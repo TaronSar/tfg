@@ -1,0 +1,2 @@
+{"v":1,"ts":1781508550723,"dur":0,"sid":"23f386fa-984e-413a-a636-76127b3b114d","type":"session_start","name":"session_start","spanId":"session-start-23f386fa-984e-413a-a636-76127b3b114d","status":"ok","attrs":{"copilotVersion":"0.52.0","vscodeVersion":"1.124.0"}}
+{"v":1,"ts":1781603325503,"dur":0,"sid":"23f386fa-984e-413a-a636-76127b3b114d","type":"session_start","name":"session_start","spanId":"session-start-23f386fa-984e-413a-a636-76127b3b114d","status":"ok","attrs":{"copilotVersion":"0.52.0","vscodeVersion":"1.124.2"}}
