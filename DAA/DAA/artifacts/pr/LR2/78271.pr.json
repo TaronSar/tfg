@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Installation instructions and airworthiness limitations",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "In the design and manufacture of the DAA for VLL Operation, the manufacturer shall provide installation instructions for system installation onto the UAS and limitation so as not to impair the airworthiness of the operation.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Minor",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

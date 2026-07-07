@@ -1,0 +1,148 @@
+================================================================================
+UAV IDENTITY VERIFICATION — PROJECT REPORT
+Few-shot ProtoNet deployment pipeline for Embention
+Date: 2026-06-29
+================================================================================
+
+--------------------------------------------------------------------------------
+1. OBJECTIVE
+--------------------------------------------------------------------------------
+The goal was not a thesis-style analysis but a working, demonstrable product: a
+system that verifies the identity of a UAV seen by a camera. The operational
+model is deliberately simple and binary. A client enrolls a single target by
+providing about five reference images. From that moment on, for every frame the
+camera sees, the system answers exactly one yes/no question: does the UAV in this
+frame match the enrolled target? It never ranks the target against a list of
+known drones, and it never retrains for a new target. The identities used to
+train the model are irrelevant at runtime — only the enrolled gallery matters.
+This is the regime a deployed device on an aircraft would actually run in, and
+everything below was built and measured against that regime.
+
+
+--------------------------------------------------------------------------------
+2. WHAT WE BUILT, AND WHY
+--------------------------------------------------------------------------------
+We assembled an end-to-end pipeline from existing pieces plus new glue code. The
+chain is: a raw camera frame goes to the YOLOX detector, which finds the UAV and
+crops it; the crop goes to the ProtoNet encoder, which turns it into a 128-number
+embedding; that embedding is compared by cosine similarity to the enrolled
+target's prototype; the score is thresholded into MATCH or UNKNOWN; and many
+per-frame decisions are aggregated into one overall verdict. We chose this
+structure because it mirrors deployment reality: detect, crop, embed, compare to
+the one enrolled gallery, decide.
+
+The components we created or hardened:
+
+- src/deploy.py — the Verifier class. It loads the trained model and the enrolled
+  gallery, embeds any crop, and produces the exact same match score the rest of
+  the system uses. We made this the single source of truth so calibration and
+  deployment can never disagree on how a score is computed.
+
+- src/enroll.py — turns five reference images into a tiny gallery file (~2 KB),
+  the only artifact that ever leaves the client, which matters for a privacy-
+  sensitive deployment.
+
+- scripts/calibrate_threshold.py — feeds positive crops (the real target) and
+  negative crops (impostors) through the scorer and recommends a decision
+  threshold, reporting detection rate, false-accept rate, and accuracy. It exists
+  so the threshold is chosen from data rather than guessed.
+
+- scripts/deploy_verify.py — the one-command demo. It accepts either a video file
+  or a folder of frames, runs the full pipeline, writes a per-frame CSV, and
+  prints a verdict. Extras: crop caching (re-scoring against a new gallery skips
+  re-extraction), annotated overlays, Grad-CAM heatmaps, and a median-score gate.
+
+- scripts/plot_embedding_map.py — visualizes the embedding space: 2D/3D
+  projections and a full-128D pairwise similarity matrix, coloured by identity,
+  so cluster quality can be seen rather than guessed.
+
+Verdict rule: CONFIRMED if >=3 matches AND >=25% of detected frames clear the
+threshold AND the median frame score clears it. The median gate was added so an
+impostor cannot pass merely by grazing the bar on a minority of frames; the
+median describes the typical frame and ignores lucky outliers.
+
+
+--------------------------------------------------------------------------------
+3. WHAT WE DID, STEP BY STEP, AND WHAT WE OBTAINED
+--------------------------------------------------------------------------------
+First, we validated the happy path. We enrolled a demo target and ran a real
+video of it through the pipeline. The genuine target was CONFIRMED and an
+impostor video was correctly rejected. This proved the plumbing worked end to end
+and produced sensible decisions.
+
+Then we stress-tested with several real UAV videos (skywalker, hornet, vector,
+lancet) scored against several galleries, and the results split sharply in two:
+  - Against a clearly DIFFERENT drone (lancet), separation was clean: the true
+    target's typical frame scored about +0.31 while the impostor sat at -0.25, a
+    healthy gap of roughly 0.56.
+  - Against SIMILAR-looking drones (hornet, vector), the system failed. Impostors
+    averaged 0.46 against the skywalker target while the true target averaged
+    0.41 — the impostors scored HIGHER. Calibration confirmed a balanced accuracy
+    of 51.8%, essentially a coin flip.
+
+Next, we caught a misleading summary metric. The original headline reported the
+average of the top-15 frames, which cherry-picks outliers and made impostors look
+close to the target. We replaced it with the median frame score and the percent
+of frames above threshold — robust numbers that describe the typical frame, not
+the luckiest one.
+
+We then noticed the verdict could still be fooled: an impostor gallery confirmed
+with 40% of frames over threshold but a median of only 0.12. We added the median
+gate, which turned that false confirmation into NOT CONFIRMED while keeping the
+true target confirmed.
+
+The Grad-CAM heatmaps then revealed the root cause: the model's attention was on
+the sky, not the airframe. We tested this directly by removing the background. The
+effect was dramatic — the true target jumped from 0.34 to 0.69 and a similar
+impostor dropped from 0.71 to 0.49. With sky present the true target had actually
+scored LOWEST of all galleries; with sky gone, the ranking corrected. This proved
+the encoder was heavily keying on background.
+
+We tried to fix background at training time with a colour-based mask, but it
+chewed into the small UAVs and degraded quality, so we reverted it. The honest
+conclusion: a clean fix needs pixel-perfect masks (Blender alpha), not a
+heuristic on baked JPGs.
+
+Finally, we added real-world images and retrained (42 train / 15 val identities,
+mixed-domain enrollment, euclidean metric, degrade augmentation). We obtained a
+best validation accuracy of 0.811 with training accuracy at 1.000 — a ~19-point
+gap that signals overfitting to training identities, with real generalization
+sitting around 0.81.
+
+
+--------------------------------------------------------------------------------
+4. WHAT THESE RESULTS MEAN
+--------------------------------------------------------------------------------
+- The pipeline is sound and demonstrable: enroll once, verify per frame, reject
+  impostors that are clearly different. Aggregating across many frames makes the
+  verdict robust to occasional bad frames.
+- The encoder partly identifies "sky" rather than "this airframe." That confound
+  inflates impostor scores whenever the sky matches and is the single biggest
+  cheap-to-address weakness.
+- The encoder cannot tell apart UAVs that genuinely look alike at small crop
+  sizes; their embeddings collapse together. No threshold, gate, or aggregation
+  can separate what the embeddings do not encode — a representation limit, not a
+  tuning problem.
+- The train/val gap means the model leans on memorized synthetic identities; real
+  performance is ~0.81. Defensible claim: reliable against distinct UAVs, not yet
+  against look-alikes at operational resolution.
+
+
+--------------------------------------------------------------------------------
+5. WHAT WE SHOULD DO TO GET BETTER RESULTS (BY IMPACT)
+--------------------------------------------------------------------------------
+1. Hard-negative training: teach the encoder using similar UAVs as explicit
+   negatives so it learns the fine differences. Highest leverage on the core
+   look-alike failure.
+2. Background handling: keep enrollment background-removed (the winning config)
+   and apply size-conditional background removal to queries above ~80px while
+   skipping tiny crops; generate clean masks via Blender alpha, not heuristics.
+3. More real frames per identity: natural background variety teaches invariance;
+   never duplicate the same crop with/without background (that is memorization).
+4. Reduce overfitting: keep degrade augmentation, deploy best.pth not last.pth,
+   add regularization or early stopping.
+5. Resolution gate: for crops below ~40px, report DETECTED but IDENTITY-UNCERTAIN
+   instead of a confident verdict, since identity is not recoverable that small.
+
+Single highest-impact action: fine-tune on real UAV crops with hard negatives.
+================================================================================

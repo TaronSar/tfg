@@ -1,0 +1,43 @@
+name: "✅ [VER] Test Result"
+description: Tests Results report related tasks.
+title: '[TR] [product] [major.minor.revision] __Text string__'
+labels: ["Commit", "Test Result", "SW Verification", "Quality"]
+assignees: []
+body:
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: |
+        ### 🏷️ Title Instructions
+        **Order tags from general to specific (UPPERCASE, ONE WORD per tag).**
+
+        📘 Related procedures:
+        - [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Descripción del Test a ejecutar
+    validations:
+      required: false
+
+  - type: textarea
+    id: trr-checklist
+    attributes:
+      label: TRR Checklist
+      description: |
+        Checklist a rellenar por el departamento QA: https://documentation.embention.net/691/es/latest/index.html
+        Test Readiness Review: https://documentation.embention.net/691/en/004/index.html
+      value: |
+        - [ ] Is the TRR scope defined?
+        - [ ] Are all Test Cases and Test Procedures reviewed and approved?
+        - [ ] Are the defined requirements traceable to the Test Cases?
+        - [ ] Is the defined Test Environment available?
+        - [ ] Has the code to be tested been baselined and is under configuration control?
+    validations:
+      required: false

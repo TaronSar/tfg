@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - GNSS Denied Accuracy",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be able to fly with a drift rate ≤ 1% of distance travelled in non-mapped areas with GNSS denied, for at least 10 km.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Performance",
+        "Operational"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61010"
+        ],
+        "is_verified_by": []
+    }
+}

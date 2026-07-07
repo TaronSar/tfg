@@ -1,0 +1,22 @@
+#!/bin/sh
+
+sleep 15
+
+touch /home/root/running_service
+
+/bin/bash -c '/bin/bash /run/media/mmcblk0p2/run_service.sh'
+
+cd /sys/class/gpio
+echo 407 > export
+echo out > gpio407/direction
+echo 1 > gpio407/value
+
+echo 408 > export
+echo out > gpio408/direction
+echo 1 > gpio408/value
+
+echo 374 > export
+echo out > gpio374/direction
+echo 1 > gpio374/value
+
+echo "servicio de ethernet habilitado"

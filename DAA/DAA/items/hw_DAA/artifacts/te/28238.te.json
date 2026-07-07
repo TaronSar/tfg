@@ -1,0 +1,8 @@
+{
+    "Version": "1.0",
+    "Title": "TE-28238",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Description": "The Test Environment includes the following equipment: actual target (P0010452), a harness DAA CS 1.0 (P011389), a Linux based PC, a power supply source (MED0023), a DC power connector, banana cables, crocodile clips, a multimeter (MED0024), multimeter probes, an oscilloscope (MED0030) and one oscilloscope probe (MED0030/C4).",    
+    "Computer": "Actual Target"
+}

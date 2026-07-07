@@ -1,0 +1,35 @@
+name: Verify WI Checklist
+
+# Init Workflow - Based on PR apprv
+on:
+   pull_request_review:
+    # Branches where the WF must be applied for this 
+       branches: ["develop", "support/sw/7.**", "feature/Amazon-PrimeAir/9388_pa_mk30"] 
+
+    # Invoke WF when a PR state chanegs 
+       types: [submitted]
+
+# Shared workflows must be a top level, could not be added as step. 
+jobs:
+   verify_checklist:
+      if: github.event.review.state == 'approved' && !contains(github.event.pull_request.labels.*.name, 'Cascade_merge')
+      uses: embention/sw_CI_Libs/.github/workflows/wf_check_requisites.yaml@develop
+      secrets: inherit
+      
+# Job to verify workflow status
+   verify_workflow:
+      needs: verify_checklist
+      runs-on: ubuntu-latest
+      if: always() 
+      steps:
+        - name: Check verify_checklist status
+          run: |
+            echo ${{ needs.verify_checklist.result }}
+
+        - name: Fail on verify_checklist
+          if: ${{ needs.verify_checklist.result == 'failure' }}
+          uses: actions/github-script@v6
+          with:
+            script: |
+                core.setFailed('Update WI failure')
+

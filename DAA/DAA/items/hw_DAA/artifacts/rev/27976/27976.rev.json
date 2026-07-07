@@ -1,0 +1,15 @@
+{
+    "Version": "1.1",
+    "Title": "REV-27976: Monitoring Power Rail",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_2V5_ETHERNET_power_supply.png",
+        "./sch_PMIC_control.png",
+        "./sch_PMIC_programming_debug.png",
+        "./sch_PSDDR_power_supply.png",
+        "./sch_system_monitoring_power_supply.png",
+        "./sch_VCCINT_power_supply.png"
+    ],
+    "__comment": "IC2 provides the voltage to the monitoring systems."
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - PCB Board format ",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have a 'carrier board' format. ",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

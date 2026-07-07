@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - CMU uplink message delivery rate",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA CMU component shall provide, via the UAS datalink and CMU and to the DAA airborne system, the uplink message at not less than 5Hz",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

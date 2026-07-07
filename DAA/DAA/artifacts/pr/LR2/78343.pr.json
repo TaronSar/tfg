@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Software configuration monitoring during PBIT",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "During PBIT, the DAA shall monitor DAA and subsystems software configuration and add result to the PBIT test report.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

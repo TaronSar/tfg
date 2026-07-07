@@ -1,0 +1,28 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28020: Power Supply - Voltage Spikes",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Check if the power supply of the hw_DAA is protected against voltage spikes of 84V.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Voltage spikes: 84V",
+        "2": "Number of spikes: 10",
+        "3": "Pulse duration: 1ms",
+        "Other": null
+    },
+    "Outputs":{                  
+        "Variables": null,  
+        "1":{
+            "Expected": "Spike clamped by the TVS diodes and the DC/DC converter continues to regulate its output voltage as normal, unaffected by the transient.", 
+            "pass criteria":{
+                "error": "null",
+                "duration": "undefined"
+            }
+        }                                
+    },  
+    "Linked Worked Items": {
+        "traced_to": "28021" 
+    }         
+}

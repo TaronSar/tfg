@@ -1,0 +1,10 @@
+{
+  "json_include": [ "../../items/_sw_perception/items/Vlibs/vpgen/projects.json", "projects0.json"],
+  "code_defs": { },
+  "code_path": "../",
+  "ccFlags": { },
+  "lnFlags": { },
+  "toolChain": { },
+  "libs": { },
+  "exe": { }
+}

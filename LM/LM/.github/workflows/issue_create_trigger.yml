@@ -1,0 +1,11 @@
+name: Create Project Trigger
+
+on:
+  issues:
+    types:
+    - opened
+         
+jobs:
+  CREATE_ISSUES:
+    uses: embention/sw_CI_Libs/.github/workflows/issue_creator_project.yml@develop
+    secrets: inherit

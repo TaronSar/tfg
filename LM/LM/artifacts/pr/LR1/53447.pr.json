@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Power consumption",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall require a maximum power consumption of 10W durign the operation.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Physical and Installation",
+        "Performance"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61059"
+        ],
+        "is_verified_by": []
+    }
+}

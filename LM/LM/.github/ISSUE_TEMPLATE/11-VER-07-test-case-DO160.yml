@@ -1,0 +1,44 @@
+name: "✅ [VER] DO160 Test Case"
+description: Write a DO160 test case
+title: '[DO160] [product] [major.minor] Section: __Text string__'
+labels: ["Commit", "Artifact", "HW Verification", "DO-160"]
+assignees: []
+body:
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: |
+        ### 🏷️ Title Instructions
+        **Order tags from general to specific (UPPERCASE, ONE WORD per tag).**
+
+        📘 Related procedures:
+        - [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Descripción del Test Case
+      value: |
+        - [ ] Test design
+        - [ ] Product configuration
+        - [ ] Automation development
+        - [ ] Workspace development
+        - [ ] Setup design
+        - [ ] Machine configuration
+        - [ ] WI creation
+        - [ ] Test execution
+
+        **Category**
+        -
+
+        **HR**
+        -
+        -
+        -
+    validations:
+      required: false

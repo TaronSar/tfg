@@ -1,0 +1,16 @@
+#include "k3-j784s4-evm.dts" // Incluimos la configuración completa de la EVM
+
+/ {
+    model = "Texas Instruments J784S4 EVM (TDA4VP Profile)";
+};
+
+/*
+ * Perfil TDA4VP:
+ * - Tiene solo 3 C7x DSP/MMA.
+  * - Mantiene el VPAC y la GPU.
+ */
+
+/* Deshabilitamos el cuarto core C7x/MMA (c71_3) */
+&c71_3 {
+    status = "disabled";
+};

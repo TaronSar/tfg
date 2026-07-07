@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - Monitoring Power Rail",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The device shall have a dedicated power rail for the monitoring systems which will check the FPGA and the rest of the components before they are powered.",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "PMIC needs to be powered and programmed before the FPGA and needs an independent I/O levels power supply",
+    "Functional": true,
+    "Labels": [
+        "Dedicated Power Supply",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "27976",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC2"
+    ]
+}

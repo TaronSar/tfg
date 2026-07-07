@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Sunlight Resistance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be resistant to any factor leading to degradation in performances (e.g. UV rays exposure). ",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Environmental"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "62359"
+        ],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "FPGA - Oscillator",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPGA shall have a 33.333MHz oscillator",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Oscillator required by the FPGA",
+    "Functional": true,
+    "Labels": [
+        "MPU Microcontroller"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28481",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "Y2"
+    ]
+}

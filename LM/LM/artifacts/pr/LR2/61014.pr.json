@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 -  Interface-visual-display",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM user interface shall display the flight parameters as configured.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software",
+        "PDI"
+    ],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

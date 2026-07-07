@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - DDR4 Memories",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The device shall have a DC-DC regulator which supplies the DRR4 Memories and its interface",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Those regulator are needed to supply every DDR4 memories and the DDR4 interface",
+    "Functional": true,
+    "Labels": [
+        "Power Supply"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28381",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC7",
+        "IC8"
+    ]
+}

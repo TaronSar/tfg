@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "DDR4 Memories - Controlled Impedance",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The impedance from the DDR4 memories' address, data and control signals shall be 50 Ohm. Differential clock signals shall have a 90 Ohm controlled impedance.",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Recommended by the FPGA manufacturer",
+    "Functional": true,
+    "Labels": [
+        " "
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": " ",
+        "traced_to": " "
+    },
+    "Designator": [
+        " "
+    ]
+}

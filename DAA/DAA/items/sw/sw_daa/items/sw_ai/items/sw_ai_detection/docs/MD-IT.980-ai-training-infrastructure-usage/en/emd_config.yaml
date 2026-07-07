@@ -1,0 +1,12 @@
+traceability: "IT.980"  # This field should not be modified
+title: "IT.980 - Ai Training Infrastructure Usage"
+odoo_name: "ai-training-infrastructure-usage"  # This field should not be modified
+author: ["Embention Sistemas Inteligentes, S.A."]
+titlepage: true
+
+
+max_depth: 99
+numbered: true
+hidden: false
+menus:
+- file: "index.md"

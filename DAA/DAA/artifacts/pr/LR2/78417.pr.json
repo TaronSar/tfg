@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Maximum operating ceiling violation notification",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall notify if the vertical corrective guidance would result in climbing above the maximum operation ceiling.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

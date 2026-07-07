@@ -1,0 +1,25 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-27957: Power Supply - 5V Power Rail",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_5V_multimeter.png",
+        "./DAA_5V_multimeter.drawio"
+    ],
+    "Steps": {
+        "1": "Check on schematic that the feedback resistors of the DC/DC converter have the correct value to achieve a voltage of 5V at the output (Vout = 0.8 (1 + R13/R14)).",
+        "2": "Connect the hw_DAA to a DAA CS harness.",
+        "3": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "4": "Switch on the power supply source.",
+        "5": "Set 6.5V and 3A on the CH1 of the power supply source.",
+        "6": "Turn on the CH1 of the power supply source.",
+        "7": "Switch on the multimeter.",
+        "8": "Set up the multimeter as voltmeter. Ensure it is set to Auto-Range, Run/Hold and DC Voltage.",
+        "9": "Measure with the multimeter probes if the voltage is 5V at the C20 pads (bottom of the hw_DAA).",
+        "10": "Repeat the measurements with different voltages at the power supply source: 12V, 24V and 36V (using CH1 and CH2 of the power supply source connected in serial).",
+        "Execution": null 
+    },
+    "Linked Worked Items": {
+        "traced_to": "27959" 
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "Ethernet Interface - Magnetic Isolation",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The Ethernet interface shall be magnetic isolated by a transformer.",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Recommended by the transceiver",
+    "Functional": true,
+    "Labels": [
+        "Interface",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28296",
+        "traced_to": null
+    },
+    "Designator": [
+        "T1"
+    ]
+}

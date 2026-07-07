@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Authority-validated maintenance procedures (Class 3)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "Maintenance instructions to ensure safe operation of a Class 3 (ARC B,C and SAIL V, VI) DAA for VLL shall be defined and made available to the UAS operator. The maintenance procedures manual is validated by a competent authority. Notefrom EASA MOC to OSO#3 SAIL III.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

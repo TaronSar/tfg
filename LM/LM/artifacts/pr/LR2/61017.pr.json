@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 -  Threat-Identification",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall distinguish potential threats during flight operations.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

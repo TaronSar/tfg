@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - DAA system interface definition",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA for VLL Operation interfaces shall be described.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

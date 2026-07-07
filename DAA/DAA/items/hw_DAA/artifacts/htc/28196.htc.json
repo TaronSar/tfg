@@ -1,0 +1,34 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28196: IMU - Power Supply",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Check if the IMU is supplied by power rails of 3.3V and 1.8V.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signal VDD at C411 pads.",
+        "2": "Signal VDDIO at C412 pads.",
+        "Other": null
+    },
+    "Outputs":{                  
+        "Variables": null,  
+        "1":{
+            "Expected": "Voltage of 3.3V.", 
+            "pass criteria":{
+                "error": "+/-1%",
+                "duration": "undefined"
+            }
+        },
+        "2":{
+            "Expected": "Voltage of 1.8V.", 
+            "pass criteria":{
+                "error": "+/-1%",
+                "duration": "undefined"
+            }
+        }
+    },
+    "Linked Worked Items": {
+        "traced_to": "28197"
+    }
+}

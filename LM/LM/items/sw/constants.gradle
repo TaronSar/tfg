@@ -1,0 +1,5 @@
+ext {
+    CORE_PATH = '_core-veronte/items/core-veronte-jdk'
+    BASE_PATH = '_core-veronte/items/_base-veronte-web/items/base-veronte-jdk'
+    WXS_PATH = "$BASE_PATH/resources/main.wxs"
+}

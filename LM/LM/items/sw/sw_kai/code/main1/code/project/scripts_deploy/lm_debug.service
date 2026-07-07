@@ -1,0 +1,19 @@
+#/etc/systemd/system/lm.service
+[Unit]
+Description=LM
+After=network.target
+# Si el servicio se reinicia más de 5 veces en 60 segundos, detenerlo.
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+[Service]
+ExecStart=/usr/local/bin/lm /etc/opt/lm_jetson_config.yaml
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=nvidia
+StandardOutput=append:/var/log/lm.log
+StandardError=append:/var/log/lm.log
+
+[Install]
+WantedBy=multi-user.target

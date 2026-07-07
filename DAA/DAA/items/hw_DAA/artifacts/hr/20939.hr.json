@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "FPD-Link III - Controlled Impedance",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The impedance of the FPD-Link III coaxial interface shall be 50 Ohm",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Impedance needed to coaxial communications over the FPD-Link III protocol",
+    "Functional": true,
+    "Labels": [
+        " "
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": " ",
+        "traced_to": " "
+    },
+    "Designator": [
+        " "
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Water & Dust Protection",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall include an enclosure with an IP53 protection rating or better.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

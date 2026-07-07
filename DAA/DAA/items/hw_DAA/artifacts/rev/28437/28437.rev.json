@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28437: FPD-Link III Interface - SMA Connector",
+    "Hyperlinks": "https://www.amphenolrf.com/132203-18.html#",
+    "Passed": true,
+    "Attachments": [
+        "./info_amphenol_RF.png",
+        "./sch_SMA_connector.png"
+    ],
+    "__comment": "Data obtained from the schematic of the hw_DAA: Sheet 2 (Connectors) -> CN2: 132203-18"
+}

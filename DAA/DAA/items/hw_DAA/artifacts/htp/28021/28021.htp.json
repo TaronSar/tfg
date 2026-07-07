@@ -1,0 +1,43 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28020: Power Supply - Voltage Spikes",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./spike.csv",
+        "./DAA_voltage_spikes.png",
+        "./DAA_voltage_spikes.drawio"
+    ],
+    "Steps": {
+        "1": "Check on schematic that there are TVS diodes to protect the device from spikes from the power inputs.",
+        "2": "Check on the datasheet of the TVS diodes the clamping voltage.",
+        "3": "Check on the datasheet of the DC/DC converter the maximum voltage that it withstands.",
+        "4": "Check that the clamping voltage is less than the maximum voltage of the DC/DC converter.",
+        "5": "Connect the hw_DAA to a DAA CS harness.",
+        "6": "Connect the output of the PCB for Normal Surge Voltage to the DAA CS harness power input using a DC power connector (according to the attached diagram) to supply the hw_DAA.",
+        "7": "Connect the waveform generator to the PCB for Normal Surge Voltage through a BNC cable MALE - MALE.",
+        "8": "Connect the power supply sources with some bananas to the PCB for Normal Surge Voltage (according to the attached diagram).",
+        "9": "Switch on the power supply sources.",
+        "10": "Connect in series three channels CH1 of MED0023 (30V) & CH2 of MED0023 (30V) & MED0189 (24V) to achieve 84V.",
+        "11": "Set 30V, 24V or 12V respectively, and 3A on the power supply sources.",
+        "12": "Press the On/Off button to turn on the channels of the power supply sources.",
+        "13": "Switch on the waveform generator.",
+        "14": "Connect a pendrive with the .csv configuration file to the waveform generator.",
+        "15": "Select the attached waveform from the pendrive memory.",
+        "16": "Switch on the oscilloscope.",
+        "17": "Connect an oscilloscope probe (CH1) to the output of the PCB for Normal Surge Voltage with x10 attenuation.",
+        "18": "Connect an oscilloscope probe (CH2) to the soldered wire at C20 pads with x10 attenuation.",
+        "19": "Configure CH1 (Voltage Spikes): set the vertical offset to ~-45V and the vertical grid to 12 V/div.",
+        "20": "Configure CH2 (Output of the DC/DC Converter): set the vertical offset to ~-3V and the vertical grid to 2 V/div.",
+        "21": "Set the horizontal grid to 1 ms/div and center the horizontal trigger position at the center of the oscilloscope screen.",
+        "22": "Set the trigger level to ~50V, rising edge and source the CH1.",
+        "23": "Ensure that the attenuation is set to x10 and BW limit OFF (on both channels).",
+        "24": "Click on the Single button.",
+        "25": "Press the Output button of thw waveform generator.",
+        "26": "Check that the DC/DC converter continues to regulate its output voltage as normal, unaffected by the transient.",
+        "27": "Take an oscilloscope screenshot.",
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "28022"
+    }
+}

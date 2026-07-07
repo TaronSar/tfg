@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Firmware Update",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall support firmware updates via CAN Bus.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

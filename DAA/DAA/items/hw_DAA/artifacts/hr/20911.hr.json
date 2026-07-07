@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "SD Memory - Interface",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The micro SD card interface shall be a 4bit SDIO interface compatible with SD 3.0",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28323",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "IC20",
+        "CN6"
+    ]
+}

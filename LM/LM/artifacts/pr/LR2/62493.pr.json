@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - NLM Compliance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be compliant with the NLM (National Defense Authorization Act).",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "PDI"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

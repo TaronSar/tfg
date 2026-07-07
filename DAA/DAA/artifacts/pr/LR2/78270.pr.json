@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - IA implementation standard",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA IA implementation shall be compliant with ED-324 standard.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification",
+        "Environmental"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

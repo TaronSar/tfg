@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Environmental test compliance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA environmental qualification shall be compliant with DO-160G standard.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Certification",
+        "Environmental"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

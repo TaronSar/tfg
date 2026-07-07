@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Startup time limit",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall perform its initialization in less time than 10 s.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Performance"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

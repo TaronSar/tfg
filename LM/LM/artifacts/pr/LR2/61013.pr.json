@@ -1,0 +1,23 @@
+{
+    "Version": "",
+    "Title": "LR2 -  Manual Flight",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have option for pilot in loop modifications in mission via manual, assisted or automatic modes.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Hardware",
+        "Software"
+    ],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

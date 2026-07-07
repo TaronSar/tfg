@@ -1,0 +1,12 @@
+{
+    "Version": "1.2",
+    "Title": "ANLYSC-28247: MIPI - Length Matching",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Type": "Routes Length Matching",
+    "Pass/Fail Criteria": "The maximum length difference between the routed signals of the DDR4 interface less than 1% of the length.",
+    "trr": "false",
+    "Linked Worked Items": {
+        "traced_to": "28248"
+    }
+}

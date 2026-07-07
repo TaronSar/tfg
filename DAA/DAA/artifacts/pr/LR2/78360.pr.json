@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - CA track classification and prioritisation schema",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall use the following schema to classify the tracks for CA alerting and guidance: - Filtering based on range: Relative horizontal range <= 1.2 NM and absolute vertical distance <= 670 ft (see appendix C, paragraph 4.2); - Filtering based on Tau Mod value: Priority is given to lower Tau Mod value  ",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

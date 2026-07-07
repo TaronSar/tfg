@@ -1,0 +1,54 @@
+# NVIDIA BSP / generated images
+Linux_for_Tegra/
+rootfs/
+bootloader/
+tools/kernel_flash/images/
+tools/kernel_flash/temp_initrdflash/
+*.img
+*.img_ext
+*.dtb.sig
+*.sig
+flashcmd.txt
+flash.xml*
+secureflash.xml
+initrdflash*.txt
+
+# Secure Boot / encryption secrets
+*.key
+*.pem
+*.der
+*.p12
+*.pfx
+*.hash
+eks_t234.img
+oem_k1.key
+sym_t234.key
+sym2_t234.key
+auth_t234.key
+rsa3k.pem
+PK.key
+KEK.key
+db_1.key
+
+# Fuse material
+fuse_*.xml
+odmfuse_*.log
+pubkeyhash.log
+fuse_info.txt
+
+# UEFI generated private material
+UefiDefaultSecurityKeys.dtbo
+UefiDefaultSecurityKeys.dts
+
+# Backups / outputs
+backups/
+out/
+*.tar
+*.tar.gz
+*.zip
+
+# Local board configs with real data
+*.env
+!.env.example
+
+*.venv

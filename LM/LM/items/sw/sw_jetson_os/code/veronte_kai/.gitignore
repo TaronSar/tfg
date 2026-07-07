@@ -1,0 +1,9 @@
+# Artefactos del build
+backups/
+out/
+
+# Script de flasheo auto-generado (contiene rutas absolutas del host)
+scripts/flash_veronte_kai.sh
+
+# Archivos temporales de quilt
+.pc/

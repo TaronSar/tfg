@@ -1,0 +1,9 @@
+{
+    "$schema": "../../../sw_daa/items/_sw_perception/items/Vlibs/vpgen2/schemas/projects.json",
+    "json_include": ["../../../sw_daa/code/vpgen/projects.json", "projects0.json"],
+    "ccFlags": {},
+    "lnFlags": {},
+    "toolChain": {},
+    "libs": {},
+    "exe": {}
+}

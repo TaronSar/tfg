@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "RS-232 Interface - ESD Protection",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The RS-232 interface shall be protected against ESD. Clamping voltage levels shall be less than 25V. Diode shall be bidirectional.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28175",
+        "traced_to": null
+    },
+    "Designator": [
+        "D5"
+    ]
+}

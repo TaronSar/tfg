@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Collision avoidance command latency",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The maximum latency of the Avoidance command message to the ownship flight control system shall be less than 100 ms when measured at the DAA’s output interface.  ",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

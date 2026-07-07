@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Operational temperature",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall operate within the ambient temperature range of –40 °C to +60 °C without active air-cooling.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Environmental"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

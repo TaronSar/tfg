@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Cyberthreat mitigation per accepted industrial standard (Class 3)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For Class 3 (ARC B,C and SAIL V, VI)  DAA a cyberthreat mitigation strategy shall be implemented and its performance assessed in accordance with an acceptable industrial standard.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

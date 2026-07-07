@@ -1,0 +1,32 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28372: DDR4 Memory - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_DDR4_power_supply.drawio",
+        "./DAA_DDR4_power_supply.png"
+    ],
+    "Steps": {
+        "1": "Check on schematic that 1.2V, 2.5V and 0.6V power rails supply the DDR4 memories.",
+        "2": "Connect the hw_DAA to a DAA CS harness.",
+        "3": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "4": "Switch on the power supply source.",
+        "5": "Set 6.5V on the CH1 of the power supply source.",
+        "6": "Turn on the CH1 of the power supply source.",
+        "7": "Switch on the multimeter.",
+        "8": "Set up the multimeter as voltmeter. Ensure it is set to Auto-Range, Run/Hold and DC Voltage.",
+        "9": "Open the Linux PC.",
+        "10": "Execute the command to stress the DDR4 memories.",
+        "11": "Connect the positive lead of the multimeter to the PSDDR signal of the DDR4 memory 1 and the negative lead to GND (at C464 pads).",
+        "12": "Measure with the multimeter and check if it is supplied with 1.2V.",
+        "13": "Connect the positive lead of the multimeter to the VPP signal of the DDR4 memory 1 and the negative lead to GND (at C465 pads).",
+        "14": "Measure with the multimeter and check if it is supplied with 2.5V.",
+        "15": "Connect the positive lead of the multimeter to the VTTREF signal of the DDR4 memory 1 and the negative lead to GND (at C221 pads).",
+        "16": "Measure with the multimeter and check if it is supplied with 0.6V.",        
+        "17": "Repeat the measurements with different voltages at the power supply source: 12V, 24V and 36V (using CH1 and CH2 of the power supply source connected in serial).",
+        "Execution": "$ stress-ng --vm 4 --vm-bytes 90% --timeout 120s"
+    },
+    "Linked Worked Items": {
+        "traced_to": "27959"
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Warning alert persistence until clear-of-conflict",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall maintain a warning alert until clear of conflict. Note Detailed implementation is left to the manufacturer. Mitigation to avoid clear of conflict flickering might be required, such as clear of conflict delay etc.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

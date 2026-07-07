@@ -1,0 +1,18 @@
+paths:
+  airborne_dataset_root: /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/
+
+# Sampling targets per class: {class: {size_bin: count}}. Must stay single-line (DVC shell interpolation).
+# size bins: small | medium | large
+
+size_metadata_bins:
+  small: 200  # area in pixels
+  medium: 2500
+
+airborne_classes: airborne helicopter bird drone flock ufo
+
+sizes_mini_train_dataset: '{"airplane": 10000, "helicopter": 10000, "bird": 10000}'
+empty_images_mini_train_dataset: 3000
+sizes_mini_eval_dataset: '{"airplane": 2000, "helicopter": 2000, "bird": 2000}'
+empty_images_mini_eval_dataset: 600
+sizes_mini_test_dataset: '{"airplane": 2000, "helicopter": 2000, "bird": 2000}'
+empty_images_mini_test_dataset: 600

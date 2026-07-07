@@ -1,0 +1,442 @@
+vars:
+  - configs/dvc_config.yaml
+
+stages:
+  01_create_dataset:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/create_dataset.py
+      --aot_root             ${paths.aot_root}
+      --output_dir           ${paths.background_classification_dir}
+      --conf_gate            0.80
+      --imbalance_ratio      2.0
+      --split_ratios         "0.70,0.15,0.15"
+      --seed                 0
+      --clip_model           ViT-L-14
+      --clip_pretrained      laion2b_s32b_b82k
+      --clip_batch           32
+      --detection_coco_dir   ${paths.detection_coco_dir}
+      --detection_coco_train ${paths.detection_coco_train}
+      --detection_coco_eval  ${paths.detection_coco_eval}
+      --detection_coco_test  ${paths.detection_coco_test}
+    deps:
+      - scripts/create_dataset.py
+      - src/ood/common/io.py
+      - src/ood/common/config_loader.py
+      - src/ood/common/path_utils.py
+      - src/ood/dataset/clip_classifier.py
+      - ${paths.detection_coco_dir}/${paths.detection_coco_train}
+      - ${paths.detection_coco_dir}/${paths.detection_coco_eval}
+      - ${paths.detection_coco_dir}/${paths.detection_coco_test}
+    params:
+      - configs/dvc_config.yaml:
+          - dataset
+    outs:
+      - ${paths.background_classification_dir}/train.jsonl
+      - ${paths.background_classification_dir}/val.jsonl
+      - ${paths.background_classification_dir}/test.jsonl
+      - ${paths.background_classification_dir}/train_crops.json
+      - ${paths.background_classification_dir}/val_crops.json
+      - ${paths.background_classification_dir}/test_crops.json
+
+  02_audit_dataset:
+    frozen: true
+    cmd: >-
+      FIFTYONE_DATABASE_URI=${fiftyone.database_uri}
+      PYTHONPATH=. uv run --group viz python scripts/clean_dataset.py
+      --aot_root           ${paths.aot_root}
+      --input_dir          ${paths.background_classification_dir}
+      --output_dir         ${paths.audited_classification_dir}
+      --dataset_name       ${fiftyone.dataset_name}
+      --dinov2_model       vit_small_patch14_dinov2.lvd142m
+      --dinov2_batch       64
+      --cv_folds           5
+      --seed               0
+    deps:
+      - scripts/clean_dataset.py
+      - src/ood/cleaning/embeddings.py
+      - src/ood/cleaning/auditor.py
+      - src/ood/cleaning/fiftyone_audit.py
+      - src/ood/common/io.py
+      - src/ood/common/config_loader.py
+      - src/ood/common/path_utils.py
+      - src/ood/common/transforms.py
+      - ${paths.background_classification_dir}/train.jsonl
+      - ${paths.background_classification_dir}/val.jsonl
+      - ${paths.background_classification_dir}/test.jsonl
+    params:
+      - configs/dvc_config.yaml:
+          - fiftyone
+    outs:
+      - ${paths.audited_classification_dir}/train.jsonl
+      - ${paths.audited_classification_dir}/val.jsonl
+      - ${paths.audited_classification_dir}/test.jsonl
+      - ${paths.audited_classification_dir}/train_cleanlab_report.json
+      - ${paths.audited_classification_dir}/val_cleanlab_report.json
+      - ${paths.audited_classification_dir}/test_cleanlab_report.json
+      - ${paths.audited_classification_dir}/embeddings_train.npy
+      - ${paths.audited_classification_dir}/embeddings_val.npy
+      - ${paths.audited_classification_dir}/embeddings_test.npy
+      - ${paths.audited_classification_dir}/audit_snapshot.jsonl
+
+  03_cleanlab_to_fiftyone:
+    frozen: true
+    cmd: >-
+      FIFTYONE_DATABASE_URI=${fiftyone.database_uri}
+      PYTHONPATH=. uv run --group viz python scripts/checkpoint_review_ready.py
+      --output_dir         ${paths.fiftyone_candidates_dir}
+      --dataset_name       ${fiftyone.dataset_name}
+      --stamp_file         ${paths.fiftyone_candidates_dir}/03_cleanlab_to_fiftyone.stamp
+    deps:
+      - scripts/checkpoint_review_ready.py
+      - src/ood/common/io.py
+      - src/ood/common/config_loader.py
+      - src/ood/common/fiftyone_utils.py
+      - src/ood/common/path_utils.py
+      - ${paths.audited_classification_dir}/train.jsonl
+      - ${paths.audited_classification_dir}/val.jsonl
+      - ${paths.audited_classification_dir}/test.jsonl
+      - ${paths.audited_classification_dir}/audit_snapshot.jsonl
+    params:
+      - configs/dvc_config.yaml:
+          - fiftyone
+    outs:
+      - ${paths.fiftyone_candidates_dir}/03_cleanlab_to_fiftyone.stamp
+
+  03b_export_cvat_queue:
+    frozen: true
+    cmd: >-
+      FIFTYONE_DATABASE_URI=${fiftyone.database_uri}
+      PYTHONPATH=. uv run --group viz python scripts/export_cvat_queue.py
+      --dataset_name  ${fiftyone.dataset_name}
+      --anno_key      relabel_round3
+      --queue_out     ${paths.cvat_queue_dir}/${curation.cvat_queue_file}
+      --task_out      ${paths.cvat_queue_dir}/${curation.cvat_task_file}
+      --label_classes "Urban,Non-urban,Water,Exclude"
+    deps:
+      - scripts/export_cvat_queue.py
+      - src/ood/curation/cvat_sync.py
+      - src/ood/curation/queue_stage.py
+      - src/ood/common/io.py
+      - src/ood/common/config_loader.py
+      - src/ood/common/cvat_utils.py
+      - src/ood/common/fiftyone_utils.py
+      - ${paths.fiftyone_candidates_dir}/03_cleanlab_to_fiftyone.stamp
+    params:
+      - configs/dvc_config.yaml:
+          - fiftyone
+          - curation
+    outs:
+      - ${paths.cvat_queue_dir}/${curation.cvat_queue_file}
+      - ${paths.cvat_queue_dir}/${curation.cvat_task_file}
+
+  03c_pull_cvat_annotations:
+    frozen: true
+    cmd: >-
+      FIFTYONE_DATABASE_URI=${fiftyone.database_uri}
+      PYTHONPATH=. uv run --group viz python scripts/pull_cvat_annotations.py
+      --dataset_name    ${fiftyone.dataset_name}
+      --anno_key        relabel_round3
+      --queue_in        ${paths.cvat_queue_dir}/${curation.cvat_queue_file}
+      --task_in         ${paths.cvat_queue_dir}/${curation.cvat_task_file}
+      --annotations_out ${paths.cvat_annotations_dir}/${curation.cvat_annotations_file}
+    deps:
+      - scripts/pull_cvat_annotations.py
+      - src/ood/curation/cvat_sync.py
+      - src/ood/curation/annotation_stage.py
+      - src/ood/common/io.py
+      - src/ood/common/config_loader.py
+      - src/ood/common/cvat_utils.py
+      - src/ood/common/fiftyone_utils.py
+      - ${paths.cvat_queue_dir}/${curation.cvat_queue_file}
+      - ${paths.cvat_queue_dir}/${curation.cvat_task_file}
+    params:
+      - configs/dvc_config.yaml:
+          - fiftyone
+          - curation
+    outs:
+      - ${paths.cvat_annotations_dir}/${curation.cvat_annotations_file}
+
+  03d_build_curation_snapshot:
+    frozen: true
+    cmd: >-
+      FIFTYONE_DATABASE_URI=${fiftyone.database_uri}
+      PYTHONPATH=. uv run --group viz python scripts/build_curation_snapshot.py
+      --dataset_name    ${fiftyone.dataset_name}
+      --annotations_in  ${paths.cvat_annotations_dir}/${curation.cvat_annotations_file}
+      --snapshot_out    ${paths.curation_snapshot_dir}/${curation.curation_snapshot_file}
+    deps:
+      - scripts/build_curation_snapshot.py
+      - src/ood/cleaning/snapshot.py
+      - src/ood/common/io.py
+      - src/ood/common/config_loader.py
+      - src/ood/common/fiftyone_utils.py
+      - ${paths.cvat_annotations_dir}/${curation.cvat_annotations_file}
+    params:
+      - configs/dvc_config.yaml:
+          - fiftyone
+          - curation
+    outs:
+      - ${paths.curation_snapshot_dir}/${curation.curation_snapshot_file}
+
+  04_apply_curation:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run --group viz python scripts/apply_curation.py
+      --audited_dir    ${paths.audited_classification_dir}
+      --output_dir     ${paths.curated_classification_dir}
+      --background_dir  ${paths.background_classification_dir}
+      --snapshot_file  ${paths.curation_snapshot_dir}/${curation.curation_snapshot_file}
+    deps:
+      - scripts/apply_curation.py
+      - src/ood/cleaning/snapshot.py
+      - src/ood/dataset/clip_classifier.py
+      - src/ood/common/io.py
+      - src/ood/common/config_loader.py
+      - src/ood/common/constants.py
+      - ${paths.audited_classification_dir}/train.jsonl
+      - ${paths.audited_classification_dir}/val.jsonl
+      - ${paths.audited_classification_dir}/test.jsonl
+      - ${paths.audited_classification_dir}/embeddings_train.npy
+      - ${paths.audited_classification_dir}/embeddings_val.npy
+      - ${paths.audited_classification_dir}/embeddings_test.npy
+      - ${paths.background_classification_dir}/train_crops.json
+      - ${paths.background_classification_dir}/val_crops.json
+      - ${paths.background_classification_dir}/test_crops.json
+      - ${paths.curation_snapshot_dir}/${curation.curation_snapshot_file}
+    outs:
+      - ${paths.curated_classification_dir}/train.jsonl
+      - ${paths.curated_classification_dir}/val.jsonl
+      - ${paths.curated_classification_dir}/test.jsonl
+      - ${paths.curated_classification_dir}/train_crops.json
+      - ${paths.curated_classification_dir}/val_crops.json
+      - ${paths.curated_classification_dir}/test_crops.json
+      - ${paths.curated_classification_dir}/embeddings_train.npy
+      - ${paths.curated_classification_dir}/embeddings_val.npy
+      - ${paths.curated_classification_dir}/embeddings_test.npy
+
+  05_create_corrupted_full:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/create_corrupted.py
+      --aot_root            ${paths.aot_root}
+      --bg_class_dir        ${paths.curated_classification_dir}
+      --output_dir          ${paths.corrupted_full_dir}
+      --corrupted_full_img_dir ${paths.corrupted_full_nas_dir}
+      --severity_filter     ${corruption.severity_filter}
+      --num_workers         ${corruption.num_workers}
+      --subsample_fraction  ${corruption.subsample_fraction}
+      --splits              "train,val,test"
+      --seed                0
+    deps:
+      - scripts/create_corrupted.py
+      - src/ood/common/io.py
+      - src/ood/common/transforms.py
+      - src/ood/preprocessing/corruptions.py
+      - ${paths.curated_classification_dir}/train.jsonl
+      - ${paths.curated_classification_dir}/val.jsonl
+      - ${paths.curated_classification_dir}/test.jsonl
+    params:
+      - configs/dvc_config.yaml:
+          - corruption
+    outs:
+      - ${paths.corrupted_full_dir}
+
+  06_create_corrupted_crops:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/create_corrupted_crops.py
+      --corrupted_full_dir  ${paths.corrupted_full_dir}
+      --crops_coco_dir      ${paths.curated_classification_dir}
+      --corrupted_full_img_dir ${paths.corrupted_full_nas_dir}
+      --corrupted_crops_img_dir ${paths.corrupted_crops_nas_dir}
+      --output_dir          ${paths.corrupted_crops_dir}
+      --crop_size           960
+      --num_workers         ${corruption.num_workers}
+      --splits              "train,val,test"
+    deps:
+      - scripts/create_corrupted_crops.py
+      - src/ood/common/io.py
+      - src/ood/common/path_utils.py
+      - src/ood/common/transforms.py
+      - src/ood/preprocessing/corruptions.py
+      - ${paths.corrupted_full_dir}
+      - ${paths.curated_classification_dir}/train_crops.json
+      - ${paths.curated_classification_dir}/val_crops.json
+      - ${paths.curated_classification_dir}/test_crops.json
+    outs:
+      - ${paths.corrupted_crops_dir}
+
+  07_detection_inference:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/evaluate_detection_degradation.py
+      --clean_crops_json          ${paths.curated_classification_dir}/test_crops.json
+      --corrupted_crops_json      ${paths.corrupted_crops_dir}/test_crops.json
+      --clean_crops_img_dir       ${paths.clean_crops_nas_dir}
+      --corrupted_crops_img_dir   ${paths.corrupted_crops_nas_dir}
+      --checkpoint_path           ${detection_degradation.checkpoint_path}
+      --config_path               ${detection_degradation.config_path}
+      --sw_ai_detection_root      ${detection_degradation.sw_ai_detection_root}
+      --output_dir                ${paths.detection_degradation_dir}/reports
+      --work_dir                  ${paths.detection_degradation_dir}/work
+      --threshold                 0.80
+    deps:
+      - scripts/evaluate_detection_degradation.py
+      - scripts/run_detection_model.py
+      - src/ood/common/io.py
+      - src/ood/common/config_loader.py
+      - src/ood/common/path_utils.py
+      - src/ood/common/transforms.py
+      - src/ood/evaluation/coco_metrics.py
+      - src/ood/evaluation/detection_degradation.py
+      - ${paths.curated_classification_dir}/test_crops.json
+      - ${paths.corrupted_crops_dir}/test_crops.json
+      - ${detection_degradation.checkpoint_path}
+      - ${detection_degradation.config_path}
+    params:
+      - configs/dvc_config.yaml:
+          - detection_degradation
+    outs:
+      - ${paths.detection_degradation_dir}/reports/detection_degradation_results.json
+      - ${paths.detection_degradation_dir}/reports/detection_degradation_bar.png
+      - ${paths.detection_degradation_dir}/reports/detection_degradation_heatmap.png
+      - ${paths.detection_degradation_dir}/reports/detection_degradation_f1_bar.png
+      - ${paths.detection_degradation_dir}/reports/detection_degradation_f1_heatmap.png
+      - ${paths.detection_degradation_dir}/reports/recommended_ood_filter.txt
+      - ${paths.detection_degradation_dir}/reports/detection_samples.crops.jsonl
+
+  08_train:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/train.py
+      --aot_root                 ${paths.aot_root}
+      --train_jsonl              ${paths.curated_classification_dir}/train.jsonl
+      --val_jsonl                ${paths.curated_classification_dir}/val.jsonl
+      --corrupted_train_dir      ${paths.corrupted_full_dir}
+      --corrupted_full_img_dir   ${paths.corrupted_full_nas_dir}
+      --models_dir               ${paths.models_dir}
+      --ood_filter_file          ${paths.detection_degradation_dir}/reports/recommended_ood_filter.txt
+      --batch                    128
+      --num_workers              ${train.num_workers}
+      --epochs                   12
+      --epochs_energy            10
+      --lr                       0.0003
+      --lr_energy                0.0001
+      --weight_decay             0.0001
+      --energy_alpha             0.2
+      --energy_margin_in         -25.0
+      --energy_margin_out        -5.0
+      --freeze_backbone          true
+      --min_val_acc              0.98
+      --early_stopping_patience  2
+    deps:
+      - scripts/train.py
+      - src/ood/common/io.py
+      - src/ood/common/model.py
+      - src/ood/common/transforms.py
+      - src/ood/preprocessing/corruptions.py
+      - src/ood/train/datasets.py
+      - src/ood/train/trainer.py
+      - ${paths.curated_classification_dir}/train.jsonl
+      - ${paths.curated_classification_dir}/val.jsonl
+      - ${paths.corrupted_full_dir}
+      - ${paths.detection_degradation_dir}/reports/recommended_ood_filter.txt
+    outs:
+      - ${paths.models_dir}/resnet18_classifier.pt
+      - ${paths.models_dir}/resnet18_energy.pt
+      - ${paths.models_dir}/resnet18_energy.onnx
+      - ${paths.models_dir}/manifest.json
+
+  09_eval:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/evaluate.py
+      --aot_root            ${paths.aot_root}
+      --test_jsonl          ${paths.curated_classification_dir}/test.jsonl
+      --corrupted_test_dir  ${paths.corrupted_full_dir}
+      --corrupted_val_dir   ${paths.corrupted_full_dir}
+      --corrupted_full_img_dir ${paths.corrupted_full_nas_dir}
+      --models_dir          ${paths.models_dir}
+      --output_dir          ${paths.eval_dir}
+      --ood_filter_file     ${paths.detection_degradation_dir}/reports/recommended_ood_filter.txt
+      --batch               128
+      --num_workers         ${evaluate.num_workers}
+    deps:
+      - scripts/evaluate.py
+      - src/ood/common/io.py
+      - src/ood/common/model.py
+      - src/ood/common/transforms.py
+      - src/ood/preprocessing/corruptions.py
+      - src/ood/train/datasets.py
+      - src/ood/train/evaluator.py
+      - ${paths.curated_classification_dir}/test.jsonl
+      - ${paths.corrupted_full_dir}
+      - ${paths.models_dir}/resnet18_energy.pt
+      - ${paths.detection_degradation_dir}/reports/recommended_ood_filter.txt
+    outs:
+      - ${paths.eval_dir}/ood_results.csv:
+          cache: false
+      - ${paths.eval_dir}/ood_per_sample.jsonl
+    metrics:
+      - ${paths.eval_dir}/ood_summary.json:
+          cache: false
+
+  10_build_fiftyone_full:
+    cmd: >-
+      FIFTYONE_DATABASE_URI=${fiftyone.database_uri}
+      PYTHONPATH=. uv run --group viz python scripts/build_fiftyone_full.py
+      --aot_root            ${paths.aot_root}
+      --curated_dir         ${paths.curated_classification_dir}
+      --corrupted_full_dir  ${paths.corrupted_full_dir}
+      --full_dir            ${paths.corrupted_full_nas_dir}
+      --ood_samples_jsonl   ${paths.eval_dir}/ood_per_sample.jsonl
+      --output_dir          ${paths.fiftyone_full_dir}
+      --dataset_name        ${fiftyone.full_dataset_name}
+      --splits              "train,val,test"
+    deps:
+      - scripts/build_fiftyone_full.py
+      - src/ood/common/io.py
+      - src/ood/common/fiftyone_utils.py
+      - src/ood/preprocessing/corruptions.py
+      - ${paths.curated_classification_dir}/train.jsonl
+      - ${paths.curated_classification_dir}/val.jsonl
+      - ${paths.curated_classification_dir}/test.jsonl
+      - ${paths.corrupted_full_dir}
+      - ${paths.eval_dir}/ood_per_sample.jsonl
+    params:
+      - configs/dvc_config.yaml:
+          - paths
+          - fiftyone
+    outs:
+      - ${paths.fiftyone_full_dir}/fiftyone_full_snapshot.jsonl
+      - ${paths.fiftyone_full_dir}/fiftyone_full_stats.jsonl
+      - ${paths.fiftyone_full_dir}/10_build_fiftyone_full.stamp
+
+  11_build_fiftyone_crops:
+    cmd: >-
+      FIFTYONE_DATABASE_URI=${fiftyone.database_uri}
+      PYTHONPATH=. uv run --group viz python scripts/build_fiftyone_crops.py
+      --detection_crops_jsonl  ${paths.detection_degradation_dir}/reports/detection_samples.crops.jsonl
+      --curated_dir            ${paths.curated_classification_dir}
+      --ood_samples_jsonl      ${paths.eval_dir}/ood_per_sample.jsonl
+      --output_dir             ${paths.fiftyone_crops_dir}
+      --dataset_name           ${fiftyone.crops_dataset_name}
+      --splits                 "train,val,test"
+    deps:
+      - scripts/build_fiftyone_crops.py
+      - src/ood/common/io.py
+      - src/ood/common/fiftyone_utils.py
+      - ${paths.detection_degradation_dir}/reports/detection_samples.crops.jsonl
+      - ${paths.curated_classification_dir}/train.jsonl
+      - ${paths.curated_classification_dir}/val.jsonl
+      - ${paths.curated_classification_dir}/test.jsonl
+      - ${paths.eval_dir}/ood_per_sample.jsonl
+    params:
+      - configs/dvc_config.yaml:
+          - paths
+          - fiftyone
+    outs:
+      - ${paths.fiftyone_crops_dir}/fiftyone_crops_snapshot.jsonl
+      - ${paths.fiftyone_crops_dir}/fiftyone_crops_stats.jsonl
+      - ${paths.fiftyone_crops_dir}/11_build_fiftyone_crops.stamp

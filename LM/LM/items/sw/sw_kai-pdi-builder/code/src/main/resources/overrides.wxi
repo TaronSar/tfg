@@ -1,0 +1,3 @@
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define AppNameReg="kai-pdi-builder"?>  <!-- Use this to set the registry value of AppId -->
+</Include>

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Environmental Test Compliance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM environmental qualification shall be compliant with DO-160G standard.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "PDI"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

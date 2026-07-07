@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Recording",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall have the means for recording log of alerts, guidance, tracks output from track processing if needed.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

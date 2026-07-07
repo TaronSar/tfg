@@ -1,0 +1,435 @@
+{
+    "SettingsVersion": 1.2,
+    "LocalHostIp": "127.0.0.1",
+    "ApiServerPort": 41451,
+    "LogMessagesVisible": true,
+    "SimMode": "Multirotor",
+    "ClockSpeed": 0.3,
+    "ClockType": "SteppableClock",
+    "OriginGeopoint": {
+        "Latitude": 47.641468,
+        "Longitude": -122.140165,
+        "Altitude": 583
+    },
+    "Recording": {
+        "RecordOnMove": false,
+        "Cameras": [
+            {
+                "CameraName": "camera_forward",
+                "ImageType": 0
+            }
+        ],
+        "External": false,
+        "RecordInterval": 0.05,
+        "Folder": "/home/catec/records",
+        "Concat": true,
+        "IsEnabled": true,
+        "Fps": 15,
+        "Width": 960,
+        "Height": 960
+    },
+    "SegmentationSettings": {
+        "InitMethod": "None"
+    },
+    "PawnPaths": {
+        "DefaultQuadrotor": {
+            "PawnBP": "Class'/AirSim/Blueprints/BP_ColibriPawn.BP_ColibriPawn_C'"
+        }
+    },
+    "Vehicles": {
+        "PX4": {
+            "VehicleType": "PX4Multirotor",
+            "UseSerial": false,
+            "LockStep": true,
+            "UseTcp": true,
+            "TcpPort": 4560,
+            "ControlPortLocal": 14540,
+            "ControlPortRemote": 14580,
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0,
+            "Parameters": {
+                "NAV_RCL_ACT": 0,
+                "NAV_DLL_ACT": 0,
+                "COM_OBL_ACT": 1,
+                "COM_RCL_EXCEPT": 4,
+                "SYS_MC_EST_GROUP": 2,
+                "EKF2_AID_MASK": 1,
+                "EKF2_HGT_MODE": 0,
+                "SYS_HAS_GPS": 1,
+                "SYS_HAS_BARO": 1,
+                "MPC_XY_VEL_MAX": 4.0,
+                "MPC_Z_VEL_MAX_UP": 4.0,
+                "MPC_Z_VEL_MAX_DN": 2.0,
+                "MC_YAWRATE_MAX": 200,
+                "MPC_TKO_SPEED": 4.0,
+                "MPC_TILTMAX_AIR": 45
+            },
+            "Cameras": {
+                "lidar_right": {
+                    "CaptureSettings": [
+                        {
+                            "ImageType": -1,
+                            "FOV_Degrees": 48.5
+                        },
+                        {
+                            "ImageType": 2,
+                            "FOV_Degrees": 48.5,
+                            "Width": 8,
+                            "Height": 8
+                        }
+                    ],
+                    "X": 0,
+                    "Y": 0.1,
+                    "Z": -0.1,
+                    "Pitch": 10,
+                    "Roll": 0,
+                    "Yaw": 90
+                },
+                "lidar_left": {
+                    "CaptureSettings": [
+                        {
+                            "ImageType": -1,
+                            "FOV_Degrees": 48.5
+                        },
+                        {
+                            "ImageType": 2,
+                            "FOV_Degrees": 48.5,
+                            "Width": 8,
+                            "Height": 8
+                        }
+                    ],
+                    "X": 0,
+                    "Y": -0.1,
+                    "Z": -0.1,
+                    "Pitch": 10,
+                    "Roll": 0,
+                    "Yaw": -90
+                },
+                "camera_forward": {
+                    "CaptureSettings": [
+                        {
+                            "ImageType": -1,
+                            "FOV_Degrees": 60
+                        },
+                        {
+                            "ImageType": 0,
+                            "FOV_Degrees": 60,
+                            "Width": 960,
+                            "Height": 960,
+                            "AutoExposureMethod": 0,
+                            "AutoExposureMinBrightness": 0.01,
+                            "AutoExposureMaxBrightness": 0.64,
+                            "AutoExposureSpeed": 100.0,
+                            "AutoExposureBias": 0.0,
+                            "TargetGamma": 2.2
+                        },
+                        {
+                            "ImageType": 5,
+                            "FOV_Degrees": 60,
+                            "Width": 960,
+                            "Height": 960
+                        }
+                    ],
+                    "X": 0.1,
+                    "Y": 0,
+                    "Z": 0.1,
+                    "Pitch": 0,
+                    "Roll": 0,
+                    "Yaw": 0
+                },
+                "camera_forward_d": {
+                    "CaptureSettings": [
+                        {
+                            "ImageType": -1,
+                            "FOV_Degrees": 60
+                        },
+                        {
+                            "ImageType": 2,
+                            "FOV_Degrees": 60,
+                            "Width": 960,
+                            "Height": 960
+                        }
+                    ],
+                    "X": 0.1,
+                    "Y": 0,
+                    "Z": 0.1,
+                    "Pitch": 0,
+                    "Roll": 0,
+                    "Yaw": 0
+                }
+            },
+            "Sensors": {
+                "distance_sensor_up": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "DrawDebugPoints": false,
+                    "Pitch": 90,
+                    "Yaw": 0,
+                    "Roll": 0,
+                    "X": 0,
+                    "Y": 0,
+                    "Z": -0.1,
+                    "ExternalController": true
+                },
+                "distance_sensor_down": {
+                    "SensorType": 5,
+                    "Enabled": true,
+                    "DrawDebugPoints": false,
+                    "Pitch": -90,
+                    "Yaw": 0,
+                    "Roll": 0,
+                    "X": 0,
+                    "Y": 0,
+                    "Z": 0.1,
+                    "ExternalController": true
+                }
+            }
+        }
+    },
+    "uav_0": {
+        "route": [
+            {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.7,
+                "type": "NO_ACTION",
+                "qw": 0.6618025632357402,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": 0.7496781758158658
+            },
+            {
+                "x": 0.7000002026557937,
+                "y": 1.1500005245208698,
+                "z": 0.7000000149011611,
+                "type": "NO_ACTION",
+                "qw": 0.6618025632357402,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": 0.7496781758158658
+            },
+            {
+                "x": -0.8999998211860643,
+                "y": 13.950000715255733,
+                "z": 2.7000000447034838,
+                "type": "INVENTORY",
+                "qw": 0.6618025632357402,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": 0.7496781758158658
+            },
+            {
+                "x": -1.0999998241662965,
+                "y": 10.15000065863132,
+                "z": 2.7000000447034838,
+                "type": "INVENTORY",
+                "qw": 0.6882736254126103,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.7254511813770668
+            },
+            {
+                "x": 0.3000001966953292,
+                "y": 3.750000563263889,
+                "z": 2.7000000447034838,
+                "type": "INVENTORY",
+                "qw": 0.7790047749550166,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.6270179906488201
+            },
+            {
+                "x": 0.3000001966953292,
+                "y": 7.150000613927837,
+                "z": 2.7000000447034838,
+                "type": "INVENTORY",
+                "qw": 0.7071067811865476,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": 0.7071067811865475
+            },
+            {
+                "x": -2.0999998390674577,
+                "y": 0.7500005185604053,
+                "z": 2.7000000447034838,
+                "type": "INVENTORY",
+                "qw": 0.5695948377626013,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.8219256175556252
+            },
+            {
+                "x": 0.9000002056360259,
+                "y": -1.249999511241917,
+                "z": 2.7000000447034838,
+                "type": "INVENTORY",
+                "qw": 0.9570920264890529,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.28978414868843005
+            },
+            {
+                "x": -1.0999998241662965,
+                "y": 16.950000759959217,
+                "z": 2.7000000447034838,
+                "type": "INVENTORY",
+                "qw": 0.6673707545776733,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": 0.7447256380268018
+            },
+            {
+                "x": 0.3000001966953292,
+                "y": 8.550000634789463,
+                "z": 2.7000000447034838,
+                "type": "NO_ACTION",
+                "qw": 0.7630199824727257,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.6463748961301958
+            },
+            {
+                "x": 0.7000002026557937,
+                "y": 8.35000063180923,
+                "z": 2.7000000447034838,
+                "type": "NO_ACTION",
+                "qw": 0.9732489894677302,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.22975292054736118
+            },
+            {
+                "x": 3.3000002413988128,
+                "y": 7.150000613927837,
+                "z": 2.7000000447034838,
+                "type": "INVENTORY",
+                "qw": 0.9767188399177247,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.21452344335707035
+            },
+            {
+                "x": 1.7000002175569549,
+                "y": 6.150000599026676,
+                "z": 2.100000035762787,
+                "type": "NO_ACTION",
+                "qw": 0.27568251304255054,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.9612487461643546
+            },
+            {
+                "x": 0.7000002026557937,
+                "y": 1.1500005245208698,
+                "z": 0.7000000149011611,
+                "type": "NO_ACTION",
+                "qw": 0.6339889056055381,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.7733421413379022
+            },
+            {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.7,
+                "type": "NO_ACTION",
+                "qw": 0.6339889056055381,
+                "qx": 0.0,
+                "qy": 0.0,
+                "qz": -0.7733421413379022
+            }
+        ],
+        "takeoff_time": 0.0,
+        "max_vel": 6.0,
+        "max_acc": 4.0
+    },
+    "dynamic": {
+        "militarHelicopter3": {
+            "velocity": 20.0,
+            "acceleration": 10000.0,
+            "cyclic": true,
+            "waypoints": [
+            [200.0, 0.0, 200],
+            [200.0, 20.0, 200],
+            [220.0, 20.0, 200],
+            [250.0, -20.0, 200],
+            [225.0, -10.0, 200],
+            [200.0, 0.0, 200]
+        ]
+        },
+        "militarHelicopter4": {
+            "velocity": 20.0,
+            "acceleration": 10000.0,
+            "cyclic": true,
+            "waypoints": [
+            [200.0, 0.0, 390],
+            [200.0, -10.0, 388],
+            [190.0, -10.0, 386],
+            [170.0, 20.0, 386],
+            [200.0, 0.0, 384]
+        ]
+        },
+        "militarHelicopter2": {
+            "velocity": 20.0,
+            "acceleration": 10000.0,
+            "cyclic": true,
+            "waypoints": [
+            [200.0, 0.0, 260],
+            [190.0, -10.0, 262],
+            [190.0, 10.0, 264],
+            [190.0, 25.0, 264],
+            [210.0, 25.0, 264],
+            [200.0, 0.0, 266]
+        ]
+        },
+        "simpleLightAircraft0": {
+            "velocity": 20.0,
+            "acceleration": 10000.0,
+            "cyclic": true,
+            "scale": 10.0,
+            "waypoints": [
+            [200.0, 0.0, 120],
+            [240.0, 0.0, 120],
+            [240.0, -80.0, 120]
+        ]
+        },
+        "simpleLightAircraft1": {
+            "velocity": 20.0,
+            "acceleration": 10000.0,
+            "cyclic": true,
+            "scale": 10.0,
+            "waypoints": [
+            [200.0, 0.0, 310],
+            [160.0, 0.0, 317],
+            [160.0, 80.0, 325]
+        ]
+        }
+    },
+    "dummy_uavs": {},
+    "dynamics_ids": {
+        "objects": [
+            {
+                "name": "militarHelicopter3",
+                "id": 20
+            },
+            {
+                "name": "militarHelicopter4",
+                "id": 30
+            },
+            {
+                "name": "militarHelicopter2",
+                "id": 10
+            },
+            {
+                "name": "lightAircraftMeshO",
+                "id": 40
+            },
+            {
+                "name": "lightAircraftMeshB",
+                "id": 50
+            }
+        ]
+    },
+    "static": {}
+}

@@ -1,0 +1,31 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28481: FPGA - Oscillator",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_FPGA_Oscillator.drawio",
+        "./DAA_FPGA_Oscillator.png"
+    ],
+    "Steps": {
+        "1": "Review the schematic design of the hw_DAA. Check that the FPGA has an oscillator of 33.333MHz.",
+        "2": "Connect the hw_DAA to a DAA CS harness.",
+        "3": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "4": "Switch on the power supply source.",
+        "5": "Set 12V and 3A on the CH1 of the power supply source.",
+        "6": "Turn on the CH1 of the power supply source.",
+        "7": "Switch on the oscilloscope.",
+        "8": "Connect on CH1 an oscilloscope probe to OUT signal (pin 3 of the Y2) with x10 attenuation.",
+        "9": "Set the vertical grid to 500 mV/div.",
+        "10": "Set the horizontal grid to ~100 ns/div and center the horizontal trigger position around the center of the oscilloscope screen.",
+        "11": "Ensure that the attenuation is set to x10 and BW limit to 200 MHz (CH1).",
+        "12": "Set the trigger level to ~1V, rising edge and source the CH1.",
+        "13": "Click on the Stop/Run button to capture the output of the oscillator.",
+        "14": "Using the horizontal menu of the measure tab, click on frequency (Freq).",
+        "15": "Check that the frequency is 33.333MHz.",
+        "16": "Take an oscilloscope screenshot.",   
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "28047"
+    }
+}

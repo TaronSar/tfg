@@ -1,0 +1,11 @@
+[core]
+    remote = nas
+    autostage = false
+    analytics = false
+[cache]
+    type = "symlink,hardlink"
+    shared = group
+    protected = true
+    dir = /mnt/Pool_IA/IA_Dataset/dvc-cache
+['remote "nas"']
+    url = /mnt/Pool_IA/IA_Dataset/dvc-storage

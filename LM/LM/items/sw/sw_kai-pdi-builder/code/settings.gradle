@@ -1,0 +1,8 @@
+rootProject.name = 'kai-pdi-builder'
+includeBuild (file('../../_core-veronte/items/core-veronte-jdk').toPath().toRealPath().toFile()) {
+    dependencySubstitution {
+        substitute module("core-veronte-jdk:core-guifx") using project(":core-guifx")
+        substitute module("core-veronte-jdk:pdi-builder-gui") using project(":pdi-builder-gui")
+    }
+}
+

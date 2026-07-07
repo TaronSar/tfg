@@ -1,0 +1,19 @@
+[Unit]
+Description=CAN FD 2 Click TLE9255W transceiver init
+After=multi-user.target
+Wants=multi-user.target
+
+# Si falla más de 5 veces en 60 segundos, systemd deja de reintentarlo.
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/setup_canfd2.sh 1000000 can0
+RemainAfterExit=yes
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+--- a/rootfs/boot/extlinux/extlinux.conf
++++ b/rootfs/boot/extlinux/extlinux.conf
+@@ -7,7 +7,7 @@
+       MENU LABEL primary kernel
+       LINUX /boot/Image
+       INITRD /boot/initrd
+-      APPEND ${cbootargs}
++      APPEND ${cbootargs} root=/dev/sda1 rootwait
+ 
+ # When testing a custom kernel, it is recommended that you create a backup of
+ # the original kernel and add a new entry to this file so that the device can

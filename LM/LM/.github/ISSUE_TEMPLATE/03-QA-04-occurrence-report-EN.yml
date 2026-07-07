@@ -1,0 +1,69 @@
+name: "🚩 [QA] Occurrence Report (EN)"
+description: "Report an event: incident, accident, or other occurrence relevant to operational safety."
+title: "[Occurrence] [ptag] [itag] [utag] Text string"
+labels: ["Analysis", "Comment", "Safety", "Occurrence Report"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🏷️ Title Instructions
+        **Order tags from general to specific (UPPERCASE, ONE WORD per tag).**
+
+        Template example:
+        `[OCURRENCE] [PRODUCT] [CUSTOMER] Brief occurrence description`
+
+        📘 Related procedures:
+        - [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+        - [P.539 - Occurrence Reporting and Analysis](https://documentation.embention.net/539/en/latest/index.html)
+
+  - type: input
+    id: references
+    attributes:
+      label: References
+      placeholder: "#1234"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: occurrence_type
+    attributes:
+      label: Occurrence type
+      description: |
+        - **Accident:** the event caused fatal or serious injuries by direct contact with any part of the aircraft, including detached parts. The event caused damage or structural failures that adversely affect its structural strength, performance or characteristics and that normally require major repair. The aircraft is missing or is completely inaccessible.
+        - **Serious incident:** an event involving circumstances indicating that an accident nearly occurred.
+        - **Minor incident:** the event caused the operation objective not to be fulfilled and the operation had to be cancelled.
+      options:
+        - Select an option...
+        - Accident
+        - Serious incident
+        - Minor incident
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: occurrence_description
+    attributes:
+      label: Description
+      description: Brief description, emphasizing details that allow reconstruction of the event for analysis. If the description comes from an issue, reference it.
+      placeholder: Describe the occurrence...
+    validations:
+      required: true
+
+  - type: textarea
+    id: follow_up
+    attributes:
+      label: 🠗 Resolution (to be filled by the person handling the event)
+      description: This section will be filled in later. Create the issue without completing it.
+      value: |
+        Follow-up
+        -
+        <!-- Detail the results obtained from the investigation of the event -->
+        <!-- If the investigation is carried out in another issue, reference it -->
+
+        Operational safety actions
+        -
+        <!-- Actions to take based on the conclusions of the event follow-up -->
+    validations:
+      required: false

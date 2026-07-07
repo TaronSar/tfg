@@ -1,0 +1,16 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28365: DDR Memory - Memory Model",
+    "Hyperlinks": "https://www.mouser.es/datasheet/2/12/16gb_auto_ddr4-3045391.pdf",
+    "Passed": true,
+    "Attachments": [
+        "./sch_ddr4_memory_1.png",
+        "./sch_ddr4_memory_2.png",
+        "./sch_ddr4_memory_3.png",
+        "./sch_ddr4_memory_4.png",
+        "./sch_ddr4_memory_ecc.png",
+        "./datasheet_DDR4_memory.png"
+    ],
+    "__comment1": "Data obtained from the datasheet of the DDR4 memory (MT40A1G16TD-062E AAT_F)",
+    "__comment2": "The 5 memories (memories 1, 2, 3, 4 and ECC bank) are the same model"
+}

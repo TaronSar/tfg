@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - PBIT coverage for all subsystems",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA PBIT shall include, at a minimum, an automated self-test for each DAA Subsystems as detailed in paragraph 3.1.1.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

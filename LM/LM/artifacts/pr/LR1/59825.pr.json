@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Service Life",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be designed for a service life of at least 5 years.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "62353"
+        ],
+        "is_verified_by": []
+    }
+}

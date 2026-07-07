@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Computer Vision ATE",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall include means for Autonomous Target Engagement (ATE).",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61000"
+        ],
+        "is_verified_by": []
+    }
+}

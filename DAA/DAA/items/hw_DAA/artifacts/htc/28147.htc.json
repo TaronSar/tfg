@@ -1,0 +1,26 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28147: RS485 - ESD protection",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Purpose": "Check if the RS485 signals of the DAA have protection and supports electrostatic discharges.",
+    "Inputs": {
+        "PDIFs": null,
+        "Variables": null,
+        "1": "10 positive and negative ESD pulses of 15000 Volts at each RS485 signal of the external connector.",
+        "Other": null
+    },
+    "Outputs": {
+        "Variables": null,
+        "1": {
+            "Expected": "Good functionality of the RS485 transceiver after the application of the pulses.",
+            "pass criteria": {
+                "error": "PASS if the checks in the RS485 test are correct after the application of the pulses, otherwise FAIL",
+                "duration": null
+            }
+        }
+    },
+    "Linked Worked Items": {
+        "traced_to": "28148"
+    }
+}

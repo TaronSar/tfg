@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Intruder capacity for CA prioritisation",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall be able to simultaneously manage a minimum of ten (10) intruders provided by the surveillance function when computing tracks prioritization.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

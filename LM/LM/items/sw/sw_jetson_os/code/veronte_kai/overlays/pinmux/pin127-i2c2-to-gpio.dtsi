@@ -1,0 +1,40 @@
+/*
+ * Veronte Kai — Override pin 127: GEN2_I2C → GPIO con pull-up
+ *
+ * En la carrier Veronte Kai no existen pull-ups externos en el bus I2C2
+ * (gen2_i2c_scl_pcc7 / gen2_i2c_sda_pdd0). Dejar la función "i2c2" con
+ * pull=NONE deja el bus flotando y puede colgar el boot.
+ *
+ * Este fragmento reconfigura ambos pines como GPIO de propósito general
+ * con pull-up interno habilitado, lo que deja el bus en estado alto (idle)
+ * y evita glitches en el arranque.
+ *
+ * AVISO: Este overlay NO se incluye directamente en el árbol de NVIDIA.
+ * Es referencia para el parche 0001 y para validación visual.
+ * El parche que aplica `quilt` modifica directamente los archivos
+ * tegra234-mb1-bct-pinmux-p3767-{dp,hdmi}-a03.dtsi.
+ *
+ * Basado en: L4T R36.5.0 — bootloader/generic/BCT/tegra234-mb1-bct-pinmux-p3767-dp-a03.dtsi
+ */
+
+/* Nodos a sobrescribir dentro de pinmux@2430000 > pex_rst_c_pgg0 */
+
+gen2_i2c_scl_pcc7 {
+	nvidia,pins         = "gen2_i2c_scl_pcc7";
+	nvidia,function     = "gp";              /* Antes: "i2c2" */
+	nvidia,pull         = <TEGRA_PIN_PULL_UP>; /* Antes: TEGRA_PIN_PULL_NONE */
+	nvidia,tristate     = <TEGRA_PIN_DISABLE>;
+	nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+	nvidia,io-high-voltage = <TEGRA_PIN_ENABLE>;
+	nvidia,lpdr         = <TEGRA_PIN_DISABLE>;
+};
+
+gen2_i2c_sda_pdd0 {
+	nvidia,pins         = "gen2_i2c_sda_pdd0";
+	nvidia,function     = "gp";              /* Antes: "i2c2" */
+	nvidia,pull         = <TEGRA_PIN_PULL_UP>; /* Antes: TEGRA_PIN_PULL_NONE */
+	nvidia,tristate     = <TEGRA_PIN_DISABLE>;
+	nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+	nvidia,io-high-voltage = <TEGRA_PIN_ENABLE>;
+	nvidia,lpdr         = <TEGRA_PIN_DISABLE>;
+};

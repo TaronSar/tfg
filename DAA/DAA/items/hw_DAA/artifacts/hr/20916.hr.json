@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "FPGA - Main Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPGA shall be powered with a 0.85V power rail as its main power supply",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Voltage needed by the FPGA",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Interface",
+        "MPU Microcontroller"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28516",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11"
+    ]
+}

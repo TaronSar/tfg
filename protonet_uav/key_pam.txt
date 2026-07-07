@@ -1,0 +1,4 @@
+key_pem = -----BEGIN RSA PRIVATE KEY-----\nMaMbaIXtE\n0gAMbMbaSsd\nMbaass\n-----END RSA PRIVATE KEY-----
+
+This will generate the single line correctly:
+    awk '{printf "%s\\n", $0}' < ~/.ssh/id_rsa

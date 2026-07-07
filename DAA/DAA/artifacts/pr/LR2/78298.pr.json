@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Active trajectory input capability",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall have an input interface that accepts from the ownship avionic or Flight Control System the active trajectory when UA is in waypoint navigation mode  ",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

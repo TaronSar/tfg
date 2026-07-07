@@ -1,0 +1,43 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28372: DDR4 Memory - Power Supply",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Check if the DDR4 Memories are supplied by power rails of 1.2V (main), 2.5V and 0.6V.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signal PSDDR (1.2V) at C464 pads.",
+        "2": "Signal VPP (2.5V) at C465 pads.",
+        "3": "Signal VTTREF (0.6V) at C221 pads.",
+        "Other": null
+    },
+    "Outputs":{                  
+        "Variables": null,  
+        "1":{
+            "Expected": "Voltage of 1.2V.", 
+            "pass criteria":{
+                "error": "+/-1%",
+                "duration": "undefined"
+            }
+        },
+        "2":{
+            "Expected": "Voltage of 2.5V.", 
+            "pass criteria":{
+                "error": "+/-1%",
+                "duration": "undefined"
+            }
+        },
+        "3":{
+            "Expected": "Voltage of 0.6V.", 
+            "pass criteria":{
+                "error": "+/-1%",
+                "duration": "undefined"
+            }
+        }        
+    },
+    "Linked Worked Items": {
+        "traced_to": "28373"
+    },
+    "__Comment": "Since all the DDR4 memories are powered by the same power rails, it is enough to check the power supply of just one DDR4 memory."
+}

@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Datalink Connection",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The datalink shall be connected to the LM by Ethernet or RS232.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Interface",
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61034"
+        ],
+        "is_verified_by": []
+    }
+}

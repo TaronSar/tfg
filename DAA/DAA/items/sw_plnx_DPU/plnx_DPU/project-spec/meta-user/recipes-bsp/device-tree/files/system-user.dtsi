@@ -1,0 +1,33 @@
+/include/ "system-conf.dtsi"
+
+#include <dt-bindings/phy/phy.h>
+/* SD */
+&sdhci1
+{ 
+	disable-wp;
+};
+
+&usb0 {
+         status = "disabled";
+};
+
+
+&usb1 {
+         status = "disabled";
+};
+
+&gem2 { 
+	status = "okay";
+	phy-handle = <&phy0>;
+	phy-mode = "rgmii";
+
+	phy0: ethernet-phy@15 {
+		#phy-cells = <1>;
+		reg = <15>;
+		device_type="ethernet-phy";
+		ti,rx-internal-delay = <0x7>;
+		ti,tx-internal-delay = <0x5>;
+		ti,fifo-depth = <0x1>;
+		ti,dp83867-rxctrl-strap-quirk;
+	};
+};

@@ -1,0 +1,42 @@
+{
+  "$schema": "../../items/_sw_perception/items/Vlibs/vpgen2/schemas/projects.json",
+  "json_include": [ ],
+  "code_defs": { },
+  "code_path": "../",
+  "ccFlags": { },
+  "lnFlags": { },
+  "toolChain": { },
+  "libs": {
+    "daa": {
+      "path": "daa/code",
+      "dependencies": [ 
+        "first",
+        "bsp",
+        "base",
+        "maverick"
+      ],
+      "headers": [ "include" ],
+      "sources": [ "source" ],
+      "test": [ ],
+      "headersPrivate": [ ],
+      "config": {
+        "2838x": {},
+        "2837x": {},
+        "28335": {},
+        "sil": {
+          "generator": {
+            "cmake": "default",
+            "qa-misra": {"certificable": false}
+          }
+        },
+        "fpa": {
+          "generator": {
+            "cmake": "default",
+            "qa-misra": {"certificable": false}
+          }
+        }
+      }
+    }
+  },
+  "exe": { }
+}

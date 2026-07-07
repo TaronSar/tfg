@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - NMAC-based warning alert generation",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "When ownship not in waypoint navigation mode, the DAA shall generate a warning alert if distance between ownship and intruder track plus uncertainty margin falls below NMAC volume at closest point of approach.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

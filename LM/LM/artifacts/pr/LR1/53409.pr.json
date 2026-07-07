@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Integrability",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be integrated in the vehicle without the needs of significant modifications on it.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "Need to minize the modifications on the aircraft and the impact on the aircraft aerodynamics. ",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61025"
+        ],
+        "is_verified_by": []
+    }
+}

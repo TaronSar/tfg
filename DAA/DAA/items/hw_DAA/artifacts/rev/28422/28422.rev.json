@@ -1,0 +1,13 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28422: FPD-Link III Interface - Serializer",
+    "Hyperlinks": "https://www.ti.com/lit/ds/symlink/ds90ub953-q1.pdf?ts=1736867370800&ref_url=https%253A%252F%252Fwww.mouser.es%252F",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_serializer.png",
+        "./sch_FPD_Link_III_Serializer.png",
+        "./sch_FPD_Link_III_Serializer_Interface.png"
+    ],
+    "__comment1": "Data obtained from the datasheet of the Serializer Transceiver (DS90UB953TRHBTQ1)",
+    "__comment2": "Data obtained from the schematic of the hw_DAA: Sheet 31 (FPD-Link III Serializer)"
+}

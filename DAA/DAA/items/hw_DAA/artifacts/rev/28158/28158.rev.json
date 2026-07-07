@@ -1,0 +1,10 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28158: RS-485 Ground",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_RS485_GND_connector.png",
+        "./sch_RS485_GND_transceiver.png"
+    ]
+}

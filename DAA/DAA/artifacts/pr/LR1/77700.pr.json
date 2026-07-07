@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Operational altitude",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall operate at altitudes up to 150 m MSL.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Environmental"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

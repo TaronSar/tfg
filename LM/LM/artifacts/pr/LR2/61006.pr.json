@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 -  Operational temperature",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall operate within the ambient temperature range of –45 °C to +60 °C withouth active air-cooling.",
+    "Verification Method": "Test, Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Operational"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

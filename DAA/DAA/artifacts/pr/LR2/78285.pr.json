@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Maintenance instructions for Class 1 and Class 2 systems",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "Maintenance instructions to ensure safe operation of Class 1 (ARC B and SAIL < IV) and Class 2 (ARC B,C and SAIL IV) DAA for VLL shall be defined and made available to the UAS operator. ",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

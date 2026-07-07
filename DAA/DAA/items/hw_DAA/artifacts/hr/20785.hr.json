@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "Ethernet Interface - Chassis",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The Ethernet interface shall have a chassis connection.",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Transformer needs a chassis connection",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28311",
+        "traced_to": null
+    },
+    "Designator": [
+        "CN1",
+        "R222",
+        "T1"
+    ]
+}

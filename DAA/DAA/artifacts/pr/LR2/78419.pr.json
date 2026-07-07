@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - RWC guidance severity mapping",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall provide vertical and horizontal RWC guidance by means of arrays with each element indicating the guidance severity level for the respective altitude and heading.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

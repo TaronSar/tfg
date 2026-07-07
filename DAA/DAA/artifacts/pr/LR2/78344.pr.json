@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Continuous failure monitoring and recording",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA must continuously monitor its operational components failures as described in the subparagraph 3.1.2.4 States and modes management requirements and record the results of this continuous monitoring as stated in the subparagraph Recording.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

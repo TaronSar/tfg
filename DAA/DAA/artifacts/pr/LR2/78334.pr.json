@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Description of restricted operations and modes to the operator",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "Detailed descriptions of the restricted operations and the specific operational modes from which they are prohibited shall be provided to the operator to ensure clear understanding and compliance.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

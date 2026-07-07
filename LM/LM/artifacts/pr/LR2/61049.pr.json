@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Gimbal Compatibility",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be compatible with commercial gimbals, including at least NextVision Colbri and Spectrum 300.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Interface",
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - ADS-B-preferred track correlation",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "In the case of a correlation between an ADS-B or e-conspicuous and non-cooperative tracks belonging to the same intruder, the track report shall be based on the ADS-B data only.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

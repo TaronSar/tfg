@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Initialisation",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall operate and get initialised in a moving environment.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "It needs to be compatible with launch from a tube or grenade launcher when operated from a boat or other moving vehicle. ",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61002"
+        ],
+        "is_verified_by": []
+    }
+}

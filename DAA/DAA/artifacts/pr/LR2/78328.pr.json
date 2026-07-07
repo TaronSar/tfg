@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Cyberthreat mitigation strategy (Class 1 and 2)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For Classes 1 (ARC B and SAIL < IV) and 2 (ARC B,C and SAIL IV) DAA, a cyberthreat mitigation strategy shall be implemented and its performance assessed.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Minor",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

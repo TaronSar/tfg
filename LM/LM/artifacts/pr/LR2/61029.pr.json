@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Data-protection",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall ensure onboard data protection across all operational conditions",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Functional",
+        "Operational"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

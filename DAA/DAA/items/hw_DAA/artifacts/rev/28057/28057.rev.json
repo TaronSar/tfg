@@ -1,0 +1,15 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28057: Main Connector",
+    "Hyperlinks": "https://www.lemo.com/pdf/HER.LM.368.XLNP.pdf",
+    "Passed": true,
+    "Attachments": [
+        "./LEMO_68pins.png",
+        "./LEMO_HE_FixedReceptacle.png",
+        "./LEMO_IP68.png",
+        "./LEMO_watertight_model_insert_configuration.png",
+        "./LEMO_watertight_model.png",
+        "./sch_LEMO_connector.png"
+    ],
+    "__comment": "LEMO Connector: HER.LM.368.XLNP"
+}

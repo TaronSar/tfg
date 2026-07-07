@@ -1,0 +1,22 @@
+name: "🏭 [PROD] New Production Preparation Plan"
+description: "Create a top-level project issue that auto-generates its sub-issues."
+title: "[PROD] [Design Product Name] [Version - Major/Minor/Revision] [TRR] - Production Preparation Plan"
+labels: ["Analysis", "Comment", "Production", "Epic"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🏷️ Title Instructions
+        Please edit the title of this issue before creating it:
+
+        Replace [Design Product Name] and [Version - Major/Minor/Revision] as needed.
+
+        📘 Related procedure: [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Project description
+      description: Describe the main project scope.
+    validations:
+      required: false

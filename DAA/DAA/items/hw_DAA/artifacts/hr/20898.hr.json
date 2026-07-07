@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "FPD-Link III Interface - SMA Connector",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPD-Link III shall use a through hole SMA female panel mount connector.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28437",
+        "traced_to": null
+    },
+    "Designator": [
+        "CN2"
+    ]
+}

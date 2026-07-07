@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "PCB Shape",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The PCB shall have the shape of a cube, made of 6 faces joined with flex board.",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "",
+    "Functional": true,
+    "Labels": [
+        "System Design",
+        "Manufacturability and Assembly"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28081",
+        "traced_to": null
+    },
+    "Designator": [
+        null
+    ]
+}

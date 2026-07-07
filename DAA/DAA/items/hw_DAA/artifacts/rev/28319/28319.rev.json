@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28319: Ethernet - Protocol",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./RGMII_interface.png",
+        "./sch_ethernet_RGMII.png"
+    ],
+    "__comment": "Data obtained from the schematic of the hw_DAA."
+}

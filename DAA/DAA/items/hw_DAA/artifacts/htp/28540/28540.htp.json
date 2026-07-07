@@ -1,0 +1,41 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28539: PMIC Programming - I2C",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_PMIC_I2C.png",
+        "./DAA_PMIC_I2C.drawio",
+        "./PMIC_config.json",
+        "../../../../items/DAA_PMIC_Programming/items/har_DAA_PMIC_Programming/BASIC/design/har_DAA_PMIC_Programming.pdf"
+    ],
+    "Steps": {
+        "1": "Review the schematic design and check if the PMIC is programmed via I2C by a JTAG connector.",
+        "2": "Connect the hw_DAA to the TPS65941212EVM using the DAA - PMIC programming harness. Connect pin 1 to J27-8 (GND), pin 2 to J29-8 (VIO_IN), pin 5 to J29-4 (I2C_SDA), and pin 7 to J29-6 (I2C_SCL).",        
+        "3": "Connect the TPS65941212EVM to the PC using an USB.",
+        "4": "Open the Scalable-PMICs-GUI app in the PC.",
+        "5": "Connect the hw_DAA to a DAA CS harness.",
+        "6": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "7": "Switch on the power supply source.",
+        "8": "Set 12V and 3A on the CH1 of the power supply source.",
+        "9": "Turn on the CH1 of the power supply source.",
+        "10": "Switch on the oscilloscope.",
+        "11": "Connect an oscilloscope probe to EXT_SCL signal (at pin 7 of the IC4) with x10 attenuation.",
+        "12": "Connect an oscilloscope probe to EXT_SDA signal (at pin 6 of the IC4) with x10 attenuation.",
+        "13": "Set the vertical offset to 3V in the CH1 and -6V in the CH2. Set the vertical grid to 1 V/div (CH1 & CH2).",
+        "14": "Set the horizontal grid to ~100 us/div and center the horizontal trigger position around the left of the oscilloscope screen.",
+        "15": "Ensure that the attenuation is set to x10 and BW limit OFF (CH1 & CH2).",
+        "16": "Set the trigger level to ~1V, rising edge and source the CH2.",
+        "17": "In the decode tab, select I2C bus type, activate it.",
+        "18": "Click on sources, add SCL on CH1 and SDA on CH2. Set the thresholds for both signals to 1.0V.",
+        "19": "Click on display, set the format to Hexadecimal.",
+        "20": "Click on the Single button.",
+        "21": "Execute the programming file of the PMIC.",
+        "22": "Observe both signals and check that data is transmitted from the programming kit TPS65941212EVM to the PMIC (hw_DAA).",
+        "23": "Check that the first byte of the communication frame is the slave address, and depending on the sensor the following bytes of data will be the ones requested at the register.",
+        "24": "Take an oscilloscope screenshot.",
+        "Execution": "./PMIC_config.json"
+    },
+    "Linked Worked Items": {
+        "traced_to": "28541"
+    }
+}

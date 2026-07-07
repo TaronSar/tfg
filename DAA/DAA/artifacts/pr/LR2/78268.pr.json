@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Service Life",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall be designed for a service life of at least 5 years.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "Minor",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

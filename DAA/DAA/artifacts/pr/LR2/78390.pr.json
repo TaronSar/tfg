@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - RWC alerting and suggestive guidance provision",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall provide RWC alerts and suggestive guidance toward ADS-B and e-conspicuous manned traffic.  ",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

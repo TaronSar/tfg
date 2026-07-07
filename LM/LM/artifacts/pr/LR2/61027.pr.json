@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Mission-recovery",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall support mission recovery when not expended, during training, or if the target is lost.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Operational"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

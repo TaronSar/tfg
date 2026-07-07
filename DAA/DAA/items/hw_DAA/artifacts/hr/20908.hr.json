@@ -1,0 +1,25 @@
+{
+    "Version": "1.1",
+    "Title": "DDR4 Memory - Quantity",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "It shall have five DDR4 memories to achieve the 64bit width bus and 8GBs with ECC requisites",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Memory"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28365",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC14",
+        "IC15",
+        "IC16",
+        "IC17",
+        "IC18"
+    ]
+}

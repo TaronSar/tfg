@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Target Tracking Camera",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have the possibility to install a camera for target tracking.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Physical and Installation",
+        "Sensors"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61021"
+        ],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Integration Position",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall be mountable in forward-facing positions on the wing or nose for fixed-wing aircraft.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "PDI"
+    ],
+    "Labels": [
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "Minor",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

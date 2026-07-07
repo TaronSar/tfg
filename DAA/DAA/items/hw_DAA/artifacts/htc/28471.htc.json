@@ -1,0 +1,26 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28471: FPD-Link III Deserializer - Oscillator",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Purpose": "Check if the FPD-Link III Deserializer has an oscillator of 25 MHz.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signal OUT (pin 3 of the Y6).",
+        "Other": null
+    },
+    "Outputs":{
+        "Variables": null,
+        "1":{
+            "Expected": "Frequency of 25MHz.",
+            "pass criteria":{
+                "error": " +/-1%",
+                "duration": "undefined"
+            }
+        }   
+    },
+    "Linked Worked Items": {
+        "traced_to": "28472" 
+    }
+}

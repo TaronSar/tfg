@@ -1,0 +1,11 @@
+name: sw_veronte_kai release trigger
+
+on:
+  push: 
+    tags:
+      - 'release/sw_veronte_kai/*'
+
+jobs:
+  _sw_veronte_kai:
+    uses: embention/sw_CI_Libs/.github/workflows/sw_veronte_kai_releases_workflow.yml@develop
+    secrets: inherit

@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "IMU Sensor - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The IMU sensor shall be powered with  3.3V power rail and a 1.8V power rail",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Voltages needed by the selected IMU",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Sensor"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28196",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC29"
+    ]
+}

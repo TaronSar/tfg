@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - Ethernet 2.5V",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The device shall have an additional LDO regulator to provide 2.5V to the Ethernet interface",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "An additional regulator its needed to supply this voltage for the ethernet transceiver",
+    "Functional": true,
+    "Labels": [
+        "Power Supply"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28300",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC10"
+    ]
+}

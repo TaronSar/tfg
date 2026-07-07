@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "CAN Interface - Signal Integrity",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The CAN interface shall ensure signal integrity by means of common mode chocke",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Recommended to have this common mode choke",
+    "Functional": true,
+    "Labels": [
+        "Interface",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28045",
+        "traced_to": null
+    },
+    "Designator": [
+        "L16",
+        "L17"
+    ]
+}

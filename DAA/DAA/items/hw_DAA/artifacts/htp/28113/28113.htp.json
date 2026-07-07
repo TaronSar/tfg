@@ -1,0 +1,36 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28112: RS485 - Flow control",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_RS485_flow_control.png",
+        "./DAA_RS485_flow_control.drawio"
+    ],
+    "Steps": {
+        "1": "Review the schematic design of the hw_DAA. Check that the RS485 transceiver has flow control signals to avoid the echo reading.",
+        "2": "Connect the hw_DAA to a PC. Set up the FPGA to pull data through the RS485 signals (TX & RX).",        
+        "3": "Connect the hw_DAA to a DAA CS harness.",
+        "4": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "5": "Switch on the power supply source.",
+        "6": "Set 12V and 3A on the CH1 of the power supply source.",
+        "7": "Turn on the CH1 of the power supply source.",
+        "8": "Switch on the oscilloscope.",
+        "9": "Connect on CH1 an oscilloscope probe to UART_0_TX signal (pin 5 of the IC25) with x10 attenuation.",
+        "10": "Connect on CH2 an oscilloscope probe to UART_0_RX signal (pin 2 of the IC25) with x10 attenuation.",
+        "11": "Connect on CH3 an oscilloscope probe to RS485_DE signal (pin 4 of the IC25) with x10 attenuation.",
+        "12": "Connect on CH4 an oscilloscope probe to !RS485_RE signal (pin 3 of the IC25) with x10 attenuation.",
+        "13": "Set the vertical grid to 500 mV/div on all the channels. Set the vertical offset to -1V.",
+        "14": "Set the horizontal grid to ~2 us/div and center the horizontal trigger position around the center of the oscilloscope screen.",
+        "15": "Ensure that the attenuation is set to x10 and BW limit OFF on all the channels.",
+        "16": "Set the trigger level to ~2V, rising edge and source the CH1.",
+        "17": "Click on the Single button to capture communication frames of the RS485.",
+        "18": "Check that when the RS485 is transmitting data (CH1), the voltage at RS485_DE and !RS485_RE signals (CH3 & CH4) is 3.3V.",
+        "19": "Take an oscilloscope screenshot (with and without zoom).",
+        "20": "Check that when the RS485 is receiving data (CH2), the voltage at RS485_DE and !RS485_RE signals (CH3 & CH4) is 0V.",
+        "21": "Take an oscilloscope screenshot (with and without zoom).",
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "28047"
+    }
+}

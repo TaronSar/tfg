@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Electronic hardware development assurance per ED-80 (Class 3)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For Class 3 (ARC B,C and SAIL V, VI) DAA, Electronic Hardware design shall follow the guidelines in document ED-80 “Design Assurance Guidance for Airborne Electronic Hardware”.  The hardware criticality level is to be validated by a competent authority.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 -  Operational acceleration",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall operate at accelerations of 30g or more.",
+    "Verification Method": "Test, Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware",
+        "Software"
+    ],
+    "Labels": [
+        "Performance"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

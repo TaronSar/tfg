@@ -1,0 +1,4 @@
+@Library('ci_library') _
+
+common_steps.cancelPreviousBuilds()
+pipelines_common()

@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Obstacle detection accuracy",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall quantify and mitigate the impact of uncertainties in bearing, elevation, and range to ensure that excessive uncertainty does not result in nuisance alerts or delays in the emission of critical alerts.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Performance"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

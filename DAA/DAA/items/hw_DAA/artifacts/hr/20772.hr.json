@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "RS-232 Interface - Transceiver",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The RS-232 interface transceiver shall have automotive grade",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28161",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC26"
+    ]
+}

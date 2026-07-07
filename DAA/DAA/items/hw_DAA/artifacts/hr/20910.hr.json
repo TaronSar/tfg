@@ -1,0 +1,45 @@
+{
+    "Version": "1.1",
+    "Title": "Volatile Memory - Termination resistors",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The DDR4 memories address and control signal shall be terminated with a 39 Ohm resistor to a 0.6V power rail",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Resistors needed by the DDR4 address and control interface",
+    "Functional": true,
+    "Labels": [
+        "Memory"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28374",
+        "traced_to": null
+    },
+    "Designator": [
+        "R145",
+        "R147",
+        "R148",
+        "R149",
+        "R150",
+        "R154",
+        "R155",
+        "R305",
+        "R306",
+        "R307",
+        "R308",
+        "R309",
+        "R310",
+        "R311",
+        "R312",
+        "R313",
+        "R314",
+        "R315",
+        "R316",
+        "R317",
+        "R318",
+        "R319",
+        "R320",
+        "R321",
+        "R157"
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Aerodynamic Profile",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall feature a low-profile design to minimize aerodynamic impact on the fuselage or wing.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61066"
+        ],
+        "is_verified_by": []
+    }
+}

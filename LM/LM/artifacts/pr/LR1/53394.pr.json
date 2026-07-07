@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Primary function",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall provide the following main functionalities: flight control, GNSS-denied navigation and shall be optimized for loitering munition applications.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "60994",
+            "60995"
+        ],
+        "is_verified_by": []
+    }
+}

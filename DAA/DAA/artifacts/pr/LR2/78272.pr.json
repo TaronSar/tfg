@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Intended DAA functions and absence of induced airspace hazards",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA for VLL Operation shall perform its intended function(s) as specified in these requirements  without creating any hazard to other users of the airspace.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

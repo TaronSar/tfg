@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Aerodynamic Profile",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall feature a low-profile design to minimize aerodynamic impact on the fuselage or wing.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

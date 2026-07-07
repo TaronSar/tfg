@@ -1,0 +1,36 @@
+{
+    "Version": "1.1",
+    "Title": "Image Sensor - Protocols",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The image sensor shall a two lane MIPI protocol and a I2C interface. Those interfaces shall be connected with the FPGA and the FPD-Link III serializer using jumper resistors to select the communication between those two ICs.",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "There will be two different mounting variants. One which select the communication between the image sensor and the FPGA and another which select the communication between the image sensor and the FPD-Link III serializer",
+    "Functional": true,
+    "Labels": [
+        "Sensor",
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28232",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "IC28",
+        "IC30",
+        "R245",
+        "R246",
+        "R247",
+        "R248",
+        "R249",
+        "R250",
+        "R255",
+        "R256",
+        "R257",
+        "R258",
+        "R259",
+        "R260"
+    ]
+}

@@ -1,0 +1,29 @@
+{
+  "checkpoint": "checkpoints_yolox_crops_mixed_domain_real\\best.pth",
+  "backbone": "mobilenetv3",
+  "data_root": "C:\\Users\\tsa3\\Desktop\\TFG\\protonet_uav\\data\\uav_dataset_yolox_crops_removed_lt30",
+  "split": "val",
+  "gallery_split": "val",
+  "k_shot": 5,
+  "degrade_p": 1.0,
+  "degrade_px": [
+    46,
+    143
+  ],
+  "agg": "mean",
+  "n_boot": 2000,
+  "seed": 42,
+  "n_identities": 10,
+  "skipped": [
+    "rq-11_raven_uav__real-time_low-poly_asset",
+    "uav",
+    "Ukraine_PD-2_UAV"
+  ],
+  "global_auc": 0.875,
+  "global_eer": 0.2049,
+  "global_auc_ci": [
+    0.8427,
+    0.9049
+  ],
+  "run_utc": "2026-07-06T10:51:26+00:00"
+}

@@ -1,0 +1,10 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28059: PCB Stack-up",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./PCB_construction_notes.png"
+    ],
+    "__comment": "Data obtained from items/hw_DAA/variants/BASIC/design/manufacturing/hw_DAA_FABRICATION_NOTES.pdf"
+}

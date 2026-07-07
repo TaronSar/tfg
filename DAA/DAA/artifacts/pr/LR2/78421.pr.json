@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Minimum content of RWC guidance and alert messages",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The RWC Guidance and alert message shall content at a minimum the information defined TABLE 36: RWC Guidance and Alert Message, for each track.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

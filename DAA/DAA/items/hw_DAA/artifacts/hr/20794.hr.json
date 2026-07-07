@@ -1,0 +1,24 @@
+{
+    "Version": "1.1",
+    "Title": "IMU Sensor - Interface",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The IMU sensor shall use a I2C interface",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Interface used by the IMU to communicate to the FPGA and the image sensor",
+    "Functional": true,
+    "Labels": [
+        "Sensor",
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28198",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "IC28",
+        "IC29"
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Camera Connection",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The cameras shall be connected to the LM by USB or Ethernet port.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Interface",
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61033"
+        ],
+        "is_verified_by": []
+    }
+}

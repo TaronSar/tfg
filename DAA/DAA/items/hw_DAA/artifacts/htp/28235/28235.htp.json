@@ -1,0 +1,30 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28234: Image Sensor - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_ImageSensor_power_supply.drawio",
+        "./DAA_ImageSensor_power_supply.png"
+    ],
+    "Steps": {
+        "1": "Check on schematic that 3.3V, 1.8V and 1.2V power rails supply the image sensor.",
+        "2": "Connect the hw_DAA to a DAA CS harness.",
+        "3": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "4": "Switch on the power supply source.",
+        "5": "Set 6.5V on the CH1 of the power supply source.",
+        "6": "Turn on the CH1 of the power supply source.",
+        "7": "Switch on the multimeter.",
+        "8": "Set up the multimeter as voltmeter. Ensure it is set to Auto-Range, Run/Hold and DC Voltage.",
+        "9": "Connect the positive lead of the multimeter to one of the capacitors of the analog supply pins (AVDD signal) and the negative lead to GND.",
+        "10": "Measure with the multimeter and check if it is supplied by 3.3V.",
+        "11": "Connect the positive lead of the multimeter to one of the capacitors of the digital supply pins (OVDD signal) and the negative lead to GND.",
+        "12": "Measure with the multimeter and check if it is supplied by 1.8V.",
+        "13": "Connect the positive lead of the multimeter to one of the capacitors of the digital supply pins (DVDD signal) and the negative lead to GND.",
+        "14": "Measure with the multimeter and check if it is supplied by 1.2V.",
+        "15": "Repeat the measurements with different voltages at the power supply source: 12V, 24V and 36V (using CH1 and CH2 of the power supply source connected in serial).",
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "27959"
+    }
+}

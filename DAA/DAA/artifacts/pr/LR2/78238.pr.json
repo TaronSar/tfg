@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Hazardous Substances - Electrical",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall be compliant with RoHS (Dir. 2011/65/EU) regulation on hazardous substances in electrical and electronic equipment.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "No safety effect",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

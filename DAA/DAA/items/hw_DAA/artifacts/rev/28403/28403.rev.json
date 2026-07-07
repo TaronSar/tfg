@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28403: External Digital I/O - Level Shifter",
+    "Hyperlinks": "https://www.ti.com/product/es-mx/TXB0106-Q1/part-details/TXB0106IPWRQ1",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_level_shifter.png",
+        "./sch_level_shifter.png"
+    ],
+    "__comment": "Data obtained from the schematic of the hw_DAA: Sheet 33 (GPIO Level Shifter)"
+}

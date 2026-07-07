@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "Image Sensor - Oscillator",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The image sensor shall have a 37.125MHz oscillator powered with 1.8V",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Image sensor needs a 37.125MHz oscillator",
+    "Functional": true,
+    "Labels": [
+        "Sensor"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28228",
+        "traced_to": null
+    },
+    "Designator": [
+        "Y5"
+    ]
+}

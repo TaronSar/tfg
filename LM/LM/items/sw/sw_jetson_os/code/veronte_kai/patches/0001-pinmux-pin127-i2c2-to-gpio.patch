@@ -1,0 +1,48 @@
+--- a/bootloader/generic/BCT/tegra234-mb1-bct-pinmux-p3767-dp-a03.dtsi
++++ b/bootloader/generic/BCT/tegra234-mb1-bct-pinmux-p3767-dp-a03.dtsi
+@@ -114,8 +114,8 @@
+ 
+ 			gen2_i2c_scl_pcc7 {
+ 				nvidia,pins = "gen2_i2c_scl_pcc7";
+-				nvidia,function = "i2c2";
+-				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
++				nvidia,function = "gp";
++				nvidia,pull = <TEGRA_PIN_PULL_UP>;
+ 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+ 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+ 				nvidia,io-high-voltage = <TEGRA_PIN_ENABLE>;
+@@ -124,8 +124,8 @@
+ 
+ 			gen2_i2c_sda_pdd0 {
+ 				nvidia,pins = "gen2_i2c_sda_pdd0";
+-				nvidia,function = "i2c2";
+-				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
++				nvidia,function = "gp";
++				nvidia,pull = <TEGRA_PIN_PULL_UP>;
+ 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+ 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+ 				nvidia,io-high-voltage = <TEGRA_PIN_ENABLE>;
+--- a/bootloader/generic/BCT/tegra234-mb1-bct-pinmux-p3767-hdmi-a03.dtsi
++++ b/bootloader/generic/BCT/tegra234-mb1-bct-pinmux-p3767-hdmi-a03.dtsi
+@@ -114,8 +114,8 @@
+ 
+ 			gen2_i2c_scl_pcc7 {
+ 				nvidia,pins = "gen2_i2c_scl_pcc7";
+-				nvidia,function = "i2c2";
+-				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
++				nvidia,function = "gp";
++				nvidia,pull = <TEGRA_PIN_PULL_UP>;
+ 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+ 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+ 				nvidia,io-high-voltage = <TEGRA_PIN_ENABLE>;
+@@ -124,8 +124,8 @@
+ 
+ 			gen2_i2c_sda_pdd0 {
+ 				nvidia,pins = "gen2_i2c_sda_pdd0";
+-				nvidia,function = "i2c2";
+-				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
++				nvidia,function = "gp";
++				nvidia,pull = <TEGRA_PIN_PULL_UP>;
+ 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+ 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+ 				nvidia,io-high-voltage = <TEGRA_PIN_ENABLE>;

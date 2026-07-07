@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "CAN Interface - Cable Management",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The CAN interface shall have duplicate output pins to improve external cable management",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Main connector has enough pins to implement a pinout redundancy",
+    "Functional": true,
+    "Labels": [
+        "Interface",
+        "Circuitry"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28048",
+        "traced_to": null
+    },
+    "Designator": [
+        "CN1"
+    ]
+}

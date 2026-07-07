@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "RS-485 Interface - Ground",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The RS-485 interface shall have an independent ground connection to external devices",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "This implementation has prevented in the past issues with current returns",
+    "Functional": true,
+    "Labels": [
+        "Interface",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28158",
+        "traced_to": null
+    },
+    "Designator": [
+        "CN1",
+        "R200"
+    ]
+}

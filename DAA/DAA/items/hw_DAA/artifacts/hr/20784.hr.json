@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "Ethernet Interface - Oscillator",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The Ethernet interface shall have a 25MHz oscillator powered with 1.8V",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "The Ethernet transceiver needs the 25MHz oscillator",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28297",
+        "traced_to": null
+    },
+    "Designator": [
+        "Y4"
+    ]
+}

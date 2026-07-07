@@ -1,0 +1,24 @@
+{
+    "Version": "1.1",
+    "Title": "RS-485 Interface - Bus Impedance",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The RS-485 interface shall have a 120 ohm bus impedance. This line impedance shall a resistor termination and it shall be able to be connected or disconnected from the bus by software",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28096",
+        "traced_to": null
+    },
+    "Designator": [
+        "OP5",
+        "OP6",
+        "R203",
+        "R204"
+    ]
+}

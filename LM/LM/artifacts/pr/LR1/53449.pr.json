@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Health monitoring",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall include health monitoring and reporting.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Safety",
+        "Reliability"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61028"
+        ],
+        "is_verified_by": []
+    }
+}

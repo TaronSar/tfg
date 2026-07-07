@@ -1,0 +1,16 @@
+# ------------------------------------------------------------------ #
+# Machine / environment-specific setup
+# ------------------------------------------------------------------ #
+# This file holds paths and infrastructure config that vary between
+# machines but are NOT experiment hyperparameters.
+# ------------------------------------------------------------------ #
+
+# ------------------------------------------------------------------ #
+# MLflow tracking server
+# ------------------------------------------------------------------ #
+# The MLflow server is shared with sw_ai_detection and runs via the
+# docker-compose stack in deployment/docker-compose.yml.
+# Override MLFLOW_TRACKING_URI in .env for non-default hosts.
+mlflow:
+  tracking_uri: http://localhost:5000
+  experiment_name: daa_ood_detector

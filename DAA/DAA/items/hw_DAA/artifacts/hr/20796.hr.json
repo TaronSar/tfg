@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "FPD-Link III Interface - Deserializer Transceiver",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPD-Link III serializer transceiver shall have automotive grade",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28424",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC31"
+    ]
+}

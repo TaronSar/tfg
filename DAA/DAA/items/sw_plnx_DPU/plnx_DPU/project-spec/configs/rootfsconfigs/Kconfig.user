@@ -1,0 +1,46 @@
+menu "user packages " 
+config dnf  
+	 bool "dnf"
+	 help
+	
+config gpio-demo  
+	 bool "gpio-demo"
+	 help
+	
+config internet  
+	 bool "internet"
+	 help
+	
+config nfs-utils  
+	 bool "nfs-utils"
+	 help
+	
+config peekpoke  
+	 bool "peekpoke"
+	 help
+	
+config python3  
+	 bool "python3"
+	 help
+	
+config python3-pip  
+	 bool "python3-pip"
+	 help
+	
+config resize-part  
+	 bool "resize-part"
+	 help
+	
+config vitis-ai-library  
+	 bool "vitis-ai-library"
+	 help
+	
+config vitis-ai-library-dbg  
+	 bool "vitis-ai-library-dbg"
+	 help
+	
+config vitis-ai-library-dev  
+	 bool "vitis-ai-library-dev"
+	 help
+	
+endmenu

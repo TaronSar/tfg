@@ -1,0 +1,33 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28350: SD Memory - Initialization",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_microSD_initialization.png",
+        "./DAA_microSD_initialization.drawio"
+    ],
+    "Steps": {
+        "1": "Review the schematic design of the hw_DAA. Check that there is a circuit which switches the power supply for the card when the interface is initialized.",
+        "2": "Connect the hw_DAA to a PC. Set up the FPGA to read/write data in the micro SD.",        
+        "3": "Connect the hw_DAA to a DAA CS harness.",
+        "4": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "5": "Switch on the power supply source.",
+        "6": "Set 12V and 3A on the CH1 of the power supply source.",
+        "7": "Switch on the oscilloscope.",
+        "8": "Connect on CH1 an oscilloscope probe to SD_VCCB signal (C292 pads) with x10 attenuation.",
+        "9": "Connect on CH2 an oscilloscope probe to SDIO_1_SEL signal (R332 pads) with x10 attenuation.",
+        "10": "Set the vertical offset to 3V in the CH1 and -6V in the CH2. Set the vertical grid to 1 V/div (CH1 & CH2).",
+        "11": "Set the horizontal grid to ~2 us/div and center the horizontal trigger position around the center of the oscilloscope screen.",
+        "12": "Ensure that the attenuation is set to x10 and BW limit OFF on all the channels.",
+        "13": "Set the trigger level to ~1V, rising edge and source the CH2.",
+        "14": "Click on the Single button to capture the micro SD initialization.",
+        "15": "Turn on the CH1 of the power supply source.",
+        "16": "Check that when the micro SD is initialized, the voltage at SD_VCCB (CH1) is 3.3V following SD 3.0 protocol.",
+        "17": "Check that SDIO_1_SEL (CH2) switches from LOW to HIGH, the voltage at SD_VCCB (CH1) is 1.8V.",
+        "18": "Take an oscilloscope screenshot (with and without zoom).",
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "28047"
+    }
+}

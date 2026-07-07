@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - Reverse Polarity",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "It shall be implement a schottky diode for the reverse polarity protection",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Power Supply"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "27915",
+        "traced_to": null
+    },
+    "Designator": [
+        "D8",
+        "D9"
+    ]
+}

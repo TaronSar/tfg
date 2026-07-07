@@ -1,0 +1,6 @@
+# In sim/, track only json and yaml — ignore subfolders and zips
+!sim/
+!sim/*.json
+!sim/*.yaml
+sim/*/
+sim/*.zip

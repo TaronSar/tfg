@@ -1,0 +1,10 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28081: PCB Shape",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./hw_DAA_Rigiflex_drawing.png"
+    ],
+    "__comment": "Data obtained from items/hw_DAA/variants/BASIC/design/manufacturing/hw_DAA_Rigiflex_drawing.pdf"
+}

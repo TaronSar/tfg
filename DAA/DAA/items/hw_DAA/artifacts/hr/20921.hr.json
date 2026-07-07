@@ -1,0 +1,27 @@
+{
+    "Version": "1.1",
+    "Title": "FPGA - Hardware version",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPGA shall have resistors to determine the hardware version",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Auxiliary function",
+    "Functional": true,
+    "Labels": [
+        "MPU Microcontroller"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28511",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "R103",
+        "R104",
+        "R106",
+        "R107",
+        "R109",
+        "R110"
+    ]
+}

@@ -1,0 +1,23 @@
+<launch>
+	
+	<arg name="images_rate_hz"     default="30"/>
+	<arg name="lidar_rate_hz"      default="10"/>
+	<arg name="state_rate_hz"      default="100"/>
+	<arg name="sim_clock_rate_hz"  default="500"/>
+	<arg name="publish_clock"      default="true"/>
+	<arg name="host"               default="localhost" />
+	<arg name="output"             default="screen"/>
+	<arg name="ground_truth_pose_topic" default="/airsim_node/PX4/ground_truth/pose"/>
+
+	<!-- Note that timer callbacks will be processed at maximum possible rate, upperbounded by the following  HZ values -->
+	<node name="airsim_node" pkg="airsim_ros_wrapper" type="airsim_node" output="$(arg output)">
+		<param name="images_rate_hz"     type="double"   value="$(arg images_rate_hz)" />
+		<param name="lidar_rate_hz"      type="double"   value="$(arg lidar_rate_hz)" />
+		<param name="state_rate_hz"      type="double"   value="$(arg state_rate_hz)" /> 
+		<param name="sim_clock_rate_hz"  type="double"   value="$(arg sim_clock_rate_hz)" />
+		<param name="publish_clock"      type="bool"     value="$(arg publish_clock)" />
+		<param name="host_ip"            type="string"   value="$(arg host)" />
+		<remap from="/airsim_node/PX4/ground_truth/pose" to="$(arg ground_truth_pose_topic)"/>
+		
+	</node>
+</launch>

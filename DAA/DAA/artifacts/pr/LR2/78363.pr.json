@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Minimum CA warning alert lead time",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall provide a warning alert a minimum of 10s before the point when the CA manoeuvre needs to be activated in order to not breach NMAC.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

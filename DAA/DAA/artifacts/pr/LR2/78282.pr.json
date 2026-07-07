@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Malfunction detection and management strategy (Class 2)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For Class 2 (ARC B,C and SAIL IV) DAA, in addition to Class 1 (ARC B and SAIL < IV) requirements, the strategy for detection, alerting and management of any malfunction, failure or combination thereof, which would lead to a hazard, shall be made available.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

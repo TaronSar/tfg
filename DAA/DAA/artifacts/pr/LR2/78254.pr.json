@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Electrical interface",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall include a connector for power and interfacing with external pheripherals.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,11 @@
+# Build folder
+
+code/main1/code/project/cmake/build/
+LM/items/_sw_perception/items/Vlibs/lib/
+
+*.csv
+*.log
+*.zip
+*.txt
+*.mp4
+Veronte_SD_Image_7.2/

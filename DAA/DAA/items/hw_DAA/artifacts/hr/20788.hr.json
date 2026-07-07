@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "Image Sensor - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The image sensor shall be powered with a PMIC. This PMIC shall provide a 3.3V power rail, a 1.8V power rail and a 1.2V power rail.",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "PMIC is recommended to reduce total area and to have a controlled power-on sequence",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Sensors"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28234",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC9",
+        "IC28"
+    ]
+}

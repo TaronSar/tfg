@@ -1,0 +1,36 @@
+{
+    "folders": [
+        {
+            "path": ".",
+            "name": "sw"
+        },
+        {
+            "path": "sw_daa/items/_sw_perception/items/Vlibs",
+            "name": "Vlibs"
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "sw_daa/items": true
+        },
+        "search.exclude": {
+            "sw_daa/items": true
+        },
+        "search.followSymlinks": false,
+        "python.defaultInterpreterPath": "${workspaceFolder:sw}/.venv/Scripts/python.exe",
+        "python.terminal.activateEnvironment": true,
+        "python.terminal.activateEnvInCurrentTerminal": true,
+        "terminal.integrated.defaultProfile.windows": "PowerShell (venv)",
+        "terminal.integrated.profiles.windows": {
+            "PowerShell (venv)": {
+                "source": "PowerShell",
+                "args": [
+                    "-NoExit",
+                    "-ExecutionPolicy", "Bypass",
+                    "-Command",
+                    "& '${workspaceFolder:sw}\\.venv\\Scripts\\Activate.ps1'"
+                ]
+            }
+        }
+    }
+}

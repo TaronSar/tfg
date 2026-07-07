@@ -1,0 +1,529 @@
+vars:
+  - configs/dvc_config.yaml
+
+stages:
+  00_airborne_to_coco:
+    foreach:
+      - part1
+      - part2
+      - part3
+    do:
+      frozen: true
+      cmd: python -m src.dataset.airborne_tracking_dataset_to_coco
+            --annotations_file ${paths.airborne_dataset_root}${item}/ImageSets/groundtruth.json
+            --output_json data/00_raw/${item}_airborne_tracking_coco.json
+            --classes ${airborne_classes}
+      deps:
+        - src/dataset/airborne_tracking_dataset_to_coco.py
+      outs:
+        - data/00_raw/${item}_airborne_tracking_coco.json
+
+  00_merge_coco_annotations:
+    frozen: true
+    cmd: python -m src.dataset.merge_coco_annotations
+          --inputs data/00_raw/part1_airborne_tracking_coco.json data/00_raw/part2_airborne_tracking_coco.json data/00_raw/part3_airborne_tracking_coco.json
+          --images_base_paths ${paths.airborne_dataset_root}part1/Images/ ${paths.airborne_dataset_root}part2/Images/ ${paths.airborne_dataset_root}part3/Images/
+          --output data/00_raw_merge/airborne_tracking_coco.json
+    deps:
+      - src/dataset/merge_coco_annotations.py
+      - data/00_raw/part1_airborne_tracking_coco.json
+      - data/00_raw/part2_airborne_tracking_coco.json
+      - data/00_raw/part3_airborne_tracking_coco.json
+    outs:
+      - data/00_raw_merge/airborne_tracking_coco.json
+
+  01_tmp_remove_images_not_in_storage: # if dataset is well downloaded, this stage should not change anything
+    frozen: true
+    cmd: python -m src.dataset.remove_images_not_in_storage
+          --input-json data/00_raw_merge/airborne_tracking_coco.json
+          --images-root ${paths.airborne_dataset_root}
+          --output-json data/01_raw_merge/airborne_tracking_coco_only_images_exist.json
+    deps:
+      - src/dataset/remove_images_not_in_storage.py
+      - data/00_raw_merge/airborne_tracking_coco.json
+    outs:
+      - data/01_raw_merge/airborne_tracking_coco_only_images_exist.json
+
+  02_downsample_videos:
+    frozen: true
+    cmd: python -m src.preprocessing.downsampling_videos
+          --input-json data/01_raw_merge/airborne_tracking_coco_only_images_exist.json
+          --output-json data/02_downsampled_airborne/airborne_tracking_coco_downsampled.json
+          --keep-every 10
+    deps:
+      - src/preprocessing/downsampling_videos.py
+      - data/01_raw_merge/airborne_tracking_coco_only_images_exist.json
+    outs:
+      - data/02_downsampled_airborne/airborne_tracking_coco_downsampled.json
+
+  03_add_size_metadata:
+    frozen: true
+    cmd: python -m src.preprocessing.add_size_metadata
+          --input-json data/02_downsampled_airborne/airborne_tracking_coco_downsampled.json
+          --output-json data/03_size_metadata/airborne_tracking_coco.json
+          --small-threshold ${size_metadata_bins.small}
+          --medium-threshold ${size_metadata_bins.medium}
+    deps:
+      - src/preprocessing/add_size_metadata.py
+      - data/02_downsampled_airborne/airborne_tracking_coco_downsampled.json
+    outs:
+      - data/03_size_metadata/airborne_tracking_coco.json
+
+  03_coco_to_fiftyone:
+    frozen: true
+    cmd: python -m src.fiftyone.load_data_to_fiftyone
+          --load-mode coco
+          --annotations-path data/03_size_metadata/airborne_tracking_coco.json
+          --images-dir ${paths.airborne_dataset_root}
+          --dataset-name airborne_tracking
+          --version 10
+          --override
+          --open-browser
+          --classes ${airborne_classes}
+          && mkdir -p data/03_coco_to_fiftyone && date > data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+    deps:
+      - src/fiftyone/load_data_to_fiftyone.py
+      - data/03_size_metadata/airborne_tracking_coco.json
+    outs:
+      - data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+
+  # ------------------------------------------------------------------ #
+  # Filter out very long-range objects (wrongly labeled most of the time or too small to be useful) a
+  # and drone/flock/airborne classes
+  # ------------------------------------------------------------------ #
+  03_tag_drone_flock_airborne:
+    foreach:
+      - drone
+      - airborne
+      - flock
+    do:
+      frozen: true
+      cmd: python -m src.fiftyone.label_fiftyone
+            --dataset-name airborne_tracking
+            --version 10
+            --mode sample
+            --filters "ground_truth.detections.label:==:${item}"
+            --tag range_bt_3000_or_drone_flock_airborne
+            && mkdir -p data/03_tag_exclude && date > data/03_tag_exclude/03_tag_${item}.stamp
+      deps:
+        - src/fiftyone/label_fiftyone.py
+        - data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+      outs:
+        - data/03_tag_exclude/03_tag_${item}.stamp
+
+  03_tag_range_bt_3000:
+    frozen: true
+    cmd: python -m src.fiftyone.label_fiftyone
+          --dataset-name airborne_tracking
+          --version 10
+          --mode sample
+          --filters "ground_truth.detections.range_m:>:3000"
+          --tag range_bt_3000_or_drone_flock_airborne
+          && mkdir -p data/03_tag_exclude && date > data/03_tag_exclude/03_tag_range_bt_3000.stamp
+    deps:
+      - src/fiftyone/label_fiftyone.py
+      - data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+    outs:
+      - data/03_tag_exclude/03_tag_range_bt_3000.stamp
+
+  04_add_version_11:
+    frozen: true
+    cmd: python -m src.fiftyone.label_fiftyone
+          --dataset-name airborne_tracking
+          --version 10
+          --mode add-version
+          --tag 11
+          --exclude-tags range_bt_3000_or_drone_flock_airborne
+          && mkdir -p data/04_add_version_11 && date > data/04_add_version_11/04_add_version_11.stamp
+    deps:
+      - src/fiftyone/label_fiftyone.py
+      - data/03_tag_exclude/
+    outs:
+      - data/04_add_version_11/04_add_version_11.stamp
+
+  04_export_version_11:
+    frozen: true
+    cmd: python -m src.fiftyone.export_fiftyone_to_coco
+          --dataset-name airborne_tracking
+          --version 11
+          --output-path data/04_export_version_11/airborne_tracking_coco.json
+          --images-dir ${paths.airborne_dataset_root}
+          --classes ${airborne_classes}
+    deps:
+      - src/fiftyone/export_fiftyone_to_coco.py
+      - data/04_add_version_11/04_add_version_11.stamp
+    outs:
+      - data/04_export_version_11/airborne_tracking_coco.json
+
+  # ------------------------------------------------------------------ #
+  # Crop all filtered images (heaviest task — done once for all iterations)
+  # ------------------------------------------------------------------ #
+  05_crop_images:
+    frozen: true
+    cmd: python -m src.preprocessing.crop_images
+          --input-json data/04_export_version_11/airborne_tracking_coco.json
+          --images-dir ${paths.airborne_dataset_root}
+          --output-json data/05_cropped_airborne/airborne_tracking_coco.json
+          --output-dir ${paths.airborne_dataset_root}/airborne_cropped_images/
+          --crop-width 960
+          --crop-height 960
+          --overlap 0.25
+          --bg-ratio 0.15
+          --min-visibility 1
+          --bg-source annotated
+    deps:
+      - src/preprocessing/crop_images.py
+      - data/04_export_version_11/airborne_tracking_coco.json
+    outs:
+      - data/05_cropped_airborne/airborne_tracking_coco.json
+
+  # ------------------------------------------------------------------ #
+  # Split by flight into train / eval / test (prevents data leakage)
+  # ------------------------------------------------------------------ #
+  06_split_train:
+    frozen: true
+    cmd: python -m src.preprocessing.dataset_split_random_by_flight
+          --input-json data/05_cropped_airborne/airborne_tracking_coco.json
+          --split-a-json data/06_split/train.json
+          --split-b-json data/06_split/eval_test.json
+          --split-b-ratio 0.3
+          --seed 42
+    deps:
+      - src/preprocessing/dataset_split_random_by_flight.py
+      - data/05_cropped_airborne/airborne_tracking_coco.json
+    outs:
+      - data/06_split/train.json
+      - data/06_split/eval_test.json
+
+  06_split_eval_test:
+    frozen: true
+    cmd: python -m src.preprocessing.dataset_split_random_by_flight
+          --input-json data/06_split/eval_test.json
+          --split-a-json data/06_split/eval.json
+          --split-b-json data/06_split/test.json
+          --split-b-ratio 0.5
+          --seed 42
+    deps:
+      - src/preprocessing/dataset_split_random_by_flight.py
+      - data/06_split/eval_test.json
+    outs:
+      - data/06_split/eval.json
+      - data/06_split/test.json
+
+  # ------------------------------------------------------------------ #
+  # Load cropped splits to FiftyOne for visualization
+  # ------------------------------------------------------------------ #
+  06_train_crop_to_fiftyone:
+    frozen: true
+    cmd: python -m src.fiftyone.load_data_to_fiftyone
+          --load-mode coco
+          --annotations-path data/06_split/train.json
+          --images-dir ${paths.airborne_dataset_root}/airborne_cropped_images/
+          --dataset-name airborne_tracking_cropped
+          --version 10
+          --override
+          --label split=train
+          --classes ${airborne_classes}
+          && mkdir -p data/06_coco_to_fiftyone && date > data/06_coco_to_fiftyone/full_crop_train.stamp
+    deps:
+      - src/fiftyone/load_data_to_fiftyone.py
+      - data/06_split/train.json
+    outs:
+      - data/06_coco_to_fiftyone/full_crop_train.stamp
+
+  06_eval_test_crop_to_fiftyone:
+    foreach:
+      - eval
+      - test
+    do:
+      frozen: true
+      cmd: python -m src.fiftyone.load_data_to_fiftyone
+            --load-mode coco
+            --annotations-path data/06_split/${item}.json
+            --images-dir ${paths.airborne_dataset_root}/airborne_cropped_images/
+            --dataset-name airborne_tracking_cropped
+            --version 10
+            --append
+            --label split=${item}
+            --classes ${airborne_classes}
+            && mkdir -p data/06_coco_to_fiftyone && date > data/06_coco_to_fiftyone/full_crop_${item}.stamp
+      deps:
+        - src/fiftyone/load_data_to_fiftyone.py
+        - data/06_split/${item}.json
+        - data/06_coco_to_fiftyone/full_crop_train.stamp
+      outs:
+        - data/06_coco_to_fiftyone/full_crop_${item}.stamp
+
+  # ------------------------------------------------------------------ #
+  # Create mini subset from full dataset, not balanced (strict subset guarantee)
+  # ------------------------------------------------------------------ #
+  07_balance_mini:
+    foreach:
+      train:
+        targets: ${sizes_mini_train_dataset}
+        empty_images: ${empty_images_mini_train_dataset}
+      eval:
+        targets: ${sizes_mini_eval_dataset}
+        empty_images: ${empty_images_mini_eval_dataset}
+      test:
+        targets: ${sizes_mini_test_dataset}
+        empty_images: ${empty_images_mini_test_dataset}
+    do:
+      frozen: true
+      cmd: python -m src.preprocessing.sample_coco_dataset
+            --input-json data/06_split/${key}.json
+            --output-json data/07_balanced/mini_${key}.json
+            --targets '${item.targets}'
+            --empty-images ${item.empty_images}
+            --seed 42
+      deps:
+        - src/preprocessing/sample_coco_dataset.py
+        - data/06_split/${key}.json
+      outs:
+        - data/07_balanced/mini_${key}.json
+
+  # ------------------------------------------------------------------ #
+  # Generate predictions with yolox_tiny_airborne.py
+  # ------------------------------------------------------------------ #
+  08_prediction_test_yolox_tiny_airborne:
+    frozen: true
+    cmd: python -m src.tools.run_docker test
+          --config configs/experiments/yolox_tiny_airborne.py
+          --checkpoint experiments/yolox_tiny_airborne_20260520_160406/best_coco_bbox_mAP_epoch_38.pth
+    deps:
+      - src/tools/run_docker.py
+      - configs/experiments/yolox_tiny_airborne.py
+    outs:
+      - experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+
+  08_prediction_test_yolox_tiny_airborne_to_fiftyone:
+    frozen: true
+    cmd: python -m src.fiftyone.load_predictions_to_fiftyone
+          --dataset-name airborne_tracking_cropped
+          --version 10
+          --predictions-path experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+          --annotations-path data/06_split/test.json
+          --images-dir ${paths.airborne_dataset_root}/airborne_cropped_images/
+          --label-field predictions_test_yolox_tiny_airborne_20260520_160406_best_epoch
+          --evaluate
+          --report-dir data/08_prediction_yolox_tiny_airborne_20260520_160406_to_fiftyone
+          --include-labels split=test
+    deps:
+      - src/fiftyone/load_predictions_to_fiftyone.py
+      - data/06_split/test.json
+      - experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+    outs:
+      - data/08_prediction_yolox_tiny_airborne_20260520_160406_to_fiftyone/
+
+  08_evaluation_test_by_range_size_yolox_tiny_airborne:
+    frozen: true
+    cmd:
+      python -m src.tools.evaluate_offline
+      --gt data/06_split/test.json
+      --predictions experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+      --range-bins 0 500 1000 1500 2000 2600 2800 3000 3100 3200 3300 3400 3500
+      --area-bins 0 100 200 300 500 2500 1000000000000000
+      --output data/08_prediction_yolox_tiny_airborne_20260520_160406_by_range_size/results.json
+      --per-class
+      --report-dir data/08_prediction_yolox_tiny_airborne_20260520_160406_by_range_size/
+    deps:
+      - src/tools/evaluate_offline.py
+      - data/06_split/test.json
+      - experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+    outs:
+      - data/08_prediction_yolox_tiny_airborne_20260520_160406_by_range_size/
+
+  # ------------------------------------------------------------------ #
+  # Cleanlab: find label issues and load scores into FiftyOne
+  # ------------------------------------------------------------------ #
+  09_reclassify_labels:
+    frozen: true
+    cmd: python -m src.fiftyone.clone_and_reclassify_labels
+          --dataset-name airborne_tracking_cropped
+          --source-version 10
+          --source-label-field ground_truth
+          --target-label-field ground_truth_v11
+          --target-version 11
+          --filters "ground_truth.detections.bbox_area:<:200"
+          --new-category-name undetermined
+          --override
+          && mkdir -p data/09_reclassify_labels && date > data/09_reclassify_labels/09_reclassify_labels.stamp
+    deps:
+      - src/fiftyone/clone_and_reclassify_labels.py
+      - data/06_coco_to_fiftyone/
+      - data/06_split/ # if previous version of exported dataset change, we want to rerun this stage to have the new labels in the new exported version
+    outs:
+      - data/09_reclassify_labels/09_reclassify_labels.stamp
+
+  09_export_version_11:
+    foreach:
+      - train
+      - eval
+      - test
+    do:
+      frozen: true
+      cmd: python -m src.fiftyone.export_fiftyone_to_coco
+            --dataset-name airborne_tracking_cropped
+            --version 11
+            --label-field ground_truth_v11
+            --output-path data/09_changed_class_based_on_area/${item}.json
+            --images-dir ${paths.airborne_dataset_root}/airborne_cropped_images/
+            --classes airplane helicopter bird undetermined
+            --include-labels split=${item}
+      deps:
+        - src/cleanlab/find_label_issues.py
+        - data/06_split/${item}.json
+        - experiments/yolox_tiny_airborne_20260520_160406/predictions_${item}.bbox.json
+      outs:
+        - data/09_changed_class_based_on_area/${item}.json
+
+  # ------------------------------------------------------------------ #
+  # Create mini subset from full dataset v11, not balanced (strict subset guarantee)
+  # ------------------------------------------------------------------ #
+  09_generate_mini_dataset:
+    foreach:
+      train:
+        targets: ${sizes_mini_train_dataset}
+        empty_images: ${empty_images_mini_train_dataset}
+      eval:
+        targets: ${sizes_mini_eval_dataset}
+        empty_images: ${empty_images_mini_eval_dataset}
+      test:
+        targets: ${sizes_mini_test_dataset}
+        empty_images: ${empty_images_mini_test_dataset}
+    do:
+      frozen: true
+      cmd: python -m src.preprocessing.sample_coco_dataset
+            --input-json data/09_changed_class_based_on_area/${key}.json
+            --output-json data/09_changed_class_based_on_area/mini_${key}.json
+            --targets '${item.targets}'
+            --empty-images ${item.empty_images}
+            --seed 42
+      deps:
+        - src/preprocessing/sample_coco_dataset.py
+        - data/09_changed_class_based_on_area/${key}.json
+      outs:
+        - data/09_changed_class_based_on_area/mini_${key}.json
+
+  # ------------------------------------------------------------------ #
+  # Generate predictions with yolox_tiny_airborne_v2.py
+  # ------------------------------------------------------------------ #
+  10_prediction_yolox_tiny_airborne_v2:
+    foreach:
+      - train
+      - eval
+      - test
+    do:
+      frozen: true
+      cmd: python -m src.tools.run_docker test
+            --quantization 0
+            --config configs/experiments/yolox_tiny_airborne_v2.py
+            --checkpoint experiments/yolox_tiny_airborne_v2_20260528_122830/best_coco_bbox_mAP_epoch_26.pth
+            --output-prefix predictions_${item}
+            --ann-file data/09_changed_class_based_on_area/${item}.json
+      deps:
+        - src/tools/run_docker.py
+        - configs/experiments/yolox_tiny_airborne_v2.py
+        - data/09_changed_class_based_on_area/${item}.json
+      outs:
+        - experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_${item}.bbox.json
+
+  # ------------------------------------------------------------------ #
+  # Evaluate predictions with yolox_tiny_airborne_v2.py
+  # ------------------------------------------------------------------ #
+  11_prediction_test_yolox_tiny_airborne_to_fiftyone:
+    foreach:
+      - test
+    do:
+      frozen: true
+      cmd: python -m src.fiftyone.load_predictions_to_fiftyone
+            --dataset-name airborne_tracking_cropped
+            --version 11
+            --predictions-path experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_${item}.bbox.json
+            --annotations-path data/09_changed_class_based_on_area/${item}.json
+            --images-dir ${paths.airborne_dataset_root}/airborne_cropped_images/
+            --label-field predictions_${item}_yolox_tiny_airborne_v2_20260528_122830_best_epoch
+            --gt-field ground_truth_v11
+            --report-dir data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_to_fiftyone/${item}
+            --evaluate
+            --include-labels split=${item}
+      deps:
+        - src/fiftyone/load_predictions_to_fiftyone.py
+        - data/09_changed_class_based_on_area/${item}.json
+        - experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_${item}.bbox.json
+      outs:
+        - data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_to_fiftyone/${item}/
+
+  11_evaluation_test_by_range_size_yolox_tiny_airborne:
+    foreach:
+      - train
+      - eval
+      - test
+    do:
+      frozen: true
+      cmd:
+        python -m src.tools.evaluate_offline
+        --gt data/09_changed_class_based_on_area/${item}.json
+        --predictions experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_${item}.bbox.json
+        --range-bins 0 500 1000 1500 2000 2600 2800 3000 3100 3200 3300 3400 3500
+        --area-bins 0 100 200 300 500 2500 1000000000000000
+        --output data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/${item}/results.json
+        --per-class
+        --report-dir data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/${item}
+      deps:
+        - src/tools/evaluate_offline.py
+        - data/09_changed_class_based_on_area/${item}.json
+        - experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_${item}.bbox.json
+
+  # ------------------------------------------------------------------ #
+  # Cleanlab: find label issues and load scores into FiftyOne
+  # ------------------------------------------------------------------ #
+  12_cleanlab_find_issues:
+    foreach:
+      - train
+      - eval
+      - test
+    do:
+      frozen: true
+      cmd: python -m src.cleanlab.find_label_issues
+            --annotations-path data/09_changed_class_based_on_area/${item}.json
+            --predictions-path experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_${item}.bbox.json
+            --output-path data/12_cleanlab/${item}_report.json
+      deps:
+        - src/cleanlab/find_label_issues.py
+        - data/09_changed_class_based_on_area/${item}.json
+        - experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_${item}.bbox.json
+      outs:
+        - data/12_cleanlab/${item}_report.json
+
+  12_cleanlab_to_fiftyone:
+    foreach:
+      - train
+      - eval
+      - test
+    do:
+      frozen: true
+      cmd: python -m src.fiftyone.load_cleanlab_scores_to_fiftyone
+            --dataset-name airborne_tracking_cropped
+            --version 11
+            --report-path data/12_cleanlab/${item}_report.json
+            --images-dir ${paths.airborne_dataset_root}/airborne_cropped_images/
+            --score-field yolox_tiny_airborne_v2_20260528_122830
+            --include-labels split=${item}
+            && mkdir -p data/12_cleanlab && date > data/12_cleanlab/to_fiftyone_${item}.stamp
+      deps:
+        - src/fiftyone/load_cleanlab_scores_to_fiftyone.py
+        - data/12_cleanlab/${item}_report.json
+        - data/06_coco_to_fiftyone/
+      outs:
+        - data/12_cleanlab/to_fiftyone_${item}.stamp
+
+  ## Commented QAT training, Training is not tracked but serve as documentation
+  # 12_train_qat_yolox_tiny_airborne_v2:
+  #   frozen: true
+  #   cmd: python -m src.tools.run_docker train
+  #         --quantization 2
+  #         --config configs/experiments/yolox_tiny_airborne_v2_qat.py
+  #   deps:
+  #     - src/tools/run_docker.py
+  #     - configs/experiments/yolox_tiny_airborne_v2_qat.py

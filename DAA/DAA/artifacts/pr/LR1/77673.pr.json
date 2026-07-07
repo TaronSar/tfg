@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Sources data",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall be able to receive data from ADS-B and at least one non-cooperative sensor (e.g. Vision, RADAR, etc.).",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

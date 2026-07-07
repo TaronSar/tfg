@@ -1,0 +1,17 @@
+#include "k3-j784s4-evm.dts" // Incluimos la configuración completa de la EVM
+
+/ {
+    model = "Texas Instruments J784S4 EVM (TDA4AH Profile)";
+};
+
+/*
+ * Basado en la tabla de comparación, el TDA4AH88:
+ * - Mantiene los Quad Core C7x DSP y MMA (no se deshabilita ninguno).
+ * - NO tiene GPU.
+ * - Mantiene el resto de periféricos de alto rendimiento (PCIe, Ethernet, etc.).
+ */
+
+/* Deshabilitamos únicamente la GPU (BXS-4-64) */
+&gpu {
+    status = "disabled";
+};

@@ -1,0 +1,26 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28516: FPGA - Main Power Supply",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Check if the DC/DC converter supply the FPGA (main power supply) with a power rail of 0.85V.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signal VCCINT.",
+        "Other": null
+    },
+    "Outputs":{                  
+        "Variables": null,  
+        "1":{
+            "Expected": "Voltage of 0.85V.", 
+            "pass criteria":{
+                "error": "+/-10mV",
+                "duration": "undefined"
+            }
+        }    
+    },
+    "Linked Worked Items": {
+        "traced_to": "28517"
+    }
+}

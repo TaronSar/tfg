@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - HMI informations",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA HMI shall provide the interface for monitoring DAA data (traffic, alerts, and guidance) and executing pilot commands to manage airborne DAA guidance proposals.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

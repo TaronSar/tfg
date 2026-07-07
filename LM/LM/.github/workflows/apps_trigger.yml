@@ -1,0 +1,28 @@
+name: Apps Build and Release workflow trigger
+
+on:
+  push:
+      tags:
+      - 'release/sw_kai-pdi-builder/*'
+
+jobs:
+  Extract_App_Name:
+    runs-on: ephemeral-unix
+    outputs:
+      APP_NAME: ${{ steps.extract_name.outputs.APP_NAME }}
+    steps:
+      - name: Extract App Name from Tag
+        id: extract_name
+        run: echo "APP_NAME=$(echo ${GITHUB_REF#refs/tags/release/} | cut -d'/' -f1)" >> $GITHUB_OUTPUT
+
+  Apps_Build_Release:
+    uses: embention/sw_CI_Libs/.github/workflows/apps_workflow.yml@develop
+    needs: Extract_App_Name
+    secrets: inherit  
+    with:
+      CHECKOUT_PATH: "items"
+      COMPILATION_PATH: "items/sw/${{ needs.Extract_App_Name.outputs.APP_NAME }}/code"
+      APP_OUTPUT: "items/sw/${{ needs.Extract_App_Name.outputs.APP_NAME }}/code/build/deploy"
+      RELEASE_COMMAND: "./gradlew deploy --stacktrace --info"
+      SUBMODULE_PATH: "items/sw/_core-veronte"
+      JAVA_VERSION: "25"

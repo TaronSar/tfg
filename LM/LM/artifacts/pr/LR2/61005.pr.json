@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 -  Operational timiline",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall operate continuously under both daytime and nighttime conditions.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware",
+        "Software"
+    ],
+    "Labels": [
+        "Operational",
+        "Performance"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

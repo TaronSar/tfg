@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - External tool and service failure rate assessment",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For ARC C DAA, the failure rate of any tool or service used by the system shall be assessed. This assessment shall be available for the competent authority.  ",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Airworthiness-level design of safety-critical components (Class 3)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For Class 3 (ARC B,C and SAIL V, VI) DAA, in addition to Class 2 (ARC B,C and SAIL IV) requirements, components essential to safe operations Shall be designed to an airworthiness design standards considered adequate by the competent authority and/or in accordance with a means of compliance acceptable to that authority to contribute to the overall safety objective.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

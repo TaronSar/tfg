@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - FPGA Internal Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The device shall have a DC-DC regulator that provides the main internal power supply of 0.85V to the FPGA",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Voltage required by the FPGA",
+    "Functional": true,
+    "Labels": [
+        "Power Supply"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28518",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC6"
+    ]
+}

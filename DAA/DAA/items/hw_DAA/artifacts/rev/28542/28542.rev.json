@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28542: Image Sensor - PMIC",
+    "Hyperlinks": "https://www.ti.com/product/TPS650330-Q1/part-details/TPS65033000RGERQ1",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_PMIC_camera.png",
+        "./sch_image_sensor_power_supply.png"
+    ],
+    "__comment": "Data obtained from the schematic of the hw_DAA: Sheet 9 (Image Sensor Power Supply)"
+}

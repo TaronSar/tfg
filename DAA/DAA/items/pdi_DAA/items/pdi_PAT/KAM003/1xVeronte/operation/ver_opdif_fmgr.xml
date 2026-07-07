@@ -1,0 +1,28 @@
+<entry-fmgr>
+    <id>79</id>
+    <filename>fmgr.bin</filename>
+    <version>
+        <major>8</major>
+        <minor>2</minor>
+        <revision>25</revision>
+    </version>
+    <data>
+        <genericOp>
+            <str-tunarray-element str-tunarray-key="0">
+                <data>
+                    <lon>-7046986</lon>
+                    <lat>383718249</lat>
+                    <alt>277340</alt>
+                </data>
+            </str-tunarray-element>
+        </genericOp>
+        <specifiedOp/>
+        <fid-groups>
+            <str-tunarray-element str-tunarray-key="0">
+                <data>
+                    <str-tunarray-element>45056</str-tunarray-element>
+                </data>
+            </str-tunarray-element>
+        </fid-groups>
+    </data>
+</entry-fmgr>

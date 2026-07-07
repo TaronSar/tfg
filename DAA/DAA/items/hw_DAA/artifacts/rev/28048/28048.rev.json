@@ -1,0 +1,13 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28048: CAN - Cable Management",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_CAN_transceiver.png"
+    ],
+    "__comment": [
+        "External connector pins 19 & 22: CAN output pins",
+        "External connector pins 40 & 43: CAN output duplicated pins"
+    ]
+}

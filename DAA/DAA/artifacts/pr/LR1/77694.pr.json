@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Manufacturing cost",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA manufacturing cost shall be less than 500€ for volumes over 20 units.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "Target selling price is 5000 EUR",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Market",
+        "Manufacturing"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    },
+    "__comment": "Sales department"
+}

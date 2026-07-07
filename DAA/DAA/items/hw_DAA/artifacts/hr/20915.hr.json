@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "FPGA - Interfaces/Transceivers Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPGA shall be powered with the following power rails to supply the interfaces modules: one 3.3V power rail, two 1.8V power rails, one 1.2V power rail, one 0.9V power rail and one 0.85V power rail",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Voltages needed by the FPGA",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Interface",
+        "MPU Microcontroller"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28515",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11"
+    ]
+}

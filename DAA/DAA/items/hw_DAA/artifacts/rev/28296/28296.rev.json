@@ -1,0 +1,10 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28282: Ethernet - Magnetic Isolation",
+    "Hyperlinks": "https://productfinder.pulseeng.com/product/HX5008NL",
+    "Passed": true,
+    "Attachments": [
+        "./sch_ethernet_isolator.png"
+    ],
+    "__comment": "HX5008NL is a transformer for Ethernet interfaces"
+}

@@ -1,0 +1,27 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28042: CAN Communication - Bus Impedance",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Check if the CAN interfaces are terminated with 120 ohms (+/-5%) and split termination technic.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": "CAN FD A: Signals CAN_A_P & CAN_A_N.",
+        "2": "CAN FD B: Signals CAN_B_P & CAN_B_N.",
+        "Other": null
+    },
+    "Outputs":{                  
+        "Variables": null,  
+        "1":{
+            "Expected": "The bus impedance between these pins shall be of 120 ohms, with split resistor termination technic.", 
+            "pass criteria":{
+                "error": " +/-5%",
+                "duration": "undefined"
+            }
+        }                                
+    },  
+    "Linked Worked Items": {
+        "traced_to": "28043" 
+    }         
+}

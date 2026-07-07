@@ -1,0 +1,31 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - Inrush Current Limiter",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "VFR shall have an inrush current circuit which limits the power-on current up to 360mA maximum",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Power Supply"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "27933",
+        "traced_to": null
+    },
+    "Designator": [
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "C4",
+        "C5",
+        "D14",
+        "D15",
+        "Q1",
+        "Q2"
+    ]
+}

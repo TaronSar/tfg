@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Power supply",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall operate with an input power supply voltage in the range of 8 VDC to 54 VDC.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Interface",
+        "Performance"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

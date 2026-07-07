@@ -1,0 +1,25 @@
+#ifndef DIGITAL_IO_EXTERN_H
+#define DIGITAL_IO_EXTERN_H
+
+
+// OUT PINS
+extern  DIGITAL_IO_t DIGITAL_IO_PLL_CE;    		// 54
+
+extern  DIGITAL_IO_t DIGITAL_IO_PLL_TRIG2; 		// 55
+
+
+
+// IN_PINS
+extern DIGITAL_IO_t DIGITAL_IO_PLL_TRIG1; 		// 56
+
+extern DIGITAL_IO_t DIGITAL_IO_PLL_MOD;   		// 57
+
+extern DIGITAL_IO_t DIGITAL_IO_PLL_MUXIN; 		// 58
+
+
+// ENABLE_PINS
+extern DIGITAL_IO_t DIGITAL_IO_PGA_LDO_ENA; 	// 59
+
+extern DIGITAL_IO_t DIGITAL_IO_BGT_LDO_ENA;		// 60
+
+#endif

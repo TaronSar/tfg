@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Operational altitude",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall operate at altitudes up to at least 5,000 m MSL.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Environmental"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61007"
+        ],
+        "is_verified_by": []
+    }
+}

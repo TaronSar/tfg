@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Operability with Cameras",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be capable of operating with cameras, regardless of whether they are mounted on a gimbal or fixed.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Physical and Installation",
+        "Operational"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61032"
+        ],
+        "is_verified_by": []
+    }
+}

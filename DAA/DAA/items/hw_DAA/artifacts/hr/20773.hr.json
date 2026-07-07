@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "RS-232 Interface - Functionality",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The RS-232 transceiver shall be configured in normal operation with auto-powerdown disabled",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "It is not needed to have an auto-powerdown functionality",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28162",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC26"
+    ]
+}

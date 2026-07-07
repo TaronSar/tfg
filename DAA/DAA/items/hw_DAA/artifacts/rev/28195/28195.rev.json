@@ -1,0 +1,13 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28195: IMU Sensor",
+    "Hyperlinks": "https://www.bosch-sensortec.com/products/motion-sensors/imus/bmi088/",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_BMI088_1.8V.png",
+        "./datasheet_BMI088_3axis.png",
+        "./datasheet_BMI088_I2C.png",
+        "./sch_IMU.png"
+    ],
+    "__comment": "Data obtained from the datasheet of the IMU (BMI088)"
+}

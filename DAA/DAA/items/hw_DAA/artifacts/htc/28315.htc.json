@@ -1,0 +1,26 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28315: Ethernet - ESD protection",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Purpose": "Check if the Ethernet signals of the DAA have protection and supports electrostatic discharges.",
+    "Inputs": {
+        "PDIFs": null,
+        "Variables": null,
+        "1": "10 positive and negative ESD pulses of 15000 Volts at each Ethernet signal of the external connector.",
+        "Other": null
+    },
+    "Outputs": {
+        "Variables": null,
+        "1": {
+            "Expected": "Good functionality of the Ethernet transceiver after the application of the pulses.",
+            "pass criteria": {
+                "error": "PASS if the checks in the Ethernet test are correct after the application of the pulses, otherwise FAIL",
+                "duration": null
+            }
+        }
+    },
+    "Linked Worked Items": {
+        "traced_to": "28316"
+    }
+}

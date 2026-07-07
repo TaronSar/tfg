@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Configuration control and traceability documentation (Class 2)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For Class 2 (ARC B,C and SAIL IV) DAA, in addition to Class 1 (ARC B and SAIL < IV) requirements, design documentation shall also cover the configuration control and traceability.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

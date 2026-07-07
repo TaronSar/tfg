@@ -1,0 +1,45 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.786935",
+   "Default View_TopLeft":"1081,20",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0r4  2019-12-20 bk=1.5203 VDI=41 GEI=36 GUI=JA:9.0 TLS
+#  -string -flagsOSRD
+preplace inst zynq_ultra_ps_e_0 -pg 1 -lvl 3 -x 600 -y 180 -defaultsOSRD
+preplace inst axi_dma_0 -pg 1 -lvl 5 -x 1565 -y 250 -defaultsOSRD
+preplace inst ps8_0_axi_periph -pg 1 -lvl 4 -x 1195 -y 200 -defaultsOSRD
+preplace inst rst_ps8_0_150M -pg 1 -lvl 1 -x -200 -y 510 -defaultsOSRD
+preplace inst axi_smc -pg 1 -lvl 2 -x 140 -y 120 -defaultsOSRD
+preplace inst rst_ps8_0_100M -pg 1 -lvl 3 -x 600 -y 510 -defaultsOSRD
+preplace inst ila_0 -pg 1 -lvl 6 -x 1970 -y 490 -defaultsOSRD
+preplace inst fpga_img_hist_top_0 -pg 1 -lvl 7 -x 2300 -y 210 -defaultsOSRD
+preplace inst fpga_median_top_0 -pg 1 -lvl 8 -x 2760 -y 250 -defaultsOSRD
+preplace netloc Clk 1 0 8 -390 240 -20 240 290 320 920 10 1360 90 1810 250 2090 330 2540
+preplace netloc zynq_ultra_ps_e_0_pl_clk2 1 1 3 0 230 280 340 930
+preplace netloc zynq_ultra_ps_e_0_pl_resetn0 1 0 4 -380 410 NJ 410 290 350 910
+preplace netloc rst_ps8_0_150M_peripheral_aresetn 1 1 4 -10 330 NJ 330 940 20 1350J
+preplace netloc rst_ps8_0_100M_peripheral_aresetn 1 3 1 950 280n
+preplace netloc s_tdata 1 5 2 1820 170 NJ
+preplace netloc tlast 1 5 2 1790 190 N
+preplace netloc tvalid 1 5 2 1830 210 N
+preplace netloc tready 1 5 2 1800 230 N
+preplace netloc fpga_img_hist_top_0_m_axis_tdata 1 5 3 1850J 90 N 90 2530
+preplace netloc fpga_img_hist_top_0_m_axis_tlast 1 5 3 1860J 330 2080 340 2520
+preplace netloc fpga_img_hist_top_0_m_axis_tvalid 1 5 3 1870J 350 N 350 2510
+preplace netloc m_tready 1 5 3 1840 340 2070J 360 2500
+preplace netloc axi_smc_M01_AXI 1 2 1 N 130
+preplace netloc axi_dma_0_M_AXI_S2MM 1 1 5 0 0 NJ 0 NJ 0 NJ 0 1760
+preplace netloc axi_dma_0_M_AXI_MM2S 1 1 5 -20 -10 NJ -10 NJ -10 NJ -10 1770
+preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM0_FPD 1 3 1 N 100
+preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM0_LPD 1 3 1 910 80n
+preplace netloc zynq_ultra_ps_e_0_M_AXI_HPM1_FPD 1 3 1 N 120
+preplace netloc ps8_0_axi_periph_M00_AXI 1 4 1 N 200
+preplace netloc axi_smc_M00_AXI 1 2 1 N 110
+preplace netloc axi_dma_0_M_AXIS_MM2S 1 5 2 1780 150 NJ
+preplace netloc fpga_img_hist_top_0_m_axis 1 7 1 2540 170n
+preplace netloc fpga_median_top_0_m_axis 1 4 5 1370 80 NJ 80 NJ 80 NJ 80 2960
+levelinfo -pg 1 -410 -200 140 600 1195 1565 1970 2300 2760 2980
+pagesize -pg 1 -db -bbox -sgen -410 -80 2980 820
+"
+}
+0

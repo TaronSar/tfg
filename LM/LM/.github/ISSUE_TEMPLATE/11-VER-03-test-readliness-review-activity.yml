@@ -1,0 +1,32 @@
+name: "✅ [VER] Test readiness review activity (TRR)"
+description: Execute a Test readiness review.
+title: '[TRR] [product/project] Test readiness review for __Text string__'
+labels: ["Commit", "Quality", "Artifact", "SW Verification"]
+assignees: []
+body:
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: |
+        ### 🏷️ Title Instructions
+        **Order tags from general to specific (UPPERCASE, ONE WORD per tag).**
+
+        Example:
+        `[TRR] [1x] Test readiness review for release/sw_1xVeronte/8.2.3`
+
+        📘 Related procedures:
+        - [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Descripción del Test a revisar
+      value: |
+        Realizar el Test readiness review activity
+    validations:
+      required: false

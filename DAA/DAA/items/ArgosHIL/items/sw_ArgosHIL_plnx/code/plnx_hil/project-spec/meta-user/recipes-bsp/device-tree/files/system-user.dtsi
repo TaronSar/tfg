@@ -1,0 +1,53 @@
+/include/ "system-conf.dtsi"
+
+#include <dt-bindings/phy/phy.h>
+
+/ {
+    /* Declaramos las etiquetas de los relojes fijos generados por el Si5332 */
+    si5332_5: si5332_5 {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <100000000>; /* Ejemplo: Frecuencia PCIe */
+    };
+
+    si5332_4: si5332_4 {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <26000000>;  /* Ejemplo: Frecuencia USB */
+    };
+
+    si5332_0: si5332_0 {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <27000000>;  /* Frecuencia requerida por el DisplayPort */
+    };
+};
+
+&i2c1 {
+    status = "okay";
+
+    /* Tu chip generador de reloj en la dirección 0x76 */
+    clock-generator@76 {
+        reg = <0x76>;
+        status = "okay";
+    };
+};
+
+&psgtr {
+    status = "okay";
+    /* Mapeo estricto de tus 3 relojes en base a tu lista */
+    clocks = <&si5332_5>, <&si5332_4>, <&si5332_0>;
+    clock-names = "ref0", "ref1", "ref2";
+};
+
+/* SD */
+&sdhci1 {
+    disable-wp;
+    no-1-8-v;
+};
+
+/* USB */
+&dwc3_0 {
+    status = "okay";
+    dr_mode = "host";
+};

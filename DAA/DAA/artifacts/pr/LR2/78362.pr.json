@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - CA warning alert computation in waypoint mode",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "When ownship is on waypoints navigation mode, the DAA shall generate a warning alert if minimum distance between planned ownship trajectory and intruder track predicted trajectory plus uncertainties falls below NMAC volume, for the look-ahead time specified.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

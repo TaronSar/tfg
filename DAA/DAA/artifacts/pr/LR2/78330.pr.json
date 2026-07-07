@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - DAA system operational states implementation",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall implement at least the following states:- Standby: the system is powered on but not providing its intended functions. The system is ready to transition to operational state upon command or predefined conditions; - Operational: the system is fully functional and actively performing its intending tasks and providing functions according to the specified requirements; - Failure: the system has detected a fault or error that prevents it from performing its intended functions. In this state, the system should cease all active operations and enter a safe mode.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

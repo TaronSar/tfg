@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Constant-velocity CA alert computation",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "When ownship not in waypoint navigation mode, the DAA shall compute collision risk alerts (warning alerts) using ownship  current position and velocity (from navigation system) and intruder track, with the hypothesis of constant velocity and with a minimum look ahead time of 45s.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

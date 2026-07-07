@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Collision Avoidance (CA) alerts and guidance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall compute CA alerts and guidance towards cooperative and non-cooperative manned traffic.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

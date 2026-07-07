@@ -1,0 +1,26 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Enclosure",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be available in a single version with environmental protection.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Software",
+        "Hardware"
+    ],
+    "Labels": [
+        "Physical and Installation",
+        "Manufacturing"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61064"
+        ],
+        "is_verified_by": []
+    }
+}

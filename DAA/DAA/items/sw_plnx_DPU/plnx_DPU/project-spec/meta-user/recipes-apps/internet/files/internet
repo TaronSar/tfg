@@ -1,0 +1,19 @@
+#!/bin/sh
+
+sleep 30
+
+echo "Mi servicio de inicio se está ejecutando..." > /home/root/startup_log.txt
+date >> /home/root/startup_log.txt
+
+cd /sys/class/gpio
+echo 408 > export
+echo out > gpio408/direction
+echo 1 > gpio408/value
+
+echo 409 > export
+echo out > gpio409/direction
+echo 1 > gpio409/value
+
+
+echo "Script finalizado." >> /home/root/startup_log.txt
+echo "servicio de ethernet habilitado"

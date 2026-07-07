@@ -1,0 +1,67 @@
+<entry-muvar>
+    <id>137</id>
+    <filename>muvar.bin</filename>
+    <version>
+        <major>8</major>
+        <minor>2</minor>
+        <revision>25</revision>
+    </version>
+    <data>
+        <map>
+            <str-tunarray-element>
+                <id>1000</id>
+                <description>
+                    <name>Selected RTH ID</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1001</id>
+                <description>
+                    <name>Vision Th Ini</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1002</id>
+                <description>
+                    <name>Vision Th Min</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1003</id>
+                <description>
+                    <name/>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1012</id>
+                <description>
+                    <name/>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1011</id>
+                <description>
+                    <name/>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1015</id>
+                <description>
+                    <name/>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1004</id>
+                <description>
+                    <name/>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1009</id>
+                <description>
+                    <name/>
+                </description>
+            </str-tunarray-element>
+        </map>
+    </data>
+</entry-muvar>

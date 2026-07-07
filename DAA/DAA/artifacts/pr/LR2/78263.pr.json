@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - USB Port",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall have a minimum of 1x USB port.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Interface",
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

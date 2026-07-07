@@ -1,0 +1,12 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28311: Ethernet - Chassis",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_DAA_CS.png",
+        "./sch_LEMO_ETH_CHASSIS.png",
+        "./sch_transformer_ETH_CHASSIS.png"
+    ],
+    "__comment": "Data obtained from the hw_DAA and har_DAA_cs schematics."
+}

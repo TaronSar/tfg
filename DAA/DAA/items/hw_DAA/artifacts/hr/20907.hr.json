@@ -1,0 +1,25 @@
+{
+    "Version": "1.1",
+    "Title": "DDR Memory - Memory Model",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The DDR4 memory used shall have a 1Gb capacity, 16 bits data bus, DDR4-3200 compatibility, automotive grade and a BGA package",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Memory"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28365",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC14",
+        "IC15",
+        "IC16",
+        "IC17",
+        "IC18"
+    ]
+}

@@ -1,0 +1,115 @@
+{
+  "Sensors":{
+    "Barometer":{
+        "SensorType": 1,
+        "Enabled": true,
+        "PressureFactorSigma": 0.0001825
+    },
+    "imu": {
+        "SensorType": 2,
+        "Enabled": true,
+        "AngularRandomWalk": 8.7266462e-5,
+        "GyroBiasStabilityTau": 500,
+        "GyroBiasStability": 9.9735023e-7,
+        "VelocityRandomWalk": 0.002353596,
+        "AccelBiasStabilityTau": 800,
+        "AccelBiasStability": 1.2481827e-5
+    },
+    "lidar": {
+        "SensorType": 6,
+        "Range": 50,
+        "Enabled": true,
+        "NumberOfChannels": 32,
+        "PointsPerSecond": 100000,
+        "RotationsPerSecond": 10,
+        "VerticalFOVUpper": 45,
+        "VerticalFOVLower": -45,
+        "HorizontalFOVStart": 0,
+        "HorizontalFOVEnd": 359,
+        "X": 0, "Y": 0, "Z": 0.0,
+        "Roll": 0, "Pitch": 0, "Yaw" : 0,
+        "DataFrame": "SensorLocalFrame",
+        "DrawDebugPoints": false,
+        "StdDevMin": 0.005, 
+        "StdDevMax": 0.05
+    },
+    "distance_sensor_f": {
+      "SensorType": 5,
+      "Enabled": true,
+      "DrawDebugPoints": false,
+      "Yaw": 0, "Pitch": 0, "Roll": 0,
+      "ExternalController": true
+    },
+    "distance_sensor_l": {
+      "SensorType": 5,
+      "Enabled": true,
+      "DrawDebugPoints": false,
+      "Yaw": -90, "Pitch": 0, "Roll": 0,
+      "ExternalController": true
+    },
+    "distance_sensor_b": {
+      "SensorType": 5,
+      "Enabled": true,
+      "DrawDebugPoints": false,
+      "Yaw": 180, "Pitch": 0, "Roll": 0,
+      "ExternalController": true
+    },
+    "distance_sensor_r": {
+      "SensorType": 5,
+      "Enabled": true,
+      "DrawDebugPoints": false,
+      "Yaw": 90, "Pitch": 0, "Roll": 0,
+      "ExternalController": true
+    }  
+  },
+  "Cameras": {
+    "camera_l": {
+      "CaptureSettings": [
+        {
+          "ImageType": -1,
+          "FOV_Degrees": 90
+        },
+        {
+          "ImageType": 0,
+          "FOV_Degrees": 90,
+          "Width": 640,
+          "Height": 480
+        }
+      ],
+      "X": 0, "Y":-0.125, "Z": -0.25,
+      "Pitch": 0, "Roll": 0, "Yaw": 0
+    },
+    "camera_r": {
+      "CaptureSettings": [
+        {
+          "ImageType": -1,
+          "FOV_Degrees": 90
+        },
+        {
+          "ImageType": 0,
+          "FOV_Degrees": 90,
+          "Width": 640,
+          "Height": 480
+        }
+      ],
+      "X": 0, "Y":0.125, "Z": -0.25,
+      "Pitch": 0, "Roll": 0, "Yaw": 0
+    },
+    "stereo_camera_d": {
+      "CaptureSettings": [
+        {
+          "ImageType": -1,
+          "FOV_Degrees": 90
+        },
+        {
+          "ImageType": 2,
+          "FOV_Degrees": 90,
+          "Width": 640,
+          "Height": 480
+        }
+      ],
+      "X": 0, "Y":0, "Z": -0.2,
+      "Pitch": 0, "Roll": 0, "Yaw": 0
+    }
+  }
+}

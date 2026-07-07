@@ -1,0 +1,110 @@
+{
+  "split": "train",
+  "n_identities": 42,
+  "n_pairs": 861,
+  "mean_similarity": 0.02342015877366066,
+  "hard_pairs": [
+    {
+      "identity_a": "mq-9_reaper_uav_drone",
+      "identity_b": "neg_airplane",
+      "cosine_similarity": 0.953914225101471
+    },
+    {
+      "identity_a": "neg_airplane_ww1",
+      "identity_b": "neg_cesna_airplane",
+      "cosine_similarity": 0.9521207213401794
+    },
+    {
+      "identity_a": "neg_cesna_airplane",
+      "identity_b": "neg_vintage_toy_airplane",
+      "cosine_similarity": 0.9339723587036133
+    },
+    {
+      "identity_a": "neg_cesna_airplane",
+      "identity_b": "uav_low_poly",
+      "cosine_similarity": 0.9311562776565552
+    },
+    {
+      "identity_a": "neg_vintage_toy_airplane",
+      "identity_b": "uav_low_poly",
+      "cosine_similarity": 0.9115513563156128
+    },
+    {
+      "identity_a": "neg_airplane",
+      "identity_b": "neg_airplane_crj-900_cityjet",
+      "cosine_similarity": 0.9107394814491272
+    },
+    {
+      "identity_a": "morok_uav_drone_3d_model",
+      "identity_b": "neg_kf-280_uav",
+      "cosine_similarity": 0.910358190536499
+    },
+    {
+      "identity_a": "mq-9_reaper_uav_drone",
+      "identity_b": "neg_airplane_crj-900_cityjet",
+      "cosine_similarity": 0.9044013619422913
+    },
+    {
+      "identity_a": "neg_airplane_ww1",
+      "identity_b": "rq-11_raven_uav__high-poly_model",
+      "cosine_similarity": 0.9005723595619202
+    },
+    {
+      "identity_a": "bayraktar_tb2_military_ukrainian_navi",
+      "identity_b": "mq-9_reaper",
+      "cosine_similarity": 0.8944266438484192
+    }
+  ],
+  "easy_pairs": [
+    {
+      "identity_a": "neg_vintage_toy_airplane",
+      "identity_b": "uav_bl",
+      "cosine_similarity": -0.5951896905899048
+    },
+    {
+      "identity_a": "attack_uav",
+      "identity_b": "neg_cesna_airplane",
+      "cosine_similarity": -0.597923755645752
+    },
+    {
+      "identity_a": "neg_pigeon_in_flight",
+      "identity_b": "uav_bl",
+      "cosine_similarity": -0.5986070036888123
+    },
+    {
+      "identity_a": "uav_bl",
+      "identity_b": "uav_low_poly",
+      "cosine_similarity": -0.6043826937675476
+    },
+    {
+      "identity_a": "mq-1_uav_war_thunder",
+      "identity_b": "neg_kf-280_uav",
+      "cosine_similarity": -0.6204271912574768
+    },
+    {
+      "identity_a": "attack_uav",
+      "identity_b": "neg_real4",
+      "cosine_similarity": -0.6232343316078186
+    },
+    {
+      "identity_a": "attack_uav",
+      "identity_b": "neg_vintage_toy_airplane",
+      "cosine_similarity": -0.6238927841186523
+    },
+    {
+      "identity_a": "mq_1_predator_uav",
+      "identity_b": "uav_strike_drone_2_war_thunder_line_of_contact",
+      "cosine_similarity": -0.6978851556777954
+    },
+    {
+      "identity_a": "attack_uav",
+      "identity_b": "uav_low_poly",
+      "cosine_similarity": -0.7238619327545166
+    },
+    {
+      "identity_a": "neg_real4",
+      "identity_b": "uav_bl",
+      "cosine_similarity": -0.7548563480377197
+    }
+  ]
+}

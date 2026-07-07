@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - RWC guidance look-ahead time",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall use a look ahead time (LAT) of 75s for predicted ownship trajectory and RWC  alerts and guidance when ownship is not in waypoints navigation mode.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

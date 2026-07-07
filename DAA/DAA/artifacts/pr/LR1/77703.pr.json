@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - System compliance ARP4754B (ED79B)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA development and certification processes shall be compliant with ARP4754B (ED79B)",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

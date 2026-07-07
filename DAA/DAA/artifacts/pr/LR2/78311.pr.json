@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Uplink control messages to DAA system",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall provide,  via the UAS datalink and CMU and to the DAA airborne system, the uplink message defined in paragraph 3.1.1.2 TABLE 33. ",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "RS-485 Interface - Flow control",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The RS-485 interface shall have flow control signals to avoid the echo reading in half-duplex architectures",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28112",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC25",
+        "R192",
+        "R193"
+    ]
+}

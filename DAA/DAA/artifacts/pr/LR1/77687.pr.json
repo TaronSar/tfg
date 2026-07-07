@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Vehicle compatibility",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall be compatible with installation and operation in all kind of vehicles (e.g. fixed wing, multicopter, helicopter, etc.).",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Physical and Installation",
+        "Compatibility"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

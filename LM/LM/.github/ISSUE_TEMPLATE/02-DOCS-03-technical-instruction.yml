@@ -1,0 +1,26 @@
+name: "📘 [DOCS] Technical Instruction"
+description: "Create or update a supporting Technical Instruction (e.g., IT.136)."
+title: "[IT.xxx] [NEW/UPDATE] Technical Instruction Title"
+labels: ["Doc", "Commit", "Production Design"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🏷️ Title Instructions
+        **Order tags from general to specific (UPPERCASE, ONE WORD per tag).**
+
+        Example:
+        `[IT.136] [UPDATE] Conformal Coating Procedure`
+
+        📘 Related procedures:
+        - [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+        - [P.679 - Creation/Edition of EMD Documentation](https://documentation.embention.net/679/es/latest/index.html)
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Task description
+      description: Detail the required changes, the purpose of the new instruction, or the scope of the update.
+    validations:
+      required: true

@@ -1,0 +1,23 @@
+{
+    "Version": 1.2,
+    "Title": "LR2 - DO-160G 5.0 - Temperature Variation",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall comply with DO-160G Category A temperature-variation requirement of at least 10 °C per minute.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Certification",
+        "Environmental"
+    ],
+    "Potential Effect of Failure Condition": "No safety effect",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

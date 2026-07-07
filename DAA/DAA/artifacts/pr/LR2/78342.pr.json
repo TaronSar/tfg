@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - RP authorization for recovery from failure",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall require RP action to authorize transition from failure to standby if the result of CBIT or IBIT indicated that the system performs its indented function according to the capacities and standards defined in this document.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

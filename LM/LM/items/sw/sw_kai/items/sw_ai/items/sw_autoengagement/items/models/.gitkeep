@@ -1,0 +1,2 @@
+# Trained checkpoints, galleries and exported ONNX models.
+# Tracked via DVC / released as PLM artifacts; not committed to git.

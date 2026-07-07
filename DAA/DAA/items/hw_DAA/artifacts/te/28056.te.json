@@ -1,0 +1,8 @@
+{
+    "Version": "1.0",
+    "Title": "TE-28056",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Description": "The Test Environment includes the following equipment: actual target (P0010452), a harness DAA CS 1.0 (P011389), a Linux based PC, a power supply source (MED0189), a DC power connector, ESD simulator system (EQT0102), power transformer isolator (EQ01947 & EQT0208), LISN (EQT0101), grounding cables, wooden table, horizontal coupling plane (HCP), 2 resistors 470KOhms, crocodile clips, and some banana cables.",
+    "Computer": "Actual Target"
+}

@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28521: FPGA - Crystal",
+    "Hyperlinks": "https://www.mouser.es/datasheet/2/122/ECX_34Q-938174.pdf",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_FPGA_crystal.png",
+        "./sch_FPGA_crystal.png"
+    ],
+    "__comment1": "FPGA Crystal: ECS-.327-12.5-34QCS-TR -> 32.768kHz."
+}

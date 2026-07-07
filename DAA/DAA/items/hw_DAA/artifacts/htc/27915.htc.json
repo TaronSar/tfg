@@ -1,0 +1,26 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-27915: Power Supply - Reverse Polarity Protection",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Verify if the power supply inputs are protected against reverse polarity through a Schottky diode.",         
+    "Inputs": {
+        "PDIFs": null,
+        "Variables": null,
+        "1": "VCC (pins 30 & 36 at the external connector).",
+        "Other": null            
+    },                
+    "Outputs": {
+        "Variables":null, 
+        "1": {
+            "Expected": "Current of 0.000 A.", 
+            "pass criteria": {
+                "error": "+/- 1 mA",
+                "duration": "10 seconds"
+            }
+        }
+    }, 
+    "Linked Worked Items": {
+        "traced_to": "27916" 
+    }                         
+}

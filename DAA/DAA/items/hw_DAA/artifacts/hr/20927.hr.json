@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - Image Sensor PMIC Model",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The device shall have a PMIC that provides power to the image sensor and the FPD-Link III interface",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "This PMIC has the correct output voltages and the proper power-on sequence for the chosen image sensor",
+    "Functional": true,
+    "Labels": [
+        "Power Supply"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28542",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC9"
+    ]
+}

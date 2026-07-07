@@ -1,0 +1,25 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Waiting Phase",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall include a waiting phase, executing a loiter on arrival.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "PDI",
+        "Software"
+    ],
+    "Labels": [
+        "Operational"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "60998"
+        ],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,27 @@
+name: "✅ [VER] Test Code"
+description: Test Code related tasks.
+title: '[TC] [product] [major.minor] Text string'
+labels: ["Commit", "Test Code", "SW Verification"]
+assignees: []
+body:
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: |
+        ### 🏷️ Title Instructions
+        **Order tags from general to specific (UPPERCASE, ONE WORD per tag).**
+
+        📘 Related procedures:
+        - [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Descripción del Test a crear
+    validations:
+      required: false

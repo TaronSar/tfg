@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Software Desing Compliance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM Flight Control Board software shall be compliant with DO178C (DAL-C or better).",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Certification",
+        "Reliability"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61037"
+        ],
+        "is_verified_by": []
+    }
+}

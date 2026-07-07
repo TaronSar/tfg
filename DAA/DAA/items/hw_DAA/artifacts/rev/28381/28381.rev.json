@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28381: DDR4 DC-DC regulator",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_power_PSDDR_VTT.png",
+        "./sch_power_VPP.png"
+    ],
+    "__comment": "Data obtained from the schematic of the hw_DAA: sheet 8 (DDR4 Memories Power Supply)"
+}

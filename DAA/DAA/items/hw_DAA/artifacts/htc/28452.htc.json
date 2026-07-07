@@ -1,0 +1,27 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28452: FPD-Link III Interface - Power Supply",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Check if the FPD-Link III Interface serializer and deserializer are supplied by power rail of 1.8V.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signals VDDD, VDDDRV and VDDPLL of the IC30.",
+        "2": "Signals VDDIO_x, VDD18_CSI, VDD18_Px and VDD18_FPDx of the IC31.",
+        "Other": null
+    },
+    "Outputs":{                  
+        "Variables": null,  
+        "1":{
+            "Expected": "Voltage of 1.8V.", 
+            "pass criteria":{
+                "error": "+/-1%",
+                "duration": "undefined"
+            }
+        }
+    },
+    "Linked Worked Items": {
+        "traced_to": "28455"
+    }
+}

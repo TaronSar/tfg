@@ -1,0 +1,16 @@
+name: "Trigger: Create Production Plan"
+
+on:
+  issues:
+    types: [ opened ]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  check-and-call:
+    if: contains(github.event.issue.title, 'Production Preparation Plan') && contains(join(github.event.issue.labels.*.name, ','), 'Epic')
+    uses: embention/sw_ci_libs/.github/workflows/create_production_plan.yml@develop
+    secrets:
+      ORG_PAT_SECRET: ${{ secrets.ORG_GH_ACTION_ADD_ISSUE_TO_PROJECT }}

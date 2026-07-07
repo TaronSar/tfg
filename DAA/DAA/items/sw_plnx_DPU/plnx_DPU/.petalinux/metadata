@@ -1,0 +1,5 @@
+PETALINUX_VER=2023.1
+VALIDATE_HW_CHKSUM=1
+HARDWARE_PATH=/home/imanol/Documentos/fpga_hw_DPU/code/project/top_wrapper_prueba.xsa
+HDF_EXT=xsa
+YOCTO_SDK=1ed8675bbbfa7319a8b09b8df6c03d64

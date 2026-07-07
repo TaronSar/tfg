@@ -1,0 +1,34 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28112: RS485 - Flow control",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Purpose": "Check if the RS-485 interface has flow control signals to avoid the echo reading in half-duplex architectures.",
+    "Inputs": {
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signal RS485_DE (pin 4 of the IC25).",
+        "2": "Signal !RS485_RE (pin 3 of the IC25).",
+        "Other": null
+    },
+    "Outputs": {
+        "Variables": null,
+        "1": {
+            "Expected": "When transmitting data through UART_0_TX, RS485_DE and !RS485_RE should be high (3.3V).",
+            "pass criteria": {
+                "error": "+/-200 mV",
+                "duration": "A communication frame"
+            }
+        },
+        "2": {
+            "Expected": "When receiving data through UART_0_RX, RS485_DE and !RS485_RE should be low (0V).",
+            "pass criteria": {
+                "error": "+/-200 mV",
+                "duration": "A communication frame"
+            }
+        }
+    },
+    "Linked Worked Items": {
+        "traced_to": "28113"
+    }
+}

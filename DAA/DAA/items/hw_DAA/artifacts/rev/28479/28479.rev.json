@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28479: FPGA - Model",
+    "Hyperlinks": "https://docs.amd.com/v/u/en-US/ds891-zynq-ultrascale-plus-overview",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_FPGA.png",
+        "./sch_FPGA.png"
+    ],
+    "__comment": "Data obtained from the datasheet of the FPGA"
+}

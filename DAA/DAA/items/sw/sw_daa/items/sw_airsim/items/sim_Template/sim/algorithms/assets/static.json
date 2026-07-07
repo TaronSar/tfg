@@ -1,0 +1,42 @@
+{
+    "marker0":
+    {    
+        "type": "marker",   
+        "texture": "aruco_markers_6x6/id_0.png",   
+        "position":[5.0, -2.0,  0],
+        "orientation":[0, 0, 45],
+        "size": 0.75        
+    },
+    "marker1":
+    {    
+        "type": "marker",   
+        "texture": "aruco_markers_6x6/id_1.png",   
+        "position":[0.0,  0.0,  0],
+        "orientation":[0, 0, 45],
+        "size": 0.75        
+    },
+    "marker2":
+    {    
+        "type": "marker",   
+        "texture": "aruco_markers_6x6/id_2.png",   
+        "position":[0.0,  5.0,  0],
+        "orientation":[0, 0, 45],
+        "size": 0.75        
+    },
+    "marker3":
+    {    
+        "type": "marker",   
+        "texture": "aruco_markers_6x6/id_3.png",   
+        "position":[10.0,  10.0,  0],
+        "orientation":[0, 0, 45],
+        "size": 0.75        
+    },
+    "marker4":
+    {    
+        "type": "marker",   
+        "texture": "aruco_markers_6x6/id_4.png",   
+        "position":[2.5,  2.5,  0],
+        "orientation":[0, 0, 0],
+        "size": 0.75        
+    }
+}

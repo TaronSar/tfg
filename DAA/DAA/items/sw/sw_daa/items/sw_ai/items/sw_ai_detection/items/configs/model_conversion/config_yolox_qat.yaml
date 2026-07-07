@@ -1,0 +1,136 @@
+# -----------------------------------------------------------------
+# Configuración TIDL para YOLOX-tiny airborne v2 (QAT)
+# -----------------------------------------------------------------
+# Modelo:    yolox_tiny_airborne_v2_qat (4 clases, 960×960, INT8 QAT)
+# Target:    Jacinto 7 — AM69A (J784S4)
+# Uso:
+#   Compilar:  python3 run_tidl.py -f conversion_modelo/config_yolox_qat.yaml -c
+#   Inferir:   python3 run_tidl.py -f conversion_modelo/config_yolox_qat.yaml -i
+# -----------------------------------------------------------------
+
+# --- Rutas de Archivos ---
+paths:
+  # model_path: "onnx_exports/yolox_tiny_airborne_v2_qat.onnx"
+  model_path: "yolox_tiny_airborne_v2_qat/model/yolox_tiny_airborne_v2_qat.onnx"
+
+  calib_images:
+    # QAT: los rangos de cuantización ya están en el ONNX.
+    # Solo se necesitan 1-2 frames para que TIDL inicialice el grafo.
+    - "/workspace/edgeai-tidl-tools/test_data/"
+
+  test_images:
+    classification: []
+    detection:
+      - "156084828667450141263c5597a57b04b448723f1f1844a2b78_x_1440_y_0.png"
+    segmentation: []
+    depth_estimation: []
+
+  labels: "labels_airborne.txt"
+  base_output_dir: "./"
+
+# --- Configuración de Ejecución ---
+settings:
+  soc: "am69a"
+  model_config_key: "od-ort-yolox-tiny-airborne-qat"
+  tidl_tools_path: "/workspace/edgeai-tidl-tools/tools/AM69A/tidl_tools/"
+
+# --- Opciones del Delegado TIDL (QAT-optimized) ---
+tidl_options:
+  platform: "J7"
+  version: "7.2"
+  tensor_bits: 8
+  debug_level: 0
+  max_num_subgraphs: 16
+  deny_list: ""
+  deny_list:layer_type: ""
+  deny_list:layer_name: ""
+  model_type: ""
+
+  # ═══════════════════════════════════════════════════════════════════
+  # QAT-SPECIFIC: accuracy_level=0 evita que TIDL recalibre.
+  # Los rangos de cuantización del entrenamiento QAT ya están
+  # embebidos en el ONNX como nodos fake-quantize.
+  # ═══════════════════════════════════════════════════════════════════
+  accuracy_level: 0
+
+  # Calibración mínima (TIDL la necesita para inicializar, pero
+  # no modifica los rangos de cuantización con accuracy_level=0)
+  advanced_options:calibration_frames: 2
+  advanced_options:calibration_iterations: 1
+  advanced_options:activation_clipping: 1
+  advanced_options:weight_clipping: 1
+  advanced_options:bias_calibration: 1
+  advanced_options:channel_wise_quantization: 0
+
+  # Otras opciones avanzadas
+  advanced_options:output_feature_16bit_names_list: ""
+  advanced_options:params_16bit_names_list: ""
+  advanced_options:mixed_precision_factor: -1
+
+  # ═══════════════════════════════════════════════════════════════════
+  # QAT-SPECIFIC: power-of-2 quantization para coincidir con el
+  # modo usado por edgeai-torchmodelopt durante el entrenamiento QAT.
+  # ═══════════════════════════════════════════════════════════════════
+  advanced_options:quantization_scale_type: 1
+
+  advanced_options:high_resolution_optimization: 0
+  advanced_options:pre_batchnorm_fold: 1
+  advanced_options:add_data_convert_ops: 3
+
+  # Opciones de inferencia
+  advanced_options:inference_mode: 0
+  advanced_options:num_cores: 1
+
+  ti_internal_nc_flag: 1601
+
+# --- Definición del Modelo ---
+model_configs:
+  od-ort-yolox-tiny-airborne-qat:
+    task_type: "detection"
+    preprocess:
+      resize: [960, 960]
+      crop: [960, 960]
+      data_layout: "NCHW"
+      # YOLOX usa letterboxing con padding gris (114) en esquina
+      resize_with_pad: [true, "corner"]
+      pad_color: [114, 114, 114]
+      # reverse_channels: true → BGR (el data_preprocessor de
+      # edgeai-mmdetection convierte RGB→BGR internamente)
+      reverse_channels: true
+    session:
+      session_name: "onnxrt"
+      # Sin normalización: el modelo recibe píxeles crudos [0,255]
+      # (el data_preprocessor de mmdet hace la normalización interna)
+      input_mean: [0.0, 0.0, 0.0]
+      input_scale: [1.0, 1.0, 1.0]
+
+      # Prototxt generado por torch2onnx.py — contiene anclas,
+      # num_classes=4 y nodos de salida del ONNX
+      meta_layers_names_list: "/workspace/example/conversion_modelo/onnx_exports/yolox_tiny_airborne_v2_qat.prototxt"
+      meta_arch_type: 6   # YOLOX
+
+      model_id: od-8220
+      input_details: null
+      output_details: null
+      num_inputs: 1
+    postprocess:
+      formatter:
+        type: "DetectionBoxSL2BoxLS"
+        src_indices: [5, 4]
+        dst_indices: [4, 5]
+      resize_with_pad: true
+      keypoint: false
+      object6dpose: false
+      normalized_detections: false
+      shuffle_indices: null
+      squeeze_axis: null
+      reshape_list: [[-1, 5], [-1, 1]]
+      ignore_index: null
+      logits_bbox_to_bbox_ls: false
+    extra_info:
+      od_type: "Yolox"
+      framework: "MMDetection"
+      num_images: 3       # frames de calibración
+      num_classes: 4      # airplane, helicopter, bird, undetermined
+      label_offset_type: null
+      label_offset: 0     # sin offset — clases 0-3 directamente

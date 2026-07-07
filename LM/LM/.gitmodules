@@ -1,0 +1,18 @@
+[submodule "items/_accesories"]
+	path = items/_accesories
+	url = ../hw-mechanics-accessories.git
+[submodule "items/_Avionics"]
+	path = items/_Avionics
+	url = ../Avionics.git
+	branch = develop
+[submodule "items/sw/_core-veronte"]
+	path = items/sw/_core-veronte
+	url = ../core-veronte.git
+	branch = develop
+[submodule "items/sw/sw_kai/items/_sw_perception"]
+	path = items/sw/sw_kai/items/_sw_perception
+	url = git@github.com:embention/sw_perception.git
+	branch = develop
+[submodule "items/sw/sw_veronte_kai/_sw_veronte"]
+	path = items/sw/sw_veronte_kai/items/_sw_Veronte
+	url = https://github.com/embention/sw_Veronte.git

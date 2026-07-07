@@ -1,0 +1,12 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28518: FPGA - DC-DC regulator",
+    "Hyperlinks": "https://www.ti.com/product/es-mx/TPS62873-Q1",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_VCCINT_power_supply.png",
+        "./datasheet_VCCINT_settings.png",
+        "./sch_VCCINT_power_supply.png"
+    ],
+    "__comment1": "DC-DC regulator configured with VSEL: 6.19kOhms to GND -> 0.85V/6A."
+}

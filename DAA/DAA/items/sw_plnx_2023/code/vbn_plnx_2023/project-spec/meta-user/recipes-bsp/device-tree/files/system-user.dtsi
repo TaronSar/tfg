@@ -1,0 +1,93 @@
+/include/ "system-conf.dtsi"
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/phy/phy.h>
+/ {
+
+	memory {
+		device_type = "memory";
+		reg = <0x0 0x0 0x0 0x7ff00000>, <0x00000008 0x00000000 0x1 0x80000000>;
+	};
+    reserved-memory {
+        #address-cells = <2>;
+        #size-cells = <2>;
+
+        ranges;
+
+        my_reserved_memory: my_reserved_region@60000000 {
+            no-map;
+            reg = <0x0 0x60000000 0x0 0x4000000>;
+        };
+
+    };
+
+    aliases {
+        i2c0 = &i2c0;          /* /dev/i2c-0 → PS I2C0 */
+        i2c1 = &i2c1;          /* /dev/i2c-1 → PS I2C1 */
+        i2c2 = &axi_iic_0;     /* /dev/i2c-2 → AXI IIC en PL */
+    };
+};
+/* SD */
+&sdhci1
+{ 
+	disable-wp;
+};
+
+&usb0 {
+         status = "disabled";
+};
+
+
+&usb1 {
+         status = "disabled";
+};
+
+&gem2 { 
+	status = "okay";
+	phy-handle = <&phy0>;
+	phy-mode = "rgmii";
+
+	phy0: ethernet-phy@15 {
+		#phy-cells = <1>;
+		reg = <15>;
+		device_type="ethernet-phy";
+		ti,rx-internal-delay = <0x7>;
+		ti,tx-internal-delay = <0x5>;
+		ti,fifo-depth = <0x1>;
+		ti,dp83867-rxctrl-strap-quirk;
+	};
+};
+
+&axi_dma_adq{
+    	compatible = "generic-uio";
+};
+
+&axi_dma_cfg{
+    	compatible = "generic-uio";
+};
+
+&axi_dma_data{
+    	compatible = "generic-uio";
+};
+
+/* AXI IIC en PL */
+&axi_iic_0 {
+	status = "okay";
+	compatible = "xlnx,axi-iic-2.0", "xlnx,xps-iic-2.00.a";
+};
+
+&imganalysis_0 {
+    ports {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        /* Puerto de entrada del stream de video */
+        port@0 {
+            reg = <0>;
+            /* Esta es la etiqueta que el compilador no encontraba */
+            imganalysis_0v_proc_ss_0: endpoint {
+                remote-endpoint = <&csc_outv_proc_ss_0>;
+            };
+        };
+    };
+};

@@ -1,0 +1,34 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28350: SD Memory - Initialization",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Purpose": "Check if micro SD interface have a circuit to switch the power supply from 3.3V to 1.8V of the card when SD 3.0 protocol is initialized.",
+    "Inputs": {
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signal SD_VCCB (C292 pads).",
+        "2": "Signal SDIO_1_SEL (R332 pads).",
+        "Other": null
+    },
+    "Outputs": {
+        "Variables": null,
+        "1": {
+            "Expected": "When the micro SD is initialized SD_VCCB should be 3.3V following SD 3.0 protocol.",
+            "pass criteria": {
+                "error": "+/- 0.1V",
+                "duration": null
+            }
+        },
+        "2": {
+            "Expected": "When SDIO_1_SEL switches from LOW to HIGH, SD_VCCB should be 1.8V.",
+            "pass criteria": {
+                "error": "+/- 0.1V",
+                "duration": null
+            }
+        }
+    },
+    "Linked Worked Items": {
+        "traced_to": "28352"
+    }
+}

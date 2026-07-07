@@ -1,0 +1,43 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28045: CAN Communication - Signal Integrity",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Purpose": "Check the signal integrity of the CAN FD transceivers (A and B) by means of common mode chocke.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signal CANA_P (pin 1 of the L16)",
+        "2": "Signal CANA_N (pin 4 of the L16)",
+        "3": "Signal CANB_P (pin 1 of the L17)",
+        "4": "Signal CANB_N (pin 4 of the L17)",
+        "Other": null
+    },
+    "Outputs":{
+        "Variables": null,
+        "1":{
+            "Expected": "Overshoot/undershoot: 10% maximum",
+            "pass criteria":{
+                "error": "+/-1%",
+                "duration": "undefined"
+            }
+        },
+        "2":{
+            "Expected": "Rise/fall time: 100ns maximum (10% of the bit time).",
+            "pass criteria":{
+                "error": "+/-1%",
+                "duration": "undefined"
+            }
+        },
+        "3":{
+            "Expected": "No glitches after the common mode chocke.",
+            "pass criteria":{
+                "error": null,
+                "duration": "undefined"
+            }
+        }        
+    },
+    "Linked Worked Items": {
+        "traced_to": "28046"
+    }
+}

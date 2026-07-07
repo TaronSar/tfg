@@ -1,0 +1,13 @@
+name: Add Issue to Project Org
+
+on:
+  issues:
+    types: [labeled]
+  pull_request:
+    types: [labeled]
+
+jobs:
+  ejecutar-accion-org:
+    uses: embention/CM/.github/workflows/add_issue_to_project_org.yml@develop
+    secrets:
+      ORG_GH_ACTION_ADD_ISSUE_TO_PROJECT: ${{ secrets.ORG_GH_ACTION_ADD_ISSUE_TO_PROJECT }}

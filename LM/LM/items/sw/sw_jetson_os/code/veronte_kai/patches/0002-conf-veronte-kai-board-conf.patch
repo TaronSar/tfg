@@ -1,0 +1,67 @@
+--- a/veronte_kai.conf
++++ b/veronte_kai.conf
+@@ -0,0 +1,64 @@
++# SPDX-FileCopyrightText: Copyright (c) 2024 Embention SL. All rights reserved.
++# Veronte Kai carrier — Jetson Orin Nano P3767-0003
++# Derivado de p3768-0000-p3767-0000-a0.conf (L4T R36.5)
++
++# Sourced by bash script.
++# shellcheck disable=SC2034,SC2154
++
++source "${LDK_DIR}/p3767.conf.common";
++
++# update_flash_args_common:
++update_flash_args_common()
++{
++# Para Veronte Kai solo soportamos P3767-0003 (Jetson Orin Nano 4 GB)
++if [ "${board_sku}" = "0003" ]; then
++BPFDTB_FILE="tegra234-bpmp-3767-0003-3509-a02.dtb";
++DTB_FILE=tegra234-p3768-0000+p3767-0003-nv.dtb;
++else
++echo "Error: veronte_kai.conf solo soporta SKU 0003 (Jetson Orin Nano), SKU detectado: ${board_sku}";
++exit 1;
++fi
++TBCDTB_FILE="${DTB_FILE}";
++}
++
++# update_flash_args:
++update_flash_args()
++{
++update_flash_args_common
++}
++
++# update_emmc_cfg_for_bup:
++update_emmc_cfg_for_bup()
++{
++local bup_type="${1}"
++
++if [ "${bup_blob}" -ne 0 ] && [ "${bup_type}" == "bl" ]; then
++EMMC_CFG="flash_t234_qspi.xml";
++fi
++}
++
++DEFAULT_EMC_FUSE="0";
++
++# Pinmux parcheado para Veronte Kai (pin 127: gen2_i2c -> gp + pull-up)
++PINMUX_CONFIG="tegra234-mb1-bct-pinmux-p3767-dp-a03.dtsi";
++PMC_CONFIG="tegra234-mb1-bct-padvoltage-p3767-dp-a03.dtsi";
++
++BPFDTB_FILE="tegra234-bpmp-3767-0003-3509-a02.dtb";
++EMMC_CFG="flash_t234_qspi_sd.xml";
++DTB_FILE=tegra234-p3768-0000+p3767-0003-nv.dtb;
++TBCDTB_FILE="${DTB_FILE}";
++OVERLAY_DTB_FILE+=",tegra234-p3768-0000+p3767-0000-dynamic.dtbo";
++
++# Rootfs en /dev/sda1 (lector microSD via USB 2.0)
++CMDLINE_ADD="root=/dev/sda1 rootwait";
++
++# Sin Rootfs A/B ni cifrado en la configuracion base
++ROOTFS_AB=0;
++
++if [[ "${ROOTFS_AB}" == 1 && "${ROOTFS_ENC}" == "" ]]; then
++EMMC_CFG=flash_t234_qspi_sd_rootfs_ab.xml;
++elif [[ "${ROOTFS_AB}" == "" && "${ROOTFS_ENC}" == 1 ]]; then
++EMMC_CFG=flash_t234_qspi_sd_enc_rfs.xml;
++elif [[ "${ROOTFS_AB}" == 1 && "${ROOTFS_ENC}" == 1 ]]; then
++EMMC_CFG=flash_t234_qspi_sd_enc_rootfs_ab.xml;
++fi;

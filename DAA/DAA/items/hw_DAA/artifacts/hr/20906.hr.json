@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "External Digital I/O - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The level shifter shall be powered by a 5V power rail for external signals and by a 1.8V power rail for FPGA signals",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Voltage needed by the level shifter",
+    "Functional": true,
+    "Labels": [
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28409",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC32"
+    ]
+}

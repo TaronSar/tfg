@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Electric Protections",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall include electric protections, such as reverse polarity.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Physical and Installation",
+        "Interface",
+        "Reliability"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

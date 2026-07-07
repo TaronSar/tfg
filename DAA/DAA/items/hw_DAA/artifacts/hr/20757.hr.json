@@ -1,0 +1,41 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - Input Voltage Spikes",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The device shall withstand spikes of 84V from the input power supply",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28020",
+        "traced_to": null
+    },
+    "Designator": [
+        "C4",
+        "C6",
+        "C7",
+        "C8",
+        "C9",
+        "C10",
+        "C11",
+        "C16",
+        "C17",
+        "R4",
+        "R5",
+        "R9",
+        "R10",
+        "R11",
+        "D14",
+        "IC1",
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4"
+    ]
+}

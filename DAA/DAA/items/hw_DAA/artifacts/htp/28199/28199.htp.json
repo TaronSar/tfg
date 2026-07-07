@@ -1,0 +1,36 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28198: IMU sensor interface - I2C",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_IMU_I2C.png",
+        "./DAA_IMU_I2C.drawio"
+    ],
+    "Steps": {
+        "1": "Review the schematic design and check if the IMU sensor is connected to the FPGA and Image Sensor via I2C.",
+        "2": "Connect the hw_DAA to a PC. Set up the FPGA to pull data from the IMU sensor.",        
+        "3": "Connect the hw_DAA to a DAA CS harness.",
+        "4": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "5": "Switch on the power supply source.",
+        "6": "Set 12V and 3A on the CH1 of the power supply source.",
+        "7": "Turn on the CH1 of the power supply source.",
+        "8": "Switch on the oscilloscope.",
+        "9": "Connect an oscilloscope probe to IMX_SCL signal (at R238 pad) with x10 attenuation.",
+        "10": "Connect an oscilloscope probe to IMX_SDA signal (at R239 pad) with x10 attenuation.",
+        "11": "Set the vertical offset to 3V in the CH1 and -6V in the CH2. Set the vertical grid to 1 V/div (CH1 & CH2).",
+        "12": "Set the horizontal grid to ~100 us/div and center the horizontal trigger position around the left of the oscilloscope screen.",
+        "13": "Ensure that the attenuation is set to x10 and BW limit OFF (CH1 & CH2).",
+        "14": "Set the trigger level to ~1V, rising edge and source the CH2.",
+        "15": "In the decode tab, select I2C bus type, activate it.",
+        "16": "Click on sources, add SCL on CH1 and SDA on CH2. Set the thresholds for both signals to 1.0V.",
+        "17": "Click on display, set the format to Hexadecimal.",
+        "18": "Click on the Single button.",
+        "19": "Observe both signals and check that data is transmitted from the IMU sensor to the FPGA and Image Sensor.",
+        "20": "Check that the first byte of the communication frame is the slave address, and depending on the sensor the following bytes of data will be the ones requested at the register.",
+        "21": "Take an oscilloscope screenshot.",
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "28047"
+    }
+}

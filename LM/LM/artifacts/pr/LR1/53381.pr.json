@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - PCB Board Format",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have a 'carrier board' format.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "Needs to minimize the assembly time and costs",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Physical and Installation",
+        "Market"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61060"
+        ],
+        "is_verified_by": []
+    }
+}

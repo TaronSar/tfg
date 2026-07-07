@@ -1,0 +1,36 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28054: CAN - ESD protection",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_ESD_test.png",
+        "./DAA_ESD_test.drawio"
+    ],
+    "Steps": {
+        "1": "Check on the datasheet of the ESD protecting diodes (D3 & D4) if the clamping voltage (V_CL) is less than 45V and have bidirectional ESD protection.",        
+        "2": "Connect the hw_DAA to a PC. Execute the CAN test to verify its performance.",
+        "3": "Check the output log file from the test, to verify the good functionality of the CAN transceivers at the beginning of the test.",
+        "4": "Place the hw_DAA on the isolator of the ESD table.",
+        "5": "Connect the hw_DAA to a DAA CS harness.",
+        "6": "Connect a GND signal of the DAA CS harness (through a crocodile clip) to the ground plane.",
+        "7": "Connect the power transformer isolator to the power supply source.",
+        "8": "Connect the power supply source with some bananas to the back of the LISN.",
+        "9": "Connect the LISN with some bananas to the DC power connector.",
+        "10": "Switch on the power supply source.",
+        "11": "Set 12V and 3A on the CH1 of the power supply source.",
+        "12": "Turn on the CH1 of the power supply source.",
+        "13": "Configure the ESD generator with an air discharge tip.",
+        "14": "Connect the ESD simulator to the ground of the installation.",
+        "15": "Connect the horizontal coupling plane to the ground reference plane using a cable with 2x470 KOhms.",
+        "16": "Switch on the ESD simulator.",
+        "17": "Configure on the ESD simulator to create positive and negative polarities pulses of 15000 Volts following the IT.736 - ESD Dito System.",
+        "18": "Charge the ESD generator and approach a selected CAN signals at a speed used for a human hand reaching towards an object (~0.3 m/s) until the generator discharges or contact is made with the test point. After discharge or contact occurs, the discharge electrode shall be removed from the signal. Recharge for another discharge.",
+        "19": "Repeat step 18 for all the CAN signals.",
+        "20": "Connect again the hw_DAA to a PC. Execute the CAN test to verify its performance.",
+        "21": "Check the output log file from the test, to verify the good functionality of the CAN transceivers after the application of the pulses.",
+        "Execution": "./items/sw_gnssdenied/code/test/can/run_test.sh"
+    },
+    "Linked Worked Items": {
+        "traced_to": "28056"
+    }
+}

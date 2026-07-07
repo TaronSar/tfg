@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "FPD-Link III Interface - Oscillator",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPD-Link III deserializer transceiver shall have a 25MHz oscillator",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "The transceiver needs a 25MHz oscillator",
+    "Functional": true,
+    "Labels": [
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28471",
+        "traced_to": null
+    },
+    "Designator": [
+        "Y6"
+    ]
+}

@@ -1,0 +1,91 @@
+name: "✅ [VER] FlyDay"
+description: Solicitud de vuelo
+title: '[FLYDAY] Week: CW '
+labels: ["PDI", "Comment", "Flight Test"]
+assignees: []
+body:
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: |
+        ### 🏷️ Title Instructions
+        **Order tags from general to specific (UPPERCASE, ONE WORD per tag).**
+
+        📘 Related procedures:
+        - [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Incluir datos del vuelo
+      value: |
+        Plataforma: EMBxx  
+        Fecha de vuelo: dd/mm/aa
+        Piloto: 
+        PDI: 
+        Observador: 
+        Versión Veronte: 
+        Autopiloto Tierra: 
+        Autopiloto Aire: 
+        Horario Salida: hh:mm
+
+        Configuración: 
+
+        Inicio del vuelo: hh:mm (llamar al aeropuerto justo antes de comenzar el vuelo)
+    validations:
+      required: false
+
+  - type: textarea
+    id: tareas-a-realizar
+    attributes:
+      label: Tareas a realizar
+      description: Tareas que se deberán llevar a cabo antes y durante el vuelo
+      value: |
+        - [ ] Ground Test PDI
+        - [ ] Material campo de vuelo (anemómetro, radio, manga viento, teléfono) se dará todo el dia de antes en verificación
+        - [ ] Plan de vuelo
+        - [ ] Rellenar fleet en Odoo
+
+        **Antes de la operación**
+
+        - [ ] verificar la aprobación del Plan de Vuelo según P.457, como mínimo un día antes de la salida.
+        - [ ] En las comunicaciones deberá usarse el indicativo de llamada correspondiente a la aeronave en uso (EMBENTIONx) seguido de "NO TRIPULADO". En la primera comunicación deberá indicarse la referencia a la aprobación (MIRAR REFERENCIA EN EL PDF DEL PLAN DE VUELO). Altura de vuelo 120 metros AGL.
+        - [ ] Comunicar por teléfono la activación de la zona de operaciones al TACC de Valencia, al menos 30 minutos antes de la salida (EMBENTIONx).
+        - [ ] Comunicar por teléfono la apertura del plan de vuelo a la Oficina ARO de Alicante antes de la salida. Para ello es necesario conocer el indicativo ARCID del plan (EMBx).
+
+        **Durante la operación**
+
+        - [ ] Permanecer en escucha en frecuencia 120.400 MHz con la radio.
+        - [ ] Permanecer atentos al teléfono de vuelos.
+        - [ ] No superar los 120 m de altura ni exceder los límites del área notificada.
+
+        **Al finalizar la operación**
+
+        - [ ] Comunicar por teléfono la desactivación de la zona de operaciones al TACC de Valencia.
+        - [ ] Comunicar por teléfono el cierre del plan de vuelo a la Oficina ARO de Alicante. Para ello es necesario conocer el indicativo ARCID del plan (EMBx).
+    validations:
+      required: false
+
+  - type: textarea
+    id: test-a-realizar
+    attributes:
+      label: Test a realizar
+      value: |
+        Cruise Speed:
+        AGL (Above Ground Level):
+        - [ ]
+
+        Cruise Speed:
+        AGL (Above Ground Level):
+        - [ ]
+
+        Cruise Speed:
+        AGL (Above Ground Level):
+        - [ ]
+    validations:
+      required: false

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Immediate automatic CA execution trigger",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall issue a message for immediate automatic CA guidance execution if: - Current CA guidance computed is estimated to be the last one providing clearance towards NMAC considering RP response time and C2 link latency; - No CA guidance inhibit message has been received by the DAA (synchronous message).",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

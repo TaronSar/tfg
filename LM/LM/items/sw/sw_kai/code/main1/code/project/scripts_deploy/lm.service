@@ -1,0 +1,16 @@
+[Unit]
+Description=LM
+After=network.target nvargus-daemon.service
+StartLimitBurst=3
+StartLimitIntervalSec=120
+
+[Service]
+User=nvidia
+ExecStart=/usr/local/lm /etc/opt/lm_jetson_config.yaml
+Restart=always
+RestartSec=10s
+# Evita que el servicio se quede colgado si no responde
+WatchdogSec=30s 
+
+[Install]
+WantedBy=multi-user.target

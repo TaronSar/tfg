@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "CAN Interface - ESD Protection",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The CAN interface shall be protected against ESD. Clamping voltage level shall be less than 45V. Diode shall be bidirectional.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28054",
+        "traced_to": null
+    },
+    "Designator": [
+        "D3",
+        "D4"
+    ]
+}

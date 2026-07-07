@@ -1,0 +1,11 @@
+[Unit]
+Description=internet
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/internet
+StandardOutput=journal+console
+
+[Install]
+WantedBy=multi-user.target

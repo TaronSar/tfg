@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Intended functionality",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA system shall detect surrounding air traffic with sufficient time and distance to allow for the timely execution of maneuvers to avoid collisions and maintain safe separation.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

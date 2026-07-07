@@ -1,0 +1,5 @@
+PETALINUX_VER=2023.1
+VALIDATE_HW_CHKSUM=1
+HARDWARE_PATH=/home/imanol/Desktop/DAA/items/fpga_hw_DAA/code/project/design_1_wrapper_histograma.xsa
+HDF_EXT=xsa
+YOCTO_SDK=1ed8675bbbfa7319a8b09b8df6c03d64

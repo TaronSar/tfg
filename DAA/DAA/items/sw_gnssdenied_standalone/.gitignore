@@ -1,0 +1,8 @@
+platform/
+*.log
+logs/
+.*
+!.gitignore
+*.o
+
+*.xsa

@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "FPGA - Temperature reading",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPGA shall have an external temperature reading module for security measures",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Auxiliary function",
+    "Functional": true,
+    "Labels": [
+        "MPU Microcontroller",
+        "Sensor"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28510",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "IC13"
+    ]
+}

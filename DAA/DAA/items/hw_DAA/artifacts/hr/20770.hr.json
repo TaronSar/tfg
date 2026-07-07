@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "RS-485 Interface - ESD Protection",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The RS-485 interface shall be protected against ESD. Clamping voltage levels shall be less than 50V. Diode shall be bidirectional.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28147",
+        "traced_to": null
+    },
+    "Designator": [
+        "D6",
+        "D7"
+    ]
+}

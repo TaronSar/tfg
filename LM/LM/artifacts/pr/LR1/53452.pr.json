@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Communication standards",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be compatible with main industry protocols, including Mavlink, STANAG 4586, Open CAN, UAV Can and Cyphal.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61044"
+        ],
+        "is_verified_by": []
+    }
+}

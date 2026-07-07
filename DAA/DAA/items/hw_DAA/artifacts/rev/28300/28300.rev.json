@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28300: Ethernet +2V5 Regulator",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_2V5_LDO.png",
+        "./sch_2V5_LDO.png"
+    ],
+    "__comment": "Data obtained from the hw_DAA schematic."
+}

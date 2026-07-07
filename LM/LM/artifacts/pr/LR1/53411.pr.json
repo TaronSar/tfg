@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - GNSS Denied Camera",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have camera compatibility for GNSS denied navigation.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Sensors",
+        "Compatibility"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61032"
+        ],
+        "is_verified_by": []
+    }
+}

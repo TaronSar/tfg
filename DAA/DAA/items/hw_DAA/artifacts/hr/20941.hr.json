@@ -1,0 +1,19 @@
+{
+    "Version": "1.1",
+    "Title": "DDR4 Memories - Length Matching",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The length from the DDR4 memories' address and control signals shall be the same with a 1% tolerance. The length from the DDR4 memories' data shall be the same with a 1% tolerance",
+    "Verification Method": "Analysis",
+    "Derived": true,
+    "Rationale": "Length matching needed to have a good signal integrity",
+    "Functional": true,
+    "Labels": [
+        "Memory"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28385",
+        "traced_to": null
+    },
+    "Designator": null
+}

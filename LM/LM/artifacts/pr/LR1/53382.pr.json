@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Ethernet Port",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have a minimum of 1x Ethernet (TM/TC+Video).",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "It is a typical interface for video & TM/TC communications. Also for camera conncection.",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Interface",
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61052"
+        ],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28083: RS-485 Transceiver",
+    "Hyperlinks": "https://www.ti.com/product/es-mx/SN65HVD33-EP/part-details/SN65HVD33MDREP",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_RS485_transceiver.png",
+        "./sch_RS485_transceiver.png",
+        "./Texas_Instruments_qualifications.png"
+    ],
+    "__comment": "Enhanced Product (EP) is better than Automotive Grade. It exceeds automotive-grade specifications in performance, reliability, environmental tolerance, or lifetime..."
+}

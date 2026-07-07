@@ -1,0 +1,13 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28424: FPD-Link III Interface - Deserializer Transceiver",
+    "Hyperlinks": "https://www.ti.com/lit/ds/symlink/ds90ub954-q1.pdf?ts=1736863026251&ref_url=https%253A%252F%252Fwww.mouser.de%252F",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_deserializer.png",
+        "./sch_FPD_Link_III_Deserializer.png",
+        "./sch_FPD_Link_III_Deserializer_Interface.png"
+    ],
+    "__comment1": "Data obtained from the datasheet of the Deserializer Transceiver (DS90UB954TRGZTQ1)",
+    "__comment2": "Data obtained from the schematic of the hw_DAA: Sheet 32 (FPD-Link III Deserializer)"    
+}

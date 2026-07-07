@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Functional Hazard Assessment and installation appraisal (Class 1)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For Class 1 (ARC B and SAIL < IV) DAA, a functional hazard assessment and a design and installation appraisal that show that hazards are minimised, are available. ",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

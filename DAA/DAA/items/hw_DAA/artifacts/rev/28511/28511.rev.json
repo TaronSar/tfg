@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28511: FPGA - HW version",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_FPGA_hw_version.png"
+    ],
+    "__comment1": "Data obtained from the schematic of the hw_DAA: Sheet 14 (SYSMON and PS Config).",
+    "__comment2": "Current Version: 000."
+}

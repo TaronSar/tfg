@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - DAA functional availability for ARC-B operations",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "Allowable loss of function and performance of the DAA shall be less of 1 per 100 Flight Hours (1E-2 Loss/FH) for ARC B DAA.  ",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

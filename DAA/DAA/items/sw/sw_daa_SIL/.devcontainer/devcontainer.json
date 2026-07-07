@@ -1,0 +1,40 @@
+{
+    "name": "C++ Dev Container (Clang, CMake, Cross-compile for Windows)",
+    "workspaceMount": "source=${localWorkspaceFolder}/../..,target=/workspaces/daa,type=bind",
+    "workspaceFolder": "/workspaces/daa/sw/sw_daa_SIL",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "../../../.."
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash",
+                "C_Cpp.default.compilerPath": "/usr/bin/clang++",
+                "C_Cpp.default.intelliSenseMode": "clang-x64",
+                "C_Cpp.default.includePath": [
+                    "/usr/include/c++/9",
+                    "/usr/include/x86_64-w64-mingw32/c++/9",
+                    "/usr/include/c++/9/backward",
+                    "/usr/include/x86_64-w64-mingw32/c++/9/backward"
+                ],
+                "CMake.configureSettings": {
+                    "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+                    "CMAKE_C_COMPILER": "/usr/bin/clang"
+                }
+            },
+            "extensions": [
+                "ms-vscode.cmake-tools",
+                "ms-vscode.cpptools",
+                "ms-vscode.mingw-w64"
+            ]
+        }
+    },
+    "postCreateCommand": "echo 'export CXX=clang++' >> ~/.bashrc && echo 'export CC=clang' >> ~/.bashrc && echo 'export PATH=/usr/x86_64-w64-mingw32/bin:$PATH' >> ~/.bashrc",
+    "remoteUser": "vscode",
+    "mounts": [
+        "source=${localWorkspaceFolder}/../sw_daa/items/_sw_perception/items/Vlibs,target=/home/vscode/Vlibs,type=bind,consistency=cached",
+        "source=${localWorkspaceFolder}/image,target=/home/vscode/image,type=bind,consistency=cached"
+    ],
+    "forwardPorts": [56777]
+}

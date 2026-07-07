@@ -1,0 +1,110 @@
+{
+  "split": "val",
+  "n_identities": 15,
+  "n_pairs": 105,
+  "mean_similarity": 0.026845155283808708,
+  "hard_pairs": [
+    {
+      "identity_a": "heavy_killer_drone",
+      "identity_b": "uav_gerbera_low-poly",
+      "cosine_similarity": 0.9390504360198975
+    },
+    {
+      "identity_a": "orbiter-2m",
+      "identity_b": "shahed",
+      "cosine_similarity": 0.8684380054473877
+    },
+    {
+      "identity_a": "bayraktar_kalkan_diha",
+      "identity_b": "uav_gerbera_low-poly",
+      "cosine_similarity": 0.8662828207015991
+    },
+    {
+      "identity_a": "Ukraine_PD-2_UAV",
+      "identity_b": "Ukraine_pavilion",
+      "cosine_similarity": 0.8531931638717651
+    },
+    {
+      "identity_a": "baykar_k2_kamikaze_uav_-_baykar_k2_kamikaze_iha",
+      "identity_b": "general_atomics",
+      "cosine_similarity": 0.8073281645774841
+    },
+    {
+      "identity_a": "orion_uav_war_thunder",
+      "identity_b": "wing_loong_i_uav_war_thunder",
+      "cosine_similarity": 0.7898679375648499
+    },
+    {
+      "identity_a": "bayraktar_kalkan_diha",
+      "identity_b": "heavy_killer_drone",
+      "cosine_similarity": 0.7484385371208191
+    },
+    {
+      "identity_a": "baykar_k2_kamikaze_uav_-_baykar_k2_kamikaze_iha",
+      "identity_b": "uav_3",
+      "cosine_similarity": 0.6476885676383972
+    },
+    {
+      "identity_a": "orbiter-2m",
+      "identity_b": "real2",
+      "cosine_similarity": 0.6346385478973389
+    },
+    {
+      "identity_a": "real2",
+      "identity_b": "shahed",
+      "cosine_similarity": 0.5932279825210571
+    }
+  ],
+  "easy_pairs": [
+    {
+      "identity_a": "heavy_killer_drone",
+      "identity_b": "wing_loong_i_uav_war_thunder",
+      "cosine_similarity": -0.5541706681251526
+    },
+    {
+      "identity_a": "real2",
+      "identity_b": "wing_loong_i_uav_war_thunder",
+      "cosine_similarity": -0.5819859504699707
+    },
+    {
+      "identity_a": "shahed",
+      "identity_b": "wing_loong_i_uav_war_thunder",
+      "cosine_similarity": -0.5838459730148315
+    },
+    {
+      "identity_a": "orbiter-2m",
+      "identity_b": "wing_loong_i_uav_war_thunder",
+      "cosine_similarity": -0.5946112871170044
+    },
+    {
+      "identity_a": "shahed",
+      "identity_b": "uav",
+      "cosine_similarity": -0.6369324326515198
+    },
+    {
+      "identity_a": "heavy_killer_drone",
+      "identity_b": "orion_uav_war_thunder",
+      "cosine_similarity": -0.6706786751747131
+    },
+    {
+      "identity_a": "bayraktar_kalkan_diha",
+      "identity_b": "uav",
+      "cosine_similarity": -0.6786672472953796
+    },
+    {
+      "identity_a": "orbiter-2m",
+      "identity_b": "uav",
+      "cosine_similarity": -0.6901472806930542
+    },
+    {
+      "identity_a": "heavy_killer_drone",
+      "identity_b": "uav",
+      "cosine_similarity": -0.7426778674125671
+    },
+    {
+      "identity_a": "uav",
+      "identity_b": "uav_gerbera_low-poly",
+      "cosine_similarity": -0.7821589708328247
+    }
+  ]
+}

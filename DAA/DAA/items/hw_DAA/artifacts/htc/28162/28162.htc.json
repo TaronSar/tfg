@@ -1,0 +1,29 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28162: RS232 - Functionality",
+    "Hyperlinks": null,
+    "Attachments": "./RS232_status.png",
+    "Purpose": "Check if the RS-232 transceiver is configured in normal operation with auto-powerdown disabled.",
+    "Inputs": {
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signal FORCEON (pin 12 of the IC26).",
+        "2": "Signal !FORCEOFF (pin 16 of the IC26).",
+        "3": "Signal DOUT (pin 13 of the IC26).",
+        "4": "Signal DIN (pin 11 of the IC26).",
+        "Other": null
+    },
+    "Outputs": {
+        "Variables": null,
+        "1": {
+            "Expected": "Signals FORCEON and !FORCEOFF should be high (3.3V), and DOUT should be the inverse of DIN.",
+            "pass criteria": {
+                "error": "+/-200 mV",
+                "duration": "A communication frame"
+            }
+        }
+    },
+    "Linked Worked Items": {
+        "traced_to": "28163"
+    }
+}

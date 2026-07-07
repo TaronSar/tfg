@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28538: FPGA - PMIC",
+    "Hyperlinks": "https://www.ti.com/product/TPS6593-Q1",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_PMIC_TPS6593-Q1.png",
+        "./sch_PMIC.png"
+    ],
+    "__comment": "Data obtained from the schematic of the hw_DAA: Sheet 5 (FPGA and Peripherals PMIC)"
+}

@@ -1,0 +1,6 @@
+PETALINUX_VER=2020.1
+VALIDATE_HW_CHKSUM=1
+HARDWARE_PATH=/home/vmm6/projects_shared/Vision/repo/DAA/items/fpga_hil/code/project/design_1_wrapper.xsa
+HARDWARE_CHECKSUM=ce05ad85a425e9429275164c7d4bcfff
+YOCTO_SDK=b034efc026f5f7d24a4732927cb62e43
+RFSCONFIG_CHKSUM=5c41c6f637339786bbdcdd4b739e391e

@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - FPGA PMIC",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The device shall have a PMIC that provides power to the FPGA and its peripherals",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "To reduce the size area of the power supply module a PMIC is requires. Additionally it controls the power-on sequence from the FPGA",
+    "Functional": true,
+    "Labels": [
+        "Power Supply"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28538",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC3"
+    ]
+}

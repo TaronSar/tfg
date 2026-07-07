@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28323: SD Memory - Interface",
+    "Hyperlinks": "https://www.mouser.es/datasheet/2/302/NVT4858-3368268.pdf",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_microSD.png",
+        "./sch_microSD_4bit.png"
+    ],
+    "__comment": "Data obtained from the schematic and the datasheet of the SD memory (NVT4858HK)"
+}

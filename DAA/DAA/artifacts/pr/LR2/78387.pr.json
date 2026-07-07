@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Automatic CA execution conditions",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall command automatic CA guidance execution in the following situations: - Imminence of a collisionthe DAA detects that a NMAC breach is imminent and the time available for the human pilot to intervene is insufficient, the DAA must act automatically. This situation can arise when human reaction time is not enough to avoid the collision safely; - Loss of communication with Control and Monitoring Unit and imminent NMAC breachin the situation of a loss of C2 link and an imminent NMAC breach, the DAA is the only barrier  available to avoid NMAC.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28206: Image sensor",
+    "Hyperlinks": "https://www.mouser.com/datasheet/2/1051/FSM-IMX296_Datasheet_v1-0f_Briefiy3sM8QjAG4dn-1815726.pdf?srsltid=AfmBOopTO-_CrhIYzK6pAuUrRSBBUHaRMltVdJKLfWImg9zXq7nzscSf",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_IMX296LQR.png",
+        "./sch_image_sensor_IMX296LQR.png"
+    ],
+    "__comment": "Data obtained from the datasheet of the Image Sensor (IMX296LQR-C)"
+}

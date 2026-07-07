@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "IMU Sensor - Sensor Model",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The IMU sensor shall have 3-axis accelerometer and 3-axis magnetometer, I2C interface and 1.8V logic voltage levels",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Sensor"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28195",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC29"
+    ]
+}

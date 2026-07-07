@@ -1,0 +1,10 @@
+{
+    "Version": "1.1",
+    "Title": "REV-27924: Power Redundancy",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_power_supply_redundancy.png"
+    ],
+    "__comment": "Power supply 1: pins 29 & 30; Power supply 2: 35 & 36"
+}

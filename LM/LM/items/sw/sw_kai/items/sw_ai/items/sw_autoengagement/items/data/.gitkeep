@@ -1,0 +1,11 @@
+# `data/` holds only small DERIVED artifacts (annotations, manifests, eval
+# reports) -- the DVC-tracked pipeline outputs.
+#
+# Image datasets are NOT stored here. They are curated source data on the NAS
+# under `paths.datasets_root`
+# (/mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/) and referenced
+# by the training stage as an external DVC dep, so their hash is recorded in
+# dvc.lock at `dvc repro` time.
+#
+#   annotations/  COCO/JSON annotations, split manifests
+#   eval/         open-set evaluation reports (openset_val.json, ...)

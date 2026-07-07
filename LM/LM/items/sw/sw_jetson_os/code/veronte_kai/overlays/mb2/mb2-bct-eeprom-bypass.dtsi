@@ -1,0 +1,35 @@
+/*
+ * Veronte Kai — Nota informativa: EEPROM bypass
+ *
+ * ESTADO: NO ES UN PARCHE ACTIVO — referencia documental únicamente.
+ *
+ * En L4T R36.5.0 (JetPack 6.0), el bypass de EEPROM ya viene de fábrica
+ * en bootloader/generic/BCT/tegra234-mb2-bct-misc-p3767-0000.dts:
+ *
+ *   cvm_eeprom_read_size = <0x0>;
+ *   cvb_eeprom_read_size = <0x0>;
+ *
+ * Esto significa que MB2 no intenta leer las EEPROMs de carrier/módulo
+ * para identificar la placa. La identidad se suministra en tiempo de
+ * flasheo mediante las variables de entorno:
+ *
+ *   BOARDID=3767  BOARDSKU=0003  FAB=000  BOARDREV=A.0
+ *
+ * Si en una actualización de BSP estos valores vuelven a ser no-cero,
+ * este archivo sirve como referencia de los valores correctos a restaurar.
+ *
+ * Verificación:
+ *   grep -E "cvm_eeprom_read_size|cvb_eeprom_read_size" \
+ *     Linux_for_Tegra/bootloader/generic/BCT/tegra234-mb2-bct-misc-p3767-0000.dts
+ *   # Debe imprimir: cvm_eeprom_read_size = <0x0>;
+ *   #                cvb_eeprom_read_size = <0x0>;
+ */
+
+/*
+ * Fragmento de referencia (valores ya presentes en upstream R36.5):
+ *
+ * misc_config {
+ *     cvm_eeprom_read_size = <0x0>;
+ *     cvb_eeprom_read_size = <0x0>;
+ * };
+ */

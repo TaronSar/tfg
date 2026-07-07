@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - FPD-Link III Port",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall have a minimum of 4x FPD-Link III port.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Interface",
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

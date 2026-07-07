@@ -1,0 +1,47 @@
+// SPDX-FileCopyrightText: Copyright (c) 2024 Embention SL. All rights reserved.
+// Veronte Kai — USB host mode fix overlay
+//
+// Hardware wiring of the USB 3.0 Type-A connector on Veronte Kai:
+//   HS lanes : USB0_D_N/P  (module pins 109/111) -> padctl port usb2-0
+//   SS lanes : USBSS0 RX/TX (module pins 161/163/166/168) -> padctl port usb3-0
+//
+// The upstream p3768 devkit DTB has:
+//   usb2-0  : mode = "otg"  (wrong — no USB-C / no device port on Veronte Kai)
+//   usb3-0  : nvidia,usb2-companion = <1>  (wrong — companion must be usb2-0)
+//   usb3-1  : companion = usb2-0  (wrong — USBSS1 not routed on Veronte Kai)
+//
+// This overlay corrects the above so that UEFI and Linux both enumerate
+// the USB 3.0 Type-A connector as a standard host port.
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	overlay-name = "Veronte Kai USB host mode";
+	compatible = "nvidia,p3767-0003";
+};
+
+// usb2-0: pure host, remove OTG role-switch and Type-C connector reference
+&{/bus@0/padctl@3520000/ports/usb2-0} {
+	mode = "host";
+	/delete-property/ usb-role-switch;
+	/delete-node/ port;
+};
+
+// usb3-0: SS companion is usb2-0 (index 0), not usb2-1 (index 1)
+&{/bus@0/padctl@3520000/ports/usb3-0} {
+	nvidia,usb2-companion = <0>;
+};
+
+// usb3-1: USBSS1 not physically routed on Veronte Kai, but keep enabled
+// so the XHCI driver can power on the PHY without -19 error.
+// Set companion to usb2-1 to avoid conflicting with usb3-0 (which uses usb2-0).
+&{/bus@0/padctl@3520000/ports/usb3-1} {
+	status = "okay";
+	nvidia,usb2-companion = <1>;
+};
+
+// Disable XUDC (USB device controller) — no device/OTG port on Veronte Kai
+&{/bus@0/usb@3550000} {
+	status = "disabled";
+};

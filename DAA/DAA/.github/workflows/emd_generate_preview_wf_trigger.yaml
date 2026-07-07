@@ -1,0 +1,18 @@
+name: Trigger EMD Document Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'docs/procedures/MD*/**'
+      - 'docs/manuals/MD*/**'
+      - 'docs/Formatos/MD*/**'
+      - 'docs/technical_instructions/MD*/**'
+      - 'docs/diagrams/MD*/**'
+      - 'docs/procedure_manuals/MD*/**'
+      - 'docs/policies/MD*/**'
+
+jobs:
+  generate-preview:
+    uses: embention/sw_CI_Libs/.github/workflows/emd_generate_preview_wf.yml@develop
+    secrets: inherit

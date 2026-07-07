@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Configuration Parameters",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall include configuration parameters for LM applications (e.g. dive angle, dive speed, impact angle).",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Performance"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61016"
+        ],
+        "is_verified_by": []
+    }
+}

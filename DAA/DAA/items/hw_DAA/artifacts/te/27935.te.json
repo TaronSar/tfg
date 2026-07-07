@@ -1,0 +1,8 @@
+{
+    "Version": "1.0",
+    "Title": "TE-27935",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Description": "The Test Environment includes the following equipment: actual target (P0010452), a harness DAA CS 1.0 (P011389), a power supply source (MED0023), a DC power connector, a switch, banana cables, crocodile clips, an oscilloscope (MED0030), a current probe (MED0048), an oscilloscope probe (MED0030/C1), a DC power connector, a switch, banana cables and crocodile clips.",    
+    "Computer": "Actual Target"
+}

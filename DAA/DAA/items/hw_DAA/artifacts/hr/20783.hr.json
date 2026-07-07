@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "Ethernet Interface - Protocol",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The Ethernet interface shall have a RGMII interface for communication with the FPGA.",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Interface selected with the FPGA",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28319",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "IC27"
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Minimum content of collision avoidance messages",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The message provided by the DAA to the ownship flight control shall contain the minimum information defined TABLE 31: DAA messages to ownship Flight control system.  ",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

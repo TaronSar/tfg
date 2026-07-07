@@ -1,0 +1,2 @@
+# Keep data/manifests/ in git; DVC stage manifests (00_render.json,
+# 01_yolox_crops.json) are written here as small tracked pipeline outputs.

@@ -1,0 +1,78 @@
+[project]
+name = "daa-sw"
+version = "0.0.5"
+description = "Detect-And-Avoid (DAA) software: conflict prediction, resolution, trajectory generation and Monte-Carlo tooling."
+requires-python = ">=3.13,<3.14"
+readme = "README.md"
+
+# Direct (top-level) runtime dependencies.  Transitive packages
+# (contourpy, cycler, fonttools, kiwisolver, packaging, pillow,
+# pyparsing, python-dateutil, six, tzdata, ...) are resolved
+# automatically and recorded in the lock file — do not list them here.
+dependencies = [
+    "h5py",
+    "matplotlib==3.10.8",
+    "networkx==3.6.1",
+    "numpy==2.4.2",
+    "pandas==3.0.1",
+    "scipy==1.17.1",
+    # Local, in-repo wheel (not on PyPI).  The source is mapped below
+    # for uv; for plain pip see the install note in README / below.
+    "cam_track_gen",
+    "pyside6>=6.11.1",
+]
+
+[project.optional-dependencies]
+# Packaging / release tooling — installed only when building a release
+# (``pip install -e .[build]`` or ``uv sync --extra build``).
+build = [
+    "pyinstaller",
+]
+
+# --- uv ---------------------------------------------------------------------
+# Map the in-repo wheel so ``uv sync`` resolves ``cam_track_gen`` from the
+# local file instead of PyPI.  VS Code's Python extension picks up the uv
+# environment automatically when the folder is opened.
+[tool.uv.sources]
+cam_track_gen = { path = "sw_trajectory_generator/package/cam_track_gen-0.1.0-py3-none-any.whl" }
+
+# ``cam_track_gen`` declares an over-conservative ``networkx<3.0`` bound, which
+# clashes with the ``networkx==3.6.1`` pin above.  The code runs fine on 3.6.1
+# (the historical venv installs the wheel with ``--no-deps`` for this reason),
+# so force the resolver onto the pinned version instead of failing.
+[tool.uv]
+override-dependencies = [
+    "networkx==3.6.1",
+    # cam_track_gen declares over-conservative upper bounds that conflict with
+    # the pinned versions below; the code runs fine on these versions.
+    "pandas==3.0.1",
+    "numpy==2.4.2",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+# The DAA code lives in five sibling ``scripts/`` folders.  We expose each
+# one as a top-level package so modules import each other by qualified name
+# (``from daa_conflict_prediction.estimators import ...``) and run with
+# ``python -m daa_montecarlo.run_montecarlo`` — no sys.path hacks needed.
+#
+# Install in editable mode so the mapping is active from source:
+#     uv sync                     (or)     pip install -e .
+[tool.setuptools]
+packages = [
+    "daa_conflict_prediction",
+    "daa_conflict_prediction.estimators",
+    "daa_conflict_resolution",
+    "daa_trajectory_generator",
+    "daa_montecarlo",
+    "daa_sil",
+]
+
+[tool.setuptools.package-dir]
+daa_conflict_prediction = "sw_conflict_prediction/scripts"
+daa_conflict_resolution = "sw_conflict_resolution/scripts"
+daa_trajectory_generator = "sw_trajectory_generator/scripts"
+daa_montecarlo = "sw_montecarlo/scripts"
+daa_sil = "sw_daa_SIL/scripts"

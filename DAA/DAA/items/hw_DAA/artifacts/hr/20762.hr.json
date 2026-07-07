@@ -1,0 +1,30 @@
+{
+    "Version": "1.1",
+    "Title": "CAN Interface - Bus Impedance",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The CAN interface shall have a 120 ohm bus impedance. This line impedance shall be an split resistor termination and it shall be able to be connected or disconnected from the bus by software",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28042",
+        "traced_to": null
+    },
+    "Designator": [
+        "OP1",
+        "OP2",
+        "OP3",
+        "OP4",
+        "R180",
+        "R181",
+        "R187",
+        "R188",
+        "C297",
+        "C300"
+    ]
+}

@@ -1,0 +1,11 @@
+name: Issue Validator - trigger
+
+on:
+  issues:
+    types: [opened, closed]
+
+jobs:
+  Issue_Validator:
+    if: github.event.issue.state == 'open' || (github.event.issue.state == 'closed' && github.event.issue.state_reason == 'completed')
+    uses: embention/sw_CI_Libs/.github/workflows/issue_validator.yml@develop
+    secrets: inherit

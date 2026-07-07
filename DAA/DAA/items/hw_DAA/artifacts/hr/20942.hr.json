@@ -1,0 +1,31 @@
+{
+    "Version": "1.1",
+    "Title": "Image Sensor - Length Matching",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "Each MIPI interface shall have their signals' length matched",
+    "Verification Method": "Analysis",
+    "Derived": true,
+    "Rationale": "Length matching needed to have a good signal integrity",
+    "Functional": true,
+    "Labels": [
+        "Sensor",
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28247",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "IC28",
+        "R245",
+        "R246",
+        "R247",
+        "R248",
+        "R339",
+        "R340",
+        "R341",
+        "R342"
+    ]
+}

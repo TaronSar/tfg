@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - HMI track information content",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA HMI shall provide tracks to the RP with, for each track, the following information: - Track ID; - timestamp; - track relative position; - track relative velocity; - track status: coasting or measured; - Track source: ADS_B; Non cooperative; Fused ASD-B + non cooperative (validated); e_conspicuous (ADSL, Flarm); - Flight ID or hexadecimal code for mode S, ADS_B tracks.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

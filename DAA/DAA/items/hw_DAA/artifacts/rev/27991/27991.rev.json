@@ -1,0 +1,12 @@
+{
+    "Version": "1.1",
+    "Title": "REV-27991: Power Line Filter",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./BODE_EMI_Filter_Output.png",
+        "./DAA_EMI_FILTER_simulation.asc",
+        "./sch_EMI_power_supply.png"
+    ],
+    "__comment": "EMI Filter Cutoff frequency: 61.51 kHz; f_SW: 255 kHz"
+}

@@ -1,0 +1,228 @@
+# =============================================================================
+# DVC pipeline for few-shot UAV identification.
+#
+# This file is the PIPELINE RECIPE: one stage per processing step of the
+# data-generation -> model-building workflow. The heavy image datasets live on
+# the NAS (configs/dvc_config.yaml -> paths.datasets_root) and are NEVER
+# `dvc add`-ed; each data stage writes its images to the NAS as a side effect
+# and emits a small JSON manifest in data/ as its tracked `out` (mirroring
+# sw_ai_detection). Editing the dataset does NOT churn dvc-storage.
+#
+# Conceptual workflow (8 steps):
+#   1. Download GLB models      -> uav_models on NAS         (MANUAL; not a stage)
+#   2. Synthetic rendering      -> 00_render
+#   3. YOLOX cropping           -> 01_yolox_crops
+#   4. Clean & audit            -> 02_filter_crops  (small-crop exclusion JSON)
+#   5. Episodic ProtoNet train  -> 03_train
+#   6. Open-set evaluation      -> 04_eval
+#   (ONNX export / deployment are out of scope until the model is fully validated;
+#    see scripts/export_onnx.py and src/uavid/export/ for future use)
+#   7. Enrollment    } CLIENT-SIDE RUNTIME -- need client images; run via
+#   8. Calibration   } scripts/enroll.py, calibrate_threshold.py, deploy_verify.py
+#      + deployment  } (NOT dvc repro stages: not reproducible without client data)
+#
+# All stages are `frozen: true` (matching sw_ai_odd): `dvc repro` will NOT
+# auto-rerun them when a dep (e.g. the dataset) changes. Each step is run
+# DELIBERATELY -- by executing its script directly, or `dvc repro --force <stage>`.
+# Run on the Vision server (RTX 5090, NAS mounted). `dvc push` BEFORE `git commit`.
+# =============================================================================
+
+vars:
+  - configs/dvc_config.yaml
+
+stages:
+
+  # --- 2. Synthetic rendering (Blender) -------------------------------------
+  # Renders operational + enrollment images for every GLB identity to the NAS.
+  00_render:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/batch_render.py
+      --models_dir   ${paths.uav_models_root}
+      --output_dir   ${paths.datasets_root}/${paths.renders_dataset}
+      --blender      ${render.blender}
+      --train_ratio  ${render.train_ratio}
+      --samples      ${render.samples}
+      --width        ${render.width}
+      --height       ${render.height}
+      --azimuths     ${render.azimuths}
+      --elevations   ${render.elevations}
+      --realistic
+      --colorize     ${render.colorize}
+      --operational_distance_mult ${render.operational_distance_mult}
+      --operational_distance_jitter ${render.operational_distance_jitter}
+      --manifest_out ${paths.manifests_dir}/00_render.json
+    deps:
+      - scripts/batch_render.py
+      - scripts/render_uav.py
+    params:
+      - configs/dvc_config.yaml:
+          - render
+    outs:
+      - ${paths.manifests_dir}/00_render.json
+
+  # --- 3. YOLOX cropping -> ProtoNet-ready crop dataset ----------------------
+  # Crops train/val frames with YOLOX; enrollment is copied uncropped (it is a
+  # large-image support domain). Writes the crop dataset to the NAS.
+  01_yolox_crops:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/crop_from_yolox.py
+      --model           ${paths.yolox_model}
+      --raw_root        ${paths.datasets_root}/${paths.renders_dataset}
+      --out_root        ${paths.datasets_root}/${paths.active_dataset}
+      --copy_enrollment ${paths.datasets_root}/${paths.renders_dataset}/enrollment
+      --manifest_out    ${paths.manifests_dir}/01_yolox_crops.json
+    deps:
+      - ${paths.manifests_dir}/00_render.json
+      - scripts/crop_from_yolox.py
+    outs:
+      - ${paths.manifests_dir}/01_yolox_crops.json
+
+  # --- 4. Clean & audit: small-crop exclusion list --------------------------
+  # Records train/val crops below filter.min_px in a JSON exclusion list. Files
+  # are NEVER deleted, so the dataset hash stays stable; the loader skips them.
+  02_filter_crops:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/filter_small_crops.py
+      --data_root ${paths.datasets_root}/${paths.active_dataset}
+      --out       ${paths.exclude_json}
+      --min_px    ${filter.min_px}
+      --splits    ${filter.splits}
+    deps:
+      - ${paths.manifests_dir}/01_yolox_crops.json
+      - scripts/filter_small_crops.py
+    params:
+      - configs/dvc_config.yaml:
+          - filter
+    outs:
+      - ${paths.exclude_json}
+
+  # --- 5. Episodic ProtoNet training ----------------------------------------
+  03_train:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/train.py
+      --data_root          ${paths.datasets_root}/${paths.active_dataset}
+      --exclude_json       ${paths.exclude_json}
+      --out                ${paths.models_dir}
+      --support_split      ${train.support_split}
+      --n_way              15
+      --test_n_way         5
+      --k_shot_range       ${train.k_shot_range}
+      --q_query            5
+      --epochs             50
+      --episodes_per_epoch 200
+      --lr                 0.001
+      --backbone_lr        0.0001
+      --metric             euclidean
+      --degrade_p          0.0
+      --embed_dim          ${train.embed_dim}
+      --image_size         ${operational.model_input_size}
+    deps:
+      - ${paths.exclude_json}
+      - scripts/train.py
+    params:
+      - configs/dvc_config.yaml:
+          - train.support_split
+          - train.k_shot_range
+          - train.embed_dim
+          - operational.model_input_size
+    outs:
+      - ${paths.models_dir}/best.pth
+      - ${paths.models_dir}/last.pth
+
+  # --- 6. Open-set evaluation (k-shot sweep) --------------------------------
+  04_eval:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/evaluate.py
+      --data_root     ${paths.datasets_root}/${paths.active_dataset}
+      --exclude_json  ${paths.exclude_json}
+      --checkpoint    ${paths.models_dir}/best.pth
+      --split         ${eval.split}
+      --gallery_split ${train.support_split}
+      --k_shots       ${eval.k_shots}
+      --agg           ${eval.agg}
+      --report_dir    ${paths.eval_dir}
+    deps:
+      - ${paths.exclude_json}
+      - scripts/evaluate.py
+      - ${paths.models_dir}/best.pth
+    params:
+      - configs/dvc_config.yaml:
+          - eval
+          - train.support_split
+    outs:
+      - ${paths.eval_dir}/openset_results.csv:
+          cache: true
+    metrics:
+      - ${paths.eval_dir}/openset_summary.json:
+          cache: true
+
+  # --- 5. Phase 1: DINOv2 ViT-S/14 training (no hardware constraints) ------
+  # backbone=dinov2_vits14 downloads ~330 MB weights on first run (needs internet).
+  # degrade_p=0.5 ensures the model never sees more detail than the sensor.
+  # Outputs to a separate models/ dir so the Phase 0 checkpoint is untouched.
+  03_train_dinov2_vits14:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/train.py
+      --data_root          ${paths.datasets_root}/${paths.active_dataset}
+      --exclude_json       ${paths.exclude_json}
+      --out                models/01_dinov2_vits14
+      --support_split      ${train.support_split}
+      --backbone           dinov2_vits14
+      --n_way              15
+      --test_n_way         5
+      --k_shot_range       ${train.k_shot_range}
+      --q_query            5
+      --epochs             30
+      --episodes_per_epoch 200
+      --lr                 0.001
+      --backbone_lr        0.00005
+      --embed_dim          128
+      --image_size         224
+      --degrade_p          0.5
+      --freeze_backbone_epochs 5
+    deps:
+      - ${paths.exclude_json}
+      - scripts/train.py
+      - src/uavid/model/encoder.py
+    params:
+      - configs/dvc_config.yaml:
+          - train.support_split
+          - train.k_shot_range
+          - operational.model_input_size
+    outs:
+      - models/01_dinov2_vits14/best.pth
+      - models/01_dinov2_vits14/last.pth
+
+  # --- 6. Phase 1: Open-set evaluation for DINOv2 ViT-S/14 -----------------
+  04_eval_dinov2_vits14:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/evaluate.py
+      --data_root     ${paths.datasets_root}/${paths.active_dataset}
+      --exclude_json  ${paths.exclude_json}
+      --checkpoint    models/01_dinov2_vits14/best.pth
+      --split         ${eval.split}
+      --gallery_split ${train.support_split}
+      --k_shots       ${eval.k_shots}
+      --agg           ${eval.agg}
+      --report_dir    data/eval_dinov2_vits14
+    deps:
+      - ${paths.exclude_json}
+      - scripts/evaluate.py
+      - models/01_dinov2_vits14/best.pth
+    params:
+      - configs/dvc_config.yaml:
+          - eval
+          - train.support_split
+    outs:
+      - data/eval_dinov2_vits14/openset_results.csv:
+          cache: true
+    metrics:
+      - data/eval_dinov2_vits14/openset_summary.json:
+          cache: true

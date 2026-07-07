@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "CAN Interface - Transceiver",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The CAN transceiver shall have standby mode, logic voltage levels from 1.8V up to 3.3V and automotive grade",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28026",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC23",
+        "IC24"
+    ]
+}

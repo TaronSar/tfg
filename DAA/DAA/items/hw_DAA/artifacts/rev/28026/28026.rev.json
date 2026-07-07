@@ -1,0 +1,15 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28026: CAN Transceiver",
+    "Hyperlinks": "https://www.ti.com/product/es-mx/TCAN1462-Q1/part-details/TCAN1462VDRBRQ1",
+    "Passed": true,
+    "Attachments": [
+        "./CAN_FD_datasheet.png",
+        "./sch_CAN_transceiver.png"
+    ],
+    "__comment": [
+        "Standby mode: Low-power standby mode supporting remote wake-up request",
+        "Logic voltage levels from 1.8V up to 3.3V: VIO level shifting support 1.7V to 5.5V",
+        "Automotive grade: AEC Q100 (Grade 1): Qualified for automotive applications"
+    ]
+}

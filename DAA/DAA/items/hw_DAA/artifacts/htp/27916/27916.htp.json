@@ -1,0 +1,27 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-27915: Power Supply - Reverse Polarity Protection",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_reverse_polarity.png",
+        "./DAA_reverse_polarity.drawio"
+    ],
+    "Steps": {
+        "1": "Review on the schematic and verify if the power inputs (Pins 29 & 36) have reverse polarity protection (Schottky diode).",
+        "2": "Connect the hw_DAA to a DAA CS harness.",
+        "3": "Connect the power supply source and multimeter to the hw_DAA using banana cables, a DC power supply and crocodile clips as shown in the attached diagram.",
+        "4": "Switch on the power supply source.",
+        "5": "Set 6.5V on the CH1 of the power supply source.",
+        "6": "Limit the current to 100mA in the power supply source.",
+        "7": "Turn on the CH1 of the power supply source.",
+        "8": "Switch on the multimeter.",
+        "9": "Set up the multimeter as ammeter. Set it to Auto-Range, Run/Hold and DC Current.",
+        "10": "Take the current value with the multimeter at power input.",
+        "11": "Check that the current is almost zero, when 12V are connected to the hw_DAA across its inverted power input terminals.",
+        "12": "Repeat the measurements with different voltages at the power supply source: 12V, 24V and 36V (using CH1 and CH2 of the power supply source connected in serial).",
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "27918" 
+    } 
+}

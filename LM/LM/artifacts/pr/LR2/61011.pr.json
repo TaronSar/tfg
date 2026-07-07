@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Impact Precision",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall impact with an accuracy of 2 m or less.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Software",
+        "Hardware"
+    ],
+    "Labels": [
+        "Performance"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

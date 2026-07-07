@@ -1,0 +1,25 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Pheripheral Connection",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall allow the integration of a external sensors (e.g. IMU FOG, Altimeter, etc.) and pheripherals (e.g. actuators, motor controllers, etc.).",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Interface",
+        "Compatibility",
+        "Sensors"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61047",
+            "61048"
+        ],
+        "is_verified_by": []
+    }
+}

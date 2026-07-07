@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - RWC track prioritisation criteria",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall use the following criteria to prioritize the tracks to be handled by the benefit of the RWC alerting and guidance: - Filtering based on range: Relative horizontal range <= 3 NM and absolute vertical distance <= 1600 ft (see appendix C, paragraph 4.2); - Filtering based on Tau Mod valuePriority is given to lower Tau Mod value.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

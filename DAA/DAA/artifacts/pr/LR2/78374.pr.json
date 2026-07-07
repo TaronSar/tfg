@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - CA guidance compliant with NMAC volune",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall compute CA guidance so the proposed manoeuvre maintains the ownship out of the NMAC volume as defined in subparagraph 1.13.1.3.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Magnetometer Sensors",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have at least 1x 3-axis Magnetometer.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Interface",
+        "Compatibility",
+        "Sensors"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61056"
+        ],
+        "is_verified_by": []
+    }
+}

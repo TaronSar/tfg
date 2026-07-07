@@ -1,0 +1,34 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28045: CAN Communication - Signal Integrity",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_CAN_signal_integrity.png",
+        "./DAA_CAN_signal_integrity.drawio"
+    ],
+    "Steps": {
+        "1": "Review the schematic design of the hw_DAA. Check that the CAN output signals have a common mode chocke to ensure signal integrity on its signals.",
+        "2": "Connect the hw_DAA to a PC. Set up the FPGA to pull data through the CAN FD signals.",        
+        "3": "Connect the hw_DAA to a DAA CS harness.",
+        "4": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "5": "Switch on the power supply source.",
+        "6": "Set 12V and 3A on the CH1 of the power supply source.",
+        "7": "Turn on the CH1 of the power supply source.",
+        "8": "Switch on the oscilloscope.",
+        "9": "Connect oscilloscope probes to CANA_P signal (before & after the common mode chocke) with x10 attenuation.",
+        "10": "Set the vertical grid to 500 mV/div on both channels. Set the vertical offset to see both signals on the screen.",
+        "11": "Set the horizontal grid to ~2 us/div and center the horizontal trigger position around the center of the oscilloscope screen.",
+        "12": "Ensure that the attenuation is set to x10 and BW limit OFF on both channels.",
+        "13": "Set the trigger level to ~2V, falling edge and source the CH1.",
+        "14": "Click on the Single button to capture communication frames of the CAN FD A.",
+        "15": "Check that there are not glitches in the signals after the common mode chocke.",
+        "16": "Using the measure tab, measure the overshoot/undershoot and rise/fall times at each channel.",
+        "17": "Take an oscilloscope screenshot (with and without zoom).",
+        "18": "Repeat steps 9 to 17 with the CANA_N signal.",
+        "19": "Repeat the same process with the CAN FD B signals.",
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "28047"
+    }
+}

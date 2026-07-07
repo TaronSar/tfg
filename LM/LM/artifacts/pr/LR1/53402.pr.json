@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - User Interface",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have a dedicated user interface optimized for LM applications.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61012"
+        ],
+        "is_verified_by": []
+    }
+}

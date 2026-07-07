@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "CAN Interface - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The CAN interface shall be powered with two different power supplies. One from 5V power rail and one from 3.3V power rail",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Required voltages from transceiver",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28029",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC23",
+        "IC24"
+    ]
+}

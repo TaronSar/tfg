@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Navigation accuracy monitoring (NACv / NACp)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall monitor ownship NACv and NACp and raise a failure message if it falls below performances defined in subparagraph 1.13.2 (assumptions).",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

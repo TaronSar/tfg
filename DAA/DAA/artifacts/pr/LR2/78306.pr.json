@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Downlink message transmission rate",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall transmit, via the UAS datalink, the message defined in pr 78305 to the DAA CMU component at a frequency of at least 5Hz.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

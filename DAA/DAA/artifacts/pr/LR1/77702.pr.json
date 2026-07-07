@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Operational EMI/EMC",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall withstand electromagnetic interference (EMI) and comply with the applicable electromagnetic compatibility (EMC) provisions for avionics equipment.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Environmental"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

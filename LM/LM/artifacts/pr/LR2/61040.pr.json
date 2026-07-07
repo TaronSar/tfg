@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Software–PDI compatibility",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall verify version compatibility between software and PDI files.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Hardware",
+        "PDI"
+    ],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

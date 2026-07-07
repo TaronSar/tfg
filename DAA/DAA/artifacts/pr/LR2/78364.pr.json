@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Waypoint-based CA look-ahead time",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": " When ownship is on waypoints navigation mode, the DAA shall use a minimum look ahead time of 60s when selecting waypoint to be used for alert computation.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

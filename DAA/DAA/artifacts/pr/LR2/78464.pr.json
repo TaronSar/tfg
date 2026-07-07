@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Guidance colour coding per alert level",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA HMI shall provide guidance for each track with the following color associated to their corresponding alert levels: - Free of conflict: no indication; - Preventive guidance: cyan; - Corrective guidance: yellow; - CA guidance: red     ",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

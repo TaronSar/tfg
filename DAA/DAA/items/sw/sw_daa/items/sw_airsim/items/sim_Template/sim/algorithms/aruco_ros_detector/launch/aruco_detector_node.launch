@@ -1,0 +1,23 @@
+<launch>
+
+    <!-- <node pkg="rviz" name="rviz" type="rviz" args="-d $(find uad_target_detector)/rviz/markers.rviz"/> -->
+
+    <!-- <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_debug" args="/uad_target_detector_node/target_image"/> -->
+    
+    <node pkg="aruco_ros_detector" type="aruco_ros_detector_node" name="aruco_ros_detector_node" output="screen">
+        <param name="cam_topic" value="/airsim_node/PX4/camera_down/Scene/image" />
+        <param name="cam_frameid" value="PX4/camera_down_optical"  />
+        <param name="markers_size" value="0.75" />
+        <!-- Folio -->
+        <!-- <rosparam param="markers_sizes"> [0.101, 0.04, 0.04, 0.04, 0.04] </rosparam> -->
+        <rosparam param="cam_matrix"> [424.0, 0.000000, 400.0, 0.000000, 424.0, 400.0, 0.0, 0.0, 1.0] </rosparam>
+        <rosparam param="dist_coeffs"> [0.0, 0.0, 0.0, 0.0, 0.0] </rosparam>
+    </node>
+
+    <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="coloroptical_to_cameralink" 
+         args="0.0 0.0 0.0 -1.5708 0.0 -1.5708 camera_link camera_color_optical_frame" />
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="cameralink_to_baselink" 
+        args="0.5 0.0 0.0 0.0 0.0 0.0 base_link camera_link" /> -->
+    
+</launch>

@@ -1,0 +1,38 @@
+name: "✅ [VER] Release Verification Tasks (Embedded)"
+description: "Release Verification related tasks."
+title: "[VERIFICATION] [product] [item] [major.minor.revision]"
+labels: ["Analysis", "Comment", "SW Verification"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🏷️ Title Instructions
+        **Order tags from general to specific (UPPERCASE, ONE WORD per tag).**
+
+        Examples:
+        `[VERIFICATION] [1x] [sw_1x-pdi-builder] [7.4.16]`
+        `[VERIFICATION] [CEX] [sw_CEX] [7.4.18]`
+
+        📘 Related procedures:
+        - [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: One full URL per line for the related releases and tasks.
+      value: |
+        <!-- https://github.com/embention/repo/releases/tag/release/item/major.minor.revision -->
+        <!-- https://github.com/embention/repo/issues/1234 -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      value: |
+        <!-- Brief description of the analysis to be performed -->
+    validations:
+      required: true

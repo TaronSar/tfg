@@ -1,0 +1,54 @@
+{
+    "release": "release/DAA/1.0.0",
+    "item_product_attribute": "DAA",
+    "version": "1.0.0",
+    "product_template_name": "DAA",
+    "odoo_model": "product.template",
+    "category": "Semiterminados",
+    "category_emb_internal_code": "C182",
+    "category_id": 371,
+    "pn_items": {
+        "3d": [
+            {
+                "product_name": "3d_DAA",
+                "emb_internal_code": "P010345",
+                "emb_part_number_code": "3d_DAA/BASIC-101010",
+                "required": true,
+                "odoo_model": "product.product",
+                "exceptions": []
+            }
+        ],
+        "hw": [
+            {
+                "product_name": "hw_DAA",
+                "emb_internal_code": "P010452",
+                "emb_part_number_code": "hw_DAA/BASIC-101010",
+                "required": true,
+                "odoo_model": "product.product",
+                "exceptions": []
+            }
+        ],
+        "pro": [
+            {
+                "product_name": "Pro_DAA",
+                "emb_internal_code": "P010403",
+                "emb_part_number_code": false,
+                "required": true,
+                "odoo_model": "product.product",
+                "exceptions": []
+            }
+        ]
+    },
+    "items": {
+        "sw_gnssdenied": [
+            {
+                "product_name": "sw_gnssdenied",
+                "emb_internal_code": "P010581",
+                "emb_part_number_code": "sw_gnssdenied/1.1.11-RC",
+                "required": false,
+                "odoo_model": "product.product",
+                "exceptions": []
+            }
+        ]
+    }
+}

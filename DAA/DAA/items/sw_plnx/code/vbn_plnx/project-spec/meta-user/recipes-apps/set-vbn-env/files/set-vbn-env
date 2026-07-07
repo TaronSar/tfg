@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cp /media/sd-mmcblk0p2/bin/* /usr/bin
+cp /media/sd-mmcblk0p2/lib/* /usr/lib
+cp /media/sd-mmcblk0p2/lib64/* /usr/lib
+
+/etc/init.d/dropbear restart
+
+/media/sd-mmcblk0p2/run_service.sh
+

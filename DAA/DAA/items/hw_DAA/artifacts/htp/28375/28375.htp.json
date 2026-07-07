@@ -1,0 +1,21 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28374: DDR4 - Termination resistors",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_DDR4_TER_resistors.png",
+        "./DAA_DDR4_TER_resistors.drawio"
+    ],
+    "Steps": {
+        "1": "Check on schematic and board that DDR4 memories have termination resistors of 39 Ohms connected to 0.6V power rail.",     
+        "2": "Check the BOM and verify the value of each resistor.",
+        "3": "Switch on the multimeter.",
+        "4": "Configure the multimeter as ohmmeter. Setup the 4-wire mode on it and Auto-Range.",
+        "5": "Connect the multimeter leads to the specified pins.",
+        "6": "Check the resistance between these pins is 39 ohms.",
+        "Execution": null   
+    },
+    "Linked Worked Items": {
+        "traced_to": "28044" 
+    }
+}

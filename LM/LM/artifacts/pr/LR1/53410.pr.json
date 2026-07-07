@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Camera Connections",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall allow the connection of a minimum of 3x cameras, considering external hardware if needed.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "A typical setup includes one camera for positioning, one camera for target acquisition and one camera for operation",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Interface"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61032"
+        ],
+        "is_verified_by": []
+    }
+}

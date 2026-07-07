@@ -1,0 +1,24 @@
+{
+    "Version": "1.1",
+    "Title": "SD Memory - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The micro SD card interface shall be powered by a 3.3V power rail for the card side and a 1.8V power rail for the FPGA side.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28383",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "IC20",
+        "CN6"
+    ]
+}

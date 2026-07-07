@@ -1,0 +1,17 @@
+{
+    "SettingsVersion": 1.2,
+    "LogMessagesVisible": true,
+    "SimMode": "Multirotor",
+    "ClockSpeed": 0.5,
+    "ClockType": "SteppableClock",
+    "OriginGeopoint": {
+        "Latitude": 47.641468,
+        "Longitude": -122.140165,
+        "Altitude": 583
+    },
+    "PawnPaths": {
+        "DefaultQuadrotor": {
+            "PawnBP": "Class'/AirSim/Blueprints/BP_ColibriPawn.BP_ColibriPawn_C'"
+        }
+    }
+}

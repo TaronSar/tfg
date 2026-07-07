@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Electrical interface",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall include soldering cables for power and interfacing with external pheripherals.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61046"
+        ],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,147 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.openjfx:javafx-plugin:0.1.0'
+        classpath 'org.beryx:badass-runtime-plugin:2.0.0-rc.1'
+    }
+}
+
+plugins {
+    id 'com.gradleup.shadow' version '9.2.2'
+}
+
+//Fat jar
+apply plugin: 'org.openjfx.javafxplugin'
+apply plugin: 'org.beryx.runtime'
+
+repositories {
+    // Use mavenCentral for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    mavenCentral()
+    maven {
+        credentials {
+            username System.getenv('nexus_user')
+            password System.getenv('nexus_pass')
+        }
+        url "https://dev-services.utm.systems:8443/repository/embention"
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+application {
+    mainClass = 'com.embention.veronte.Launcher'
+    applicationDefaultJvmArgs = [
+            "-XX:+UseZGC",
+            "-XX:+ZGenerational",
+            "-Xmx2g",
+            "-Xms128m",
+    ]
+}
+
+dependencies {
+    implementation 'core-veronte-jdk:core-guifx'
+    implementation 'core-veronte-jdk:pdi-builder-gui'
+    implementation group: 'org.controlsfx', name: 'controlsfx', version: '11.1.0'
+    implementation group: 'com.jfoenix', name: 'jfoenix', version: '9.0.10'
+    compileOnly 'org.codehaus.groovy:groovy-all:3.0.19'
+}
+
+javafx {
+    version = '25'
+    modules = ['javafx.base', 'javafx.graphics', 'javafx.media', 'javafx.web', 'javafx.controls', 'javafx.fxml', 'javafx.swing']
+}
+
+run {
+    jvmArgs = ["--add-opens", "javafx.graphics/com.sun.javafx.css=ALL-UNNAMED",
+               "--add-opens", "javafx.graphics/javafx.css=ALL-UNNAMED",
+               "--add-opens", "javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED",
+               "--enable-native-access=javafx.graphics"]
+}
+
+// Constants like CORE_PATH, BASE_PATH and WXS_PATH are defined here
+apply from: "$rootDir\\..\\..\\constants.gradle"
+
+version = '10.1.17'
+
+ext {
+    applicationName = 'Veronte KAI PDI Builder'
+    wxsFile = file("$rootDir\\..\\..\\$WXS_PATH")
+    wxiFile = file('src/main/resources/overrides.wxi')
+    winPkgName = 'KAIVerontePDIBuilder'
+    msiPkgName = 'kai-pdi-builder'
+    linuxPkgName = 'veronte-kai-pdi-builder'
+}
+// import common version functionality
+apply from: "$rootDir\\..\\..\\$CORE_PATH\\version.gradle"
+
+ext {
+    def iconKey = "package/${winPkgName}.png".toString()
+    def iconResourceName = "$applicationName-${versionWithoutRevision}.png".toString()
+    linuxResources = [[iconKey, iconResourceName]]
+}
+apply from: "$rootDir\\..\\..\\$BASE_PATH\\deploy.gradle"
+
+runtime {
+    options = ['--strip-debug', '--compress', 'zip-6', '--no-header-files', '--no-man-pages']
+    launcher {
+        noConsole = true
+    }
+
+    modules = [
+            'java.rmi',
+            'java.sql',
+            'java.logging',
+            'java.xml.crypto',
+            'java.management',
+            'java.xml',
+            'jdk.jsobject',
+            'jdk.jfr',
+            'jdk.unsupported',
+            'java.datatransfer',
+            'java.security.jgss',
+            'java.desktop',
+            'java.naming',
+            'java.compiler',
+            'java.scripting',
+            'java.prefs',
+            'jdk.unsupported.desktop',
+            'java.net.http',
+            'java.security.sasl',
+            'jdk.xml.dom',
+            'jdk.crypto.cryptoki',
+            'jdk.crypto.ec',
+    ]
+
+    jpackage {
+        imageName = applicationName + "-" + versionWithoutRevision
+
+        def currentOs = org.gradle.internal.os.OperatingSystem.current()
+        def imgType = currentOs.windows ? 'ico' : currentOs.macOsX ? 'icns' : 'png'
+        imageOptions += ['--icon', "package/$winPkgName.$imgType"]
+        imageOptions += ['--app-version', project.version.toString()]
+        installerOptions += ['--vendor', 'Embention']
+        installerOptions += ['--verbose']
+        installerOptions += ['--license-file', "../../$BASE_PATH/resources/eula/eula.rtf"]
+        if(currentOs.windows) {
+            installerOptions += ['--resource-dir', "build/wix"]
+            installerOptions += ['--name', winPkgName, '--win-dir-chooser', '--win-per-user-install', '--win-menu', '--win-shortcut', '--install-dir', "Embention\\$winPkgName\\$versionWithoutRevision"]
+        } else if (currentOs.linux) {
+            installerOptions += ['--resource-dir', "build/linux-src"]
+            installerOptions += ['--linux-package-name', linuxPkgName,'--linux-shortcut']
+        } else if (currentOs.macOsX) {
+            installerOptions += ['--resource-dir', "src/main/resources"]
+            installerOptions += ['--mac-package-name', linuxPkgName]
+        }
+    }
+}

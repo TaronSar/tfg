@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Friend or Foe",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be able to distinguish Friends or Foe.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61017"
+        ],
+        "is_verified_by": []
+    }
+}

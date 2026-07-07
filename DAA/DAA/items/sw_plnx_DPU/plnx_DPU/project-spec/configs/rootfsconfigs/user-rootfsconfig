@@ -1,0 +1,14 @@
+#Note: Mention Each package in individual line
+#These packages will get added into rootfs menu entry
+
+CONFIG_gpio-demo
+CONFIG_peekpoke
+CONFIG_vitis-ai-library
+CONFIG_vitis-ai-library-dev
+CONFIG_vitis-ai-library-dbg
+CONFIG_dnf
+CONFIG_nfs-utils
+CONFIG_resize-part
+CONFIG_internet
+CONFIG_python3
+CONFIG_python3-pip

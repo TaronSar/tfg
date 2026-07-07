@@ -1,0 +1,29 @@
+{
+    "Version": "1.1",
+    "Title": "FPGA - Boot",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPGA shall be configured to boot from the SD 3.0 interface ar the start",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Boot mode preferred",
+    "Functional": true,
+    "Labels": [
+        "MPU Microcontroller"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28527",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "R112",
+        "R113",
+        "R114",
+        "R115",
+        "R116",
+        "R117",
+        "R118",
+        "R119"
+    ]
+}

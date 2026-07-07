@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28161: RS232 Transceiver",
+    "Hyperlinks": "https://www.ti.com/product/SN65C3221-Q1/part-details/SN65C3221IPWRQ1",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_RS232_transceiver.png",
+        "./sch_RS232_transceiver.png"
+    ],
+    "__comment": "Data obtained from the datasheet of the RS232 transceiver (SN65C3221IPWRQ1)"
+}

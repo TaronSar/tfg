@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Fail-safe design and installation (Class 1)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For Class 1 (ARC B and SAIL < IV) DAA, the equipment and its installation in the UAS shall be designed to minimize hazards in the event of a probable malfunction or failure of the equipment or of any external system supporting the operation.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

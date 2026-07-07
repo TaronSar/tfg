@@ -1,0 +1,63 @@
+{
+  "simulation_host_ip": "192.168.1.150",
+  "can_interface": "can0",
+  "serial_config": {
+    "rx_port": {
+      "device": "/dev/ttyUL1",
+      "baud_rate": 115200
+    },
+    "tx_port": {
+      "device": "/dev/ttyUL2",
+      "baud_rate": 115200
+    }
+  },
+  "queue_size": 256,
+  "udp_ports": [
+    2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014,
+    3000, 3001, 3002, 3003, 3004, 3005, 3006, 3007, 3008, 3009, 3010, 3011, 3012, 3013, 3014,
+    4000,
+    5000
+  ],
+  "routing_rules": {
+    "udp_to_can": [
+      { "udp_port": 3000, "can_id": "0x00" },
+      { "udp_port": 3001, "can_id": "0x01" },
+      { "udp_port": 3002, "can_id": "0x02" },
+      { "udp_port": 3003, "can_id": "0x03" },
+      { "udp_port": 3004, "can_id": "0x04" },
+      { "udp_port": 3005, "can_id": "0x05" },
+      { "udp_port": 3006, "can_id": "0x06" },
+      { "udp_port": 3007, "can_id": "0x07" },
+      { "udp_port": 3008, "can_id": "0x08" },
+      { "udp_port": 3009, "can_id": "0x09" },
+      { "udp_port": 3010, "can_id": "0x0A" },
+      { "udp_port": 3011, "can_id": "0x0B" },
+      { "udp_port": 3012, "can_id": "0x0C" },
+      { "udp_port": 3013, "can_id": "0x0D" },
+      { "udp_port": 3014, "can_id": "0x0E" }
+    ],
+    "can_to_udp": [
+      { "can_id": "0x00", "udp_port": 2000 },
+      { "can_id": "0x01", "udp_port": 2001 },
+      { "can_id": "0x02", "udp_port": 2002 },
+      { "can_id": "0x03", "udp_port": 2003 },
+      { "can_id": "0x04", "udp_port": 2004 },
+      { "can_id": "0x05", "udp_port": 2005 },
+      { "can_id": "0x06", "udp_port": 2006 },
+      { "can_id": "0x07", "udp_port": 2007 },
+      { "can_id": "0x08", "udp_port": 2008 },
+      { "can_id": "0x09", "udp_port": 2009 },
+      { "can_id": "0x0A", "udp_port": 2010 },
+      { "can_id": "0x0B", "udp_port": 2011 },
+      { "can_id": "0x0C", "udp_port": 2012 },
+      { "can_id": "0x0D", "udp_port": 2013 },
+      { "can_id": "0x0E", "udp_port": 2014 }
+    ],
+    "udp_to_rs485": {
+      "udp_port": 4000
+    },
+    "rs485_to_udp": {
+      "udp_port": 5000
+    }
+  }
+}

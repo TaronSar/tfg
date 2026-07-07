@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "Ethernet Interface - Transceiver",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The Ethernet interface transceiver shall RGMII compatibility, 1.8V logic level compatibility and it shall operate between -40°C to 85°C",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28282",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC27"
+    ]
+}

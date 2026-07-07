@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28527: FPGA - Boot Mode",
+    "Hyperlinks": "https://www.origin.xilinx.com/support/documents/user_guides/ug1085-zynq-ultrascale-trm.pdf",
+    "Passed": true,
+    "Attachments": [
+        "./Manual_Zynq_UltraScale.png",
+        "./sch_FGPA_PS_Mode.png"
+    ],
+    "__comment1": "PS_MODE[3:0] -> 1110: SD1 LS (3.0)"
+}

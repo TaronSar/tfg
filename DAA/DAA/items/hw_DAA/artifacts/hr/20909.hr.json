@@ -1,0 +1,26 @@
+{
+    "Version": "1.1",
+    "Title": "DDR4 Memory - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The DDR4 memories shall be powered by a 1.2V power rail as the main power source. An aditional 2.5V power rail and 0.6V are needed.",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Voltages needed by the memories to work",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Memory"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28372",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC14",
+        "IC15",
+        "IC16",
+        "IC17",
+        "IC18"
+    ]
+}

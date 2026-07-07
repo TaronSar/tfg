@@ -1,0 +1,10 @@
+[submodule "items/_Avionics"]
+	path = items/_Avionics
+	url = ../Avionics.git
+[submodule "items/_accessories"]
+	path = items/_accessories
+	url = ../hw-mechanics-accessories.git
+[submodule "items/sw/sw_daa/items/_sw_perception"]
+	path = items/sw/sw_daa/items/_sw_perception
+	url = git@github.com:embention/sw_perception.git
+	branch = develop

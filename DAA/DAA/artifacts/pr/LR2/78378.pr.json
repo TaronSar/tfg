@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Vertical guidance preference in constrained corridors",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "If a horizontal CA guidance is expected to exceed the horizontal contingency volume, the DAA shall favour vertical CA guidance.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

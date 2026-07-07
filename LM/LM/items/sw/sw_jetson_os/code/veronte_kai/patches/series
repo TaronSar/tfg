@@ -1,0 +1,6 @@
+0001-pinmux-pin127-i2c2-to-gpio.patch
+0002-conf-veronte-kai-board-conf.patch
+# 0003-extlinux-rootfs-sda1.patch — manejado por Stage 3 (sudo sed, archivo root-owned)
+# Parches contingentes (habilitar si Stage 0 lo confirma):
+# 0010-disable-i2c1-cvm-eeprom-probe.patch
+# 0011-pmic-i2c5-workaround.patch

@@ -1,0 +1,51 @@
+From 47516beb48a54fa79f19495910c85156f5438e25 Mon Sep 17 00:00:00 2001
+From: Ashok Reddy Soma <ashok.reddy.soma@amd.com>
+Date: Sun, 9 Jul 2023 07:09:57 -0600
+Subject: [PATCH 2/4] cmd: thordown: Add proper dependency for
+ CMD_THOR_DOWNLOAD
+
+When CONFIG_CMD_USB and CONFIG_USB are disabled some compilation errors
+are seen as below.
+
+cmd/thordown.o: in function `usb_gadget_initialize':
+include/linux/usb/gadget.h:981: undefined reference to `board_usb_init'
+cmd/thordown.o: in function `do_thor_down':
+cmd/thordown.c:68: undefined reference to `g_dnl_unregister'
+cmd/thordown.o: in function `usb_gadget_release':
+include/linux/usb/gadget.h:986: undefined reference to `board_usb_cleanup'
+cmd/thordown.o: in function `do_thor_down':
+cmd/thordown.c:41: undefined reference to `g_dnl_register'
+cmd/thordown.c:48: undefined reference to `thor_init'
+cmd/thordown.c:56: undefined reference to `thor_handle'
+gnu/aarch64/lin/aarch64-linux/bin/aarch64-linux-gnu-ld.bfd: line 4:  8485
+Segmentation fault      (core dumped) $CC --sysroot=$LIBC
+--no-warn-rwx-segment "$@"
+Makefile:1779: recipe for target 'u-boot' failed
+make: *** [u-boot] Error 139
+make: *** Deleting file 'u-boot'
+
+Add dependency of CMD_USB for CONFIG_CMD_THOR_DOWNLOAD to fix the errors.
+
+Signed-off-by: Ashok Reddy Soma <ashok.reddy.soma@amd.com>
+Link: https://lore.kernel.org/r/20230709130958.7666-2-ashok.reddy.soma@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+---
+
+ cmd/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/cmd/Kconfig b/cmd/Kconfig
+index b2d7598717..a57cb160ce 100644
+--- a/cmd/Kconfig
++++ b/cmd/Kconfig
+@@ -519,6 +519,7 @@ config CMD_SPL_WRITE_SIZE
+ 
+ config CMD_THOR_DOWNLOAD
+ 	bool "thor - TIZEN 'thor' download"
++	depends on CMD_USB
+ 	select DFU
+ 	help
+ 	  Implements the 'thor' download protocol. This is a way of
+-- 
+2.17.1
+

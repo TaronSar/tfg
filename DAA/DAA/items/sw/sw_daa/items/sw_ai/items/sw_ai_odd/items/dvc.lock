@@ -1,0 +1,1867 @@
+schema: '2.0'
+stages:
+  01_create_dataset:
+    cmd: PYTHONPATH=. uv run python scripts/create_dataset.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --output_dir           data/01_create_dataset --conf_gate            0.80 
+      --imbalance_ratio      2.0 --split_ratios         "0.70,0.15,0.15" --seed 
+      0 --clip_model           ViT-L-14 --clip_pretrained      laion2b_s32b_b82k
+      --clip_batch           32 --detection_coco_dir 
+      ../../sw_ai_detection/items/data/07_balanced --detection_coco_train 
+      mini_train.json --detection_coco_eval  mini_eval.json 
+      --detection_coco_test  mini_test.json
+    deps:
+    - path: ../../sw_ai_detection/items/data/07_balanced/mini_eval.json
+      hash: md5
+      md5: b16fc73bb86ebbd80247d38f70f86a24
+      size: 3837607
+    - path: ../../sw_ai_detection/items/data/07_balanced/mini_test.json
+      hash: md5
+      md5: f6f9077539a6d0c185d3832cfe8964fa
+      size: 3789748
+    - path: ../../sw_ai_detection/items/data/07_balanced/mini_train.json
+      hash: md5
+      md5: b8cb724f610973bd2e5ad668dab6c074
+      size: 18918658
+    - path: scripts/create_dataset.py
+      hash: md5
+      md5: f7cafa60dfac7ff37b723bc38fb5b7ba
+      size: 19585
+    - path: src/ood/common/config_loader.py
+      hash: md5
+      md5: cadfc34da027605978edaa2e7a9d3b39
+      size: 2350
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/path_utils.py
+      hash: md5
+      md5: 74a11c074c44c866acd55be463a1ff2a
+      size: 3311
+    - path: src/ood/dataset/clip_classifier.py
+      hash: md5
+      md5: 05a7fbfdf4e49a2f6f41092ed0a26cc6
+      size: 14762
+    params:
+      configs/dvc_config.yaml:
+        dataset:
+          classes:
+          - Urban
+          - Non-urban
+          - Water
+          mix_category: Mix
+          prompts:
+            Urban:
+            - an aerial photo of a mostly dominated city view
+            - an aerial photo with a significant amount of buildings, streets 
+              and houses and little or no water present
+            - an aerial photo of a mostly dominated urban area with roads and 
+              rooftops without many natural features
+            - an aerial photo of a town, suburb or medium size village without a
+              lot of importance to the vegetation presence
+            - an aerial photo of a residential or industrial neighbourhood
+            - an aerial photo of a built-up area dominated by man-made 
+              structures
+            Non-urban:
+            - an aerial photo of a forest sometimes with secondary presence of 
+              roads or very few buildings
+            - an aerial photo of trees, fields or mountains
+            - an aerial photo of natural terrain such as woodland, grassland or 
+              crops
+            - an aerial photo of farmland, meadows or agricultural fields
+            - an aerial photo of mountains, hills or rocky natural landscape
+            - an aerial photo of vegetation, jungle or open countryside
+            - an aerial photo of undeveloped natural land with no buildings
+            - an aerial photo of a desert, dunes or barren ground
+            Water:
+            - an aerial photo of the ocean with no land or almost no land 
+              visible
+            - an aerial photo of a lake, river or sea
+            - an aerial photo of a large body of water with no buildings or 
+              urban structures
+            - an aerial photo of waves or open water with no significant land
+            - an aerial photo of the sea surface or a reservoir
+            - an aerial photo dominated by water
+            Mix:
+            - an aerial photo of a coastline mixing water and land at even 
+              proportions
+            - an aerial photo showing the edge between an urban area and the 
+              countryside
+            - an aerial photo with a roughly equal mix of water, land and 
+              buildings
+            - an ambiguous aerial photo without land or water dominating the 
+              scene because it is dominated by the sky
+    outs:
+    - path: data/01_create_dataset/test.jsonl
+      hash: md5
+      md5: fa677e3d075550334413c2236a14164c
+      size: 135627
+    - path: data/01_create_dataset/test_crops.json
+      hash: md5
+      md5: 35ef2b7be8861ed78148b79211ab6c87
+      size: 936035
+    - path: data/01_create_dataset/train.jsonl
+      hash: md5
+      md5: d458d125039aea1eeac359026fea1098
+      size: 588570
+    - path: data/01_create_dataset/train_crops.json
+      hash: md5
+      md5: a3ac85ae29c9da110c087d70600e3fd8
+      size: 4487510
+    - path: data/01_create_dataset/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: data/01_create_dataset/val_crops.json
+      hash: md5
+      md5: b6185d4ea279a85f12e15fd20b56ae83
+      size: 856721
+  02_create_corrupted:
+    cmd: PYTHONPATH=. uv run python scripts/create_corrupted.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --bg_class_dir  data/background-classification --output_dir 
+      data/corrupted-images --severity_filter "all:1" --num_workers   8 
+      --subsample_fraction 0.2 --seed          0
+    deps:
+    - path: data/background-classification/test.jsonl
+      hash: md5
+      md5: fa677e3d075550334413c2236a14164c
+      size: 135627
+    - path: data/background-classification/train.jsonl
+      hash: md5
+      md5: d458d125039aea1eeac359026fea1098
+      size: 588570
+    - path: data/background-classification/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: scripts/create_corrupted.py
+      hash: md5
+      md5: 44d966c91a5991d35f57f55bef26f8fb
+      size: 7702
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 7ed4b27aacdf64e658bee20ada1a4570
+      size: 3993
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/preprocessing/corruptions.py
+      hash: md5
+      md5: e8f7f92b47400636653f7ef926b3072a
+      size: 5855
+    params:
+      configs/dvc_config.yaml:
+        corruption:
+          severity_filter: all:1
+          num_workers: 8
+          subsample_fraction: 0.2
+          seed: 0
+    outs:
+    - path: data/corrupted-images
+      hash: md5
+      md5: f8c440a1a2b2d9367af3bb2dafdda6c7.dir
+      size: 8019965539
+      nfiles: 2858
+  03_train:
+    cmd: PYTHONPATH=. uv run python scripts/train.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --train_jsonl         data/background-classification/train.jsonl 
+      --val_jsonl           data/background-classification/val.jsonl 
+      --corrupted_train_dir data/corrupted-images --models_dir          models 
+      --ood_filter          "all:3" --batch               16 --num_workers 4 
+      --epochs              12 --epochs_energy       10 --lr 0.0003 --lr_energy 
+      0.0001 --weight_decay        0.0001 --energy_alpha        0.2 
+      --energy_margin_in    -25.0 --energy_margin_out -5.0 --freeze_backbone 
+      true --min_val_acc         0.98
+    deps:
+    - path: data/background-classification/train.jsonl
+      hash: md5
+      md5: d458d125039aea1eeac359026fea1098
+      size: 588570
+    - path: data/background-classification/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: data/corrupted-images
+      hash: md5
+      md5: 0e9bc29fa3ea17af7d9bb953d1eb2417.dir
+      size: 8016980125
+      nfiles: 2858
+    - path: scripts/train.py
+      hash: md5
+      md5: c73bf7bb76743dc93800e39bfab57e93
+      size: 17529
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 7ed4b27aacdf64e658bee20ada1a4570
+      size: 3993
+    - path: src/ood/common/model.py
+      hash: md5
+      md5: a27ac5e0f73d1e3366a7ac986ee3dc7d
+      size: 1337
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 7073ab118306d3b1bb1def242441ca25
+      size: 3143
+    - path: src/ood/train/datasets.py
+      hash: md5
+      md5: e6c4c7c216bdb0376d0f7e560c7e7c91
+      size: 2028
+    - path: src/ood/train/trainer.py
+      hash: md5
+      md5: a967ff468b5a8f780cb79748d4d7c675
+      size: 11836
+    params:
+      configs/dvc_config.yaml:
+        train:
+          batch: 16
+          num_workers: 4
+          epochs: 12
+          epochs_energy: 10
+          lr: 0.0003
+          lr_energy: 0.0001
+          weight_decay: 0.0001
+          energy_alpha: 0.2
+          energy_margin_in: -25.0
+          energy_margin_out: -5.0
+          ood_filter: all:3
+          freeze_backbone: true
+          min_val_acc: 0.98
+    outs:
+    - path: models/manifest.json
+      hash: md5
+      md5: a8672a255e4c76f9c37983cc4f35a2fc
+      size: 198
+    - path: models/resnet18_classifier.pt
+      hash: md5
+      md5: fc47fa85732be4ebb717ef7f8579b095
+      size: 44792550
+    - path: models/resnet18_energy.onnx
+      hash: md5
+      md5: 1761d252c73e1534e9160157939c2327
+      size: 44702699
+    - path: models/resnet18_energy.pt
+      hash: md5
+      md5: 296f4b75b7cceac748cd734b90a171f5
+      size: 44792046
+  04_evaluate:
+    cmd: PYTHONPATH=. uv run python scripts/evaluate.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --test_jsonl          data/background-classification/test.jsonl 
+      --corrupted_test_dir  data/corrupted-images --corrupted_val_dir 
+      data/corrupted-images --models_dir          models --ood_filter "all:3" 
+      --batch               16 --num_workers         4
+    deps:
+    - path: data/background-classification/test.jsonl
+      hash: md5
+      md5: fa677e3d075550334413c2236a14164c
+      size: 135627
+    - path: data/corrupted-images
+      hash: md5
+      md5: 0e9bc29fa3ea17af7d9bb953d1eb2417.dir
+      size: 8016980125
+      nfiles: 2858
+    - path: models/resnet18_energy.pt
+      hash: md5
+      md5: 296f4b75b7cceac748cd734b90a171f5
+      size: 44792046
+    - path: scripts/evaluate.py
+      hash: md5
+      md5: b0e06ef604f5502022bec6f926c910ad
+      size: 14120
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 7ed4b27aacdf64e658bee20ada1a4570
+      size: 3993
+    - path: src/ood/common/model.py
+      hash: md5
+      md5: a27ac5e0f73d1e3366a7ac986ee3dc7d
+      size: 1337
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 7073ab118306d3b1bb1def242441ca25
+      size: 3143
+    - path: src/ood/train/datasets.py
+      hash: md5
+      md5: e6c4c7c216bdb0376d0f7e560c7e7c91
+      size: 2028
+    - path: src/ood/train/evaluator.py
+      hash: md5
+      md5: 339fd9569d1b07bdbe1f58ed1162c001
+      size: 2759
+    params:
+      configs/dvc_config.yaml:
+        evaluate:
+          batch: 16
+          num_workers: 4
+        train.ood_filter: all:3
+    outs:
+    - path: models/ood_results.csv
+      hash: md5
+      md5: ba26e91332dbd42e55432ee271340a79
+      size: 1478
+    - path: models/ood_summary.json
+      hash: md5
+      md5: 587f5d15a151fffa5f1ad32801993252
+      size: 291
+  05_detection_degradation:
+    cmd: PYTHONPATH=. uv run python scripts/evaluate_detection_degradation.py 
+      --detection_coco_dir   ../../sw_ai_detection/items/data/07_balanced 
+      --corrupted_test_dir   data/corrupted-images/test --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --checkpoint_path 
+      ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth 
+      --config_path 
+      ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py 
+      --sw_ai_detection_root ../../sw_ai_detection/items --output_dir 
+      data/reports --work_dir             data/detection_degradation --threshold
+      0.8
+    deps:
+    - path: 
+        ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py
+      hash: md5
+      md5: 17fa2b5dd39e40b40448f88d7ac0361a
+      size: 10023
+    - path: ../../sw_ai_detection/items/data/07_balanced/mini_test.json
+      hash: md5
+      md5: f6f9077539a6d0c185d3832cfe8964fa
+      size: 3789748
+    - path: ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth
+      hash: md5
+      md5: f4d77a9c90a3c96ffd70bd65063bf845
+      size: 64837463
+    - path: data/corrupted-images/test/dataset.jsonl
+      hash: md5
+      md5: a41f9e7f8888db47ebdd0320df4a183b
+      size: 97685
+    - path: scripts/evaluate_detection_degradation.py
+      hash: md5
+      md5: 8b874f85d0c902b1a453bff28a3bb602
+      size: 23687
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 7ed4b27aacdf64e658bee20ada1a4570
+      size: 3993
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 7073ab118306d3b1bb1def242441ca25
+      size: 3143
+    - path: src/ood/evaluation/detection_degradation.py
+      hash: md5
+      md5: d151af4294da567d734b0676014fe165
+      size: 5121
+    params:
+      configs/dvc_config.yaml:
+        detection_degradation:
+          checkpoint_path: 
+            ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth
+          config_path: 
+            ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py
+          sw_ai_detection_root: ../../sw_ai_detection/items
+          threshold: 0.8
+    outs:
+    - path: data/reports/detection_degradation_bar.png
+      hash: md5
+      md5: a1e3e4150e70f5494a2a24df38e59f96
+      size: 37226
+    - path: data/reports/detection_degradation_heatmap.png
+      hash: md5
+      md5: 04c5434e3db5aee9fae6e274a02451b3
+      size: 77975
+    - path: data/reports/detection_degradation_results.json
+      hash: md5
+      md5: e5c80a4a3db328d89fbed1ef8ff2c000
+      size: 3369
+    - path: data/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: 4c570c43ef3efab2aaed932627df0c46
+      size: 83
+  03_detection_degradation:
+    cmd: PYTHONPATH=. uv run python scripts/evaluate_detection_degradation.py 
+      --detection_coco_dir   ../../sw_ai_detection/items/data/07_balanced 
+      --corrupted_test_dir   data/corrupted-images/test --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --checkpoint_path 
+      ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth 
+      --config_path 
+      ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py 
+      --sw_ai_detection_root ../../sw_ai_detection/items --output_dir 
+      data/reports --work_dir             data/detection_degradation --threshold
+      0.8
+    deps:
+    - path: 
+        ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py
+      hash: md5
+      md5: 9c4eb95415bf782b76ca8e5a00922e00
+      size: 9958
+    - path: ../../sw_ai_detection/items/data/07_balanced/mini_test.json
+      hash: md5
+      md5: f6f9077539a6d0c185d3832cfe8964fa
+      size: 3789748
+    - path: ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth
+      hash: md5
+      md5: f4d77a9c90a3c96ffd70bd65063bf845
+      size: 64837463
+    - path: data/corrupted-images/test/dataset.jsonl
+      hash: md5
+      md5: fe31833b08fe98b950702b3d17108db6
+      size: 97685
+    - path: scripts/evaluate_detection_degradation.py
+      hash: md5
+      md5: 3f33848c220ca4046faf125a4b62f506
+      size: 16780
+    - path: scripts/run_detection_model.py
+      hash: md5
+      md5: ac21abc829a67fae2639471ce5a304af
+      size: 3797
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 7ed4b27aacdf64e658bee20ada1a4570
+      size: 3993
+    - path: src/ood/common/path_utils.py
+      hash: md5
+      md5: 74a11c074c44c866acd55be463a1ff2a
+      size: 3311
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/evaluation/coco_metrics.py
+      hash: md5
+      md5: 7fcc91575c9a134d1114a1735d77171d
+      size: 5025
+    - path: src/ood/evaluation/detection_degradation.py
+      hash: md5
+      md5: e8482b60ea0271ac166c4f43e83403eb
+      size: 7301
+    params:
+      configs/dvc_config.yaml:
+        detection_degradation:
+          checkpoint_path: 
+            ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth
+          config_path: 
+            ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py
+          sw_ai_detection_root: ../../sw_ai_detection/items
+          threshold: 0.8
+    outs:
+    - path: data/reports/detection_degradation_bar.png
+      hash: md5
+      md5: 386b966b44e6e612d31914db391352eb
+      size: 37504
+    - path: data/reports/detection_degradation_f1_bar.png
+      hash: md5
+      md5: c5309989b61bb51de3f20ad5d4a0b81a
+      size: 35178
+    - path: data/reports/detection_degradation_f1_heatmap.png
+      hash: md5
+      md5: 11d3a010de12fe87ed9c5cbd8c7f1776
+      size: 77542
+    - path: data/reports/detection_degradation_heatmap.png
+      hash: md5
+      md5: 816bad5a1c5ab6f78a874919808e9b69
+      size: 77489
+    - path: data/reports/detection_degradation_results.json
+      hash: md5
+      md5: 7330f464cc85063116d343aa34222029
+      size: 5558
+    - path: data/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: 739ca31074afb8f2bdbac044e968a1e6
+      size: 83
+  04_train:
+    cmd: PYTHONPATH=. uv run python scripts/train.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --train_jsonl         data/background-classification/train.jsonl 
+      --val_jsonl           data/background-classification/val.jsonl 
+      --corrupted_train_dir data/corrupted-images --models_dir          models 
+      --ood_filter_file     data/reports/recommended_ood_filter.txt --batch 16 
+      --num_workers         4 --epochs              12 --epochs_energy 10 --lr 
+      0.0003 --lr_energy           0.0001 --weight_decay        0.0001 
+      --energy_alpha        0.2 --energy_margin_in -25.0 --energy_margin_out 
+      -5.0 --freeze_backbone     true --min_val_acc 0.98
+    deps:
+    - path: data/background-classification/train.jsonl
+      hash: md5
+      md5: d458d125039aea1eeac359026fea1098
+      size: 588570
+    - path: data/background-classification/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: data/corrupted-images
+      hash: md5
+      md5: f8c440a1a2b2d9367af3bb2dafdda6c7.dir
+      size: 8019965539
+      nfiles: 2858
+    - path: data/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: 739ca31074afb8f2bdbac044e968a1e6
+      size: 83
+    - path: scripts/train.py
+      hash: md5
+      md5: 4ed8ffe65de1d2e837cef9b8121d7ae2
+      size: 19057
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 7ed4b27aacdf64e658bee20ada1a4570
+      size: 3993
+    - path: src/ood/common/model.py
+      hash: md5
+      md5: a27ac5e0f73d1e3366a7ac986ee3dc7d
+      size: 1337
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/train/datasets.py
+      hash: md5
+      md5: e6c4c7c216bdb0376d0f7e560c7e7c91
+      size: 2028
+    - path: src/ood/train/trainer.py
+      hash: md5
+      md5: a967ff468b5a8f780cb79748d4d7c675
+      size: 11836
+    params:
+      configs/dvc_config.yaml:
+        train:
+          batch: 16
+          num_workers: 4
+          epochs: 12
+          epochs_energy: 10
+          lr: 0.0003
+          lr_energy: 0.0001
+          weight_decay: 0.0001
+          energy_alpha: 0.2
+          energy_margin_in: -25.0
+          energy_margin_out: -5.0
+          freeze_backbone: true
+          min_val_acc: 0.98
+    outs:
+    - path: models/manifest.json
+      hash: md5
+      md5: fae9a6d405ec47bf84059b26aa516c4f
+      size: 198
+    - path: models/resnet18_classifier.pt
+      hash: md5
+      md5: fc47fa85732be4ebb717ef7f8579b095
+      size: 44792550
+    - path: models/resnet18_energy.onnx
+      hash: md5
+      md5: a09f8bc931055f3de323bde43b50c185
+      size: 44702699
+    - path: models/resnet18_energy.pt
+      hash: md5
+      md5: 5078679a6a798123351dd94c69ef2e3d
+      size: 44792046
+  05_evaluate:
+    cmd: PYTHONPATH=. uv run python scripts/evaluate.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --test_jsonl          data/background-classification/test.jsonl 
+      --corrupted_test_dir  data/corrupted-images --corrupted_val_dir 
+      data/corrupted-images --models_dir          models --ood_filter_file 
+      data/reports/recommended_ood_filter.txt --batch               16 
+      --num_workers         4
+    deps:
+    - path: data/background-classification/test.jsonl
+      hash: md5
+      md5: fa677e3d075550334413c2236a14164c
+      size: 135627
+    - path: data/corrupted-images
+      hash: md5
+      md5: f8c440a1a2b2d9367af3bb2dafdda6c7.dir
+      size: 8019965539
+      nfiles: 2858
+    - path: data/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: 739ca31074afb8f2bdbac044e968a1e6
+      size: 83
+    - path: models/resnet18_energy.pt
+      hash: md5
+      md5: 5078679a6a798123351dd94c69ef2e3d
+      size: 44792046
+    - path: scripts/evaluate.py
+      hash: md5
+      md5: 5309b46235bb320c9076f8e46295c2b1
+      size: 15095
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 7ed4b27aacdf64e658bee20ada1a4570
+      size: 3993
+    - path: src/ood/common/model.py
+      hash: md5
+      md5: a27ac5e0f73d1e3366a7ac986ee3dc7d
+      size: 1337
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/train/datasets.py
+      hash: md5
+      md5: e6c4c7c216bdb0376d0f7e560c7e7c91
+      size: 2028
+    - path: src/ood/train/evaluator.py
+      hash: md5
+      md5: e64f07f1072f732b3ee4118d0abb5d41
+      size: 2883
+    params:
+      configs/dvc_config.yaml:
+        evaluate:
+          batch: 16
+          num_workers: 4
+    outs:
+    - path: models/ood_results.csv
+      hash: md5
+      md5: dea40b4faa2f9dcf0679181c198e58b4
+      size: 1313
+    - path: models/ood_summary.json
+      hash: md5
+      md5: f1b36b88cb30c4cbedc7a89c299d9cde
+      size: 358
+  02_audit_dataset:
+    cmd: FIFTYONE_DATABASE_URI=mongodb://192.168.2.1:27017/fiftyone PYTHONPATH=.
+      uv run --group viz python scripts/clean_dataset.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --input_dir          data/01_create_dataset --output_dir 
+      data/02_audit_dataset --dataset_name       ood_cleanlab_audit 
+      --dinov2_model       vit_small_patch14_dinov2.lvd142m --dinov2_batch 64 
+      --cv_folds           5 --seed               0
+    deps:
+    - path: data/01_create_dataset/test.jsonl
+      hash: md5
+      md5: fa677e3d075550334413c2236a14164c
+      size: 135627
+    - path: data/01_create_dataset/train.jsonl
+      hash: md5
+      md5: d458d125039aea1eeac359026fea1098
+      size: 588570
+    - path: data/01_create_dataset/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: scripts/clean_dataset.py
+      hash: md5
+      md5: e8e8d5a27feb876ace50a8dd54c48b26
+      size: 10552
+    - path: src/ood/cleaning/auditor.py
+      hash: md5
+      md5: 42c2f80b07ab56370c467488781959ca
+      size: 6350
+    - path: src/ood/cleaning/embeddings.py
+      hash: md5
+      md5: 6605c5c191d7c216be6f637c7eb21e94
+      size: 5381
+    - path: src/ood/cleaning/fiftyone_audit.py
+      hash: md5
+      md5: d4d73f967f5a964e5ba90c1b5834e8ce
+      size: 9490
+    - path: src/ood/common/config_loader.py
+      hash: md5
+      md5: cadfc34da027605978edaa2e7a9d3b39
+      size: 2350
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/path_utils.py
+      hash: md5
+      md5: 74a11c074c44c866acd55be463a1ff2a
+      size: 3311
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    params:
+      configs/dvc_config.yaml:
+        fiftyone:
+          database_uri: mongodb://192.168.2.1:27017/fiftyone
+          dataset_name: ood_cleanlab_audit
+          full_dataset_name: ood_full_visual
+          crops_dataset_name: ood_crops_visual
+    outs:
+    - path: data/02_audit_dataset/audit_snapshot.jsonl
+      hash: md5
+      md5: 82d0ad1802faf508442a08d54976ed92
+      size: 1572323
+    - path: data/02_audit_dataset/embeddings_test.npy
+      hash: md5
+      md5: 4c766ccffa2b3273fff0f4e9a714d680
+      size: 732800
+    - path: data/02_audit_dataset/embeddings_train.npy
+      hash: md5
+      md5: 94197dd019766fd36a6453fe66e3f17b
+      size: 3179648
+    - path: data/02_audit_dataset/embeddings_val.npy
+      hash: md5
+      md5: ecbcb5483910f57aaaae4ea93a0eb271
+      size: 479360
+    - path: data/02_audit_dataset/test.jsonl
+      hash: md5
+      md5: fa677e3d075550334413c2236a14164c
+      size: 135627
+    - path: data/02_audit_dataset/test_cleanlab_report.json
+      hash: md5
+      md5: 399cf9545d7a4dbb885e1ae6931b0c60
+      size: 5781
+    - path: data/02_audit_dataset/train.jsonl
+      hash: md5
+      md5: d458d125039aea1eeac359026fea1098
+      size: 588570
+    - path: data/02_audit_dataset/train_cleanlab_report.json
+      hash: md5
+      md5: 03d1924b91f367d0ba430fb45afc4355
+      size: 20932
+    - path: data/02_audit_dataset/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: data/02_audit_dataset/val_cleanlab_report.json
+      hash: md5
+      md5: 1d28ab8390ba3a8f9269b8b722ed0a4e
+      size: 4261
+  03_cleanlab_to_fiftyone:
+    cmd: FIFTYONE_DATABASE_URI=mongodb://192.168.2.1:27017/fiftyone PYTHONPATH=.
+      uv run --group viz python scripts/checkpoint_review_ready.py --output_dir 
+      data/03_cleanlab_to_fiftyone --dataset_name       ood_cleanlab_audit 
+      --stamp_file data/03_cleanlab_to_fiftyone/03_cleanlab_to_fiftyone.stamp
+    deps:
+    - path: data/02_audit_dataset/audit_snapshot.jsonl
+      hash: md5
+      md5: 82d0ad1802faf508442a08d54976ed92
+      size: 1572323
+    - path: data/02_audit_dataset/test.jsonl
+      hash: md5
+      md5: fa677e3d075550334413c2236a14164c
+      size: 135627
+    - path: data/02_audit_dataset/train.jsonl
+      hash: md5
+      md5: d458d125039aea1eeac359026fea1098
+      size: 588570
+    - path: data/02_audit_dataset/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: scripts/checkpoint_review_ready.py
+      hash: md5
+      md5: 74cf4b774bb1da9f8b8ec88b7d6bed70
+      size: 3387
+    - path: src/ood/common/config_loader.py
+      hash: md5
+      md5: cadfc34da027605978edaa2e7a9d3b39
+      size: 2350
+    - path: src/ood/common/fiftyone_utils.py
+      hash: md5
+      md5: 649c1ef94f7b614d300c2d005df9f0f3
+      size: 3807
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/path_utils.py
+      hash: md5
+      md5: 74a11c074c44c866acd55be463a1ff2a
+      size: 3311
+    params:
+      configs/dvc_config.yaml:
+        fiftyone:
+          database_uri: mongodb://192.168.2.1:27017/fiftyone
+          dataset_name: ood_cleanlab_audit
+          full_dataset_name: ood_full_visual
+          crops_dataset_name: ood_crops_visual
+    outs:
+    - path: data/03_cleanlab_to_fiftyone/03_cleanlab_to_fiftyone.stamp
+      hash: md5
+      md5: 817dd43ddbe0ecdf3416076a38734118
+      size: 33
+  03b_export_cvat_queue:
+    cmd: FIFTYONE_DATABASE_URI=mongodb://192.168.2.1:27017/fiftyone PYTHONPATH=.
+      uv run --group viz python scripts/export_cvat_queue.py --dataset_name 
+      ood_cleanlab_audit --anno_key      relabel_round3 --queue_out 
+      data/03b_export_cvat_queue/cvat_queue.jsonl --task_out 
+      data/03b_export_cvat_queue/cvat_task.json --label_classes 
+      "Urban,Non-urban,Water,Exclude"
+    deps:
+    - path: data/03_cleanlab_to_fiftyone/03_cleanlab_to_fiftyone.stamp
+      hash: md5
+      md5: 817dd43ddbe0ecdf3416076a38734118
+      size: 33
+    - path: scripts/export_cvat_queue.py
+      hash: md5
+      md5: a685887de5605f348d6e5e2b08de049f
+      size: 3326
+    - path: src/ood/common/config_loader.py
+      hash: md5
+      md5: cadfc34da027605978edaa2e7a9d3b39
+      size: 2350
+    - path: src/ood/common/cvat_utils.py
+      hash: md5
+      md5: eb5c5deb2b0c8d6a667995480e65f09c
+      size: 1175
+    - path: src/ood/common/fiftyone_utils.py
+      hash: md5
+      md5: 649c1ef94f7b614d300c2d005df9f0f3
+      size: 3807
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/curation/cvat_sync.py
+      hash: md5
+      md5: e7ef5e8bb654bf2a3e69801c0634ce8e
+      size: 5654
+    - path: src/ood/curation/queue_stage.py
+      hash: md5
+      md5: aae568c6b3e9abf3a884e640e1827c60
+      size: 2148
+    params:
+      configs/dvc_config.yaml:
+        curation:
+          cvat_queue_file: cvat_queue.jsonl
+          cvat_task_file: cvat_task.json
+          cvat_annotations_file: cvat_annotations.jsonl
+          curation_snapshot_file: curation_snapshot.jsonl
+        fiftyone:
+          database_uri: mongodb://192.168.2.1:27017/fiftyone
+          dataset_name: ood_cleanlab_audit
+          full_dataset_name: ood_full_visual
+          crops_dataset_name: ood_crops_visual
+    outs:
+    - path: data/03b_export_cvat_queue/cvat_queue.jsonl
+      hash: md5
+      md5: 7e310d4c3120c431279c5c5ca9acf067
+      size: 286
+    - path: data/03b_export_cvat_queue/cvat_task.json
+      hash: md5
+      md5: 34393ad9d21de11523be420b257dd5b0
+      size: 217
+  03c_pull_cvat_annotations:
+    cmd: FIFTYONE_DATABASE_URI=mongodb://192.168.2.1:27017/fiftyone PYTHONPATH=.
+      uv run --group viz python scripts/pull_cvat_annotations.py --dataset_name 
+      ood_cleanlab_audit --anno_key        relabel_round3 --queue_in 
+      data/03b_export_cvat_queue/cvat_queue.jsonl --task_in 
+      data/03b_export_cvat_queue/cvat_task.json --annotations_out 
+      data/03c_pull_cvat_annotations/cvat_annotations.jsonl
+    deps:
+    - path: data/03b_export_cvat_queue/cvat_queue.jsonl
+      hash: md5
+      md5: 7e310d4c3120c431279c5c5ca9acf067
+      size: 286
+    - path: data/03b_export_cvat_queue/cvat_task.json
+      hash: md5
+      md5: 34393ad9d21de11523be420b257dd5b0
+      size: 217
+    - path: scripts/pull_cvat_annotations.py
+      hash: md5
+      md5: 583e2cd5993f494048ccc548b257b09f
+      size: 2855
+    - path: src/ood/common/config_loader.py
+      hash: md5
+      md5: cadfc34da027605978edaa2e7a9d3b39
+      size: 2350
+    - path: src/ood/common/cvat_utils.py
+      hash: md5
+      md5: eb5c5deb2b0c8d6a667995480e65f09c
+      size: 1175
+    - path: src/ood/common/fiftyone_utils.py
+      hash: md5
+      md5: 649c1ef94f7b614d300c2d005df9f0f3
+      size: 3807
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/curation/annotation_stage.py
+      hash: md5
+      md5: 0594ac5b61c952fc7153ceaca7832468
+      size: 4723
+    - path: src/ood/curation/cvat_sync.py
+      hash: md5
+      md5: e7ef5e8bb654bf2a3e69801c0634ce8e
+      size: 5654
+    params:
+      configs/dvc_config.yaml:
+        curation:
+          cvat_queue_file: cvat_queue.jsonl
+          cvat_task_file: cvat_task.json
+          cvat_annotations_file: cvat_annotations.jsonl
+          curation_snapshot_file: curation_snapshot.jsonl
+        fiftyone:
+          database_uri: mongodb://192.168.2.1:27017/fiftyone
+          dataset_name: ood_cleanlab_audit
+          full_dataset_name: ood_full_visual
+          crops_dataset_name: ood_crops_visual
+    outs:
+    - path: data/03c_pull_cvat_annotations/cvat_annotations.jsonl
+      hash: md5
+      md5: c5c2f166ab86fa57ec1f7c35c28e1b77
+      size: 562
+  03d_build_curation_snapshot:
+    cmd: FIFTYONE_DATABASE_URI=mongodb://192.168.2.1:27017/fiftyone PYTHONPATH=.
+      uv run --group viz python scripts/build_curation_snapshot.py 
+      --dataset_name    ood_cleanlab_audit --annotations_in 
+      data/03c_pull_cvat_annotations/cvat_annotations.jsonl --snapshot_out 
+      data/03d_build_curation_snapshot/curation_snapshot.jsonl
+    deps:
+    - path: data/03c_pull_cvat_annotations/cvat_annotations.jsonl
+      hash: md5
+      md5: c5c2f166ab86fa57ec1f7c35c28e1b77
+      size: 562
+    - path: scripts/build_curation_snapshot.py
+      hash: md5
+      md5: e41d9fd7af9895c7e4d21106050e08f5
+      size: 1520
+    - path: src/ood/cleaning/snapshot.py
+      hash: md5
+      md5: 183efa528e26be51e13de1ba9030e04e
+      size: 2522
+    - path: src/ood/common/config_loader.py
+      hash: md5
+      md5: cadfc34da027605978edaa2e7a9d3b39
+      size: 2350
+    - path: src/ood/common/fiftyone_utils.py
+      hash: md5
+      md5: 649c1ef94f7b614d300c2d005df9f0f3
+      size: 3807
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    params:
+      configs/dvc_config.yaml:
+        curation:
+          cvat_queue_file: cvat_queue.jsonl
+          cvat_task_file: cvat_task.json
+          cvat_annotations_file: cvat_annotations.jsonl
+          curation_snapshot_file: curation_snapshot.jsonl
+        fiftyone:
+          database_uri: mongodb://192.168.2.1:27017/fiftyone
+          dataset_name: ood_cleanlab_audit
+          full_dataset_name: ood_full_visual
+          crops_dataset_name: ood_crops_visual
+    outs:
+    - path: data/03d_build_curation_snapshot/curation_snapshot.jsonl
+      hash: md5
+      md5: 744f77aa7d65ea9eae29b2b762f24ada
+      size: 747797
+  04_apply_curation:
+    cmd: PYTHONPATH=. uv run --group viz python scripts/apply_curation.py 
+      --audited_dir    data/02_audit_dataset --output_dir data/04_apply_curation
+      --background_dir  data/01_create_dataset --snapshot_file 
+      data/03d_build_curation_snapshot/curation_snapshot.jsonl
+    deps:
+    - path: data/01_create_dataset/test_crops.json
+      hash: md5
+      md5: 35ef2b7be8861ed78148b79211ab6c87
+      size: 936035
+    - path: data/01_create_dataset/train_crops.json
+      hash: md5
+      md5: a3ac85ae29c9da110c087d70600e3fd8
+      size: 4487510
+    - path: data/01_create_dataset/val_crops.json
+      hash: md5
+      md5: b6185d4ea279a85f12e15fd20b56ae83
+      size: 856721
+    - path: data/02_audit_dataset/embeddings_test.npy
+      hash: md5
+      md5: 4c766ccffa2b3273fff0f4e9a714d680
+      size: 732800
+    - path: data/02_audit_dataset/embeddings_train.npy
+      hash: md5
+      md5: 94197dd019766fd36a6453fe66e3f17b
+      size: 3179648
+    - path: data/02_audit_dataset/embeddings_val.npy
+      hash: md5
+      md5: ecbcb5483910f57aaaae4ea93a0eb271
+      size: 479360
+    - path: data/02_audit_dataset/test.jsonl
+      hash: md5
+      md5: fa677e3d075550334413c2236a14164c
+      size: 135627
+    - path: data/02_audit_dataset/train.jsonl
+      hash: md5
+      md5: d458d125039aea1eeac359026fea1098
+      size: 588570
+    - path: data/02_audit_dataset/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: data/03d_build_curation_snapshot/curation_snapshot.jsonl
+      hash: md5
+      md5: 744f77aa7d65ea9eae29b2b762f24ada
+      size: 747797
+    - path: scripts/apply_curation.py
+      hash: md5
+      md5: 72658694ab01780d31faf7a8593b56f3
+      size: 6503
+    - path: src/ood/cleaning/snapshot.py
+      hash: md5
+      md5: 183efa528e26be51e13de1ba9030e04e
+      size: 2522
+    - path: src/ood/common/config_loader.py
+      hash: md5
+      md5: cadfc34da027605978edaa2e7a9d3b39
+      size: 2350
+    - path: src/ood/common/constants.py
+      hash: md5
+      md5: c84ed527ab876a05c1e440d308f03e7f
+      size: 149
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/dataset/clip_classifier.py
+      hash: md5
+      md5: 05a7fbfdf4e49a2f6f41092ed0a26cc6
+      size: 14762
+    outs:
+    - path: data/04_apply_curation/embeddings_test.npy
+      hash: md5
+      md5: 4c766ccffa2b3273fff0f4e9a714d680
+      size: 732800
+    - path: data/04_apply_curation/embeddings_train.npy
+      hash: md5
+      md5: 94197dd019766fd36a6453fe66e3f17b
+      size: 3179648
+    - path: data/04_apply_curation/embeddings_val.npy
+      hash: md5
+      md5: 1ad857ced8fc11b019a6d571a1569396
+      size: 477824
+    - path: data/04_apply_curation/test.jsonl
+      hash: md5
+      md5: c0b5944bca3d85328fa5865f32153d97
+      size: 135659
+    - path: data/04_apply_curation/test_crops.json
+      hash: md5
+      md5: 35ef2b7be8861ed78148b79211ab6c87
+      size: 936035
+    - path: data/04_apply_curation/train.jsonl
+      hash: md5
+      md5: 529cc6bc68b3f2b61ebaf2b0a36b2a7c
+      size: 588630
+    - path: data/04_apply_curation/train_crops.json
+      hash: md5
+      md5: a3ac85ae29c9da110c087d70600e3fd8
+      size: 4487510
+    - path: data/04_apply_curation/val.jsonl
+      hash: md5
+      md5: b1f66056a88e15964244bfa45cb594f9
+      size: 88429
+    - path: data/04_apply_curation/val_crops.json
+      hash: md5
+      md5: d66a3930cead60be99385005c2e13b5e
+      size: 856157
+  05_create_corrupted:
+    cmd: PYTHONPATH=. uv run python scripts/create_corrupted.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --bg_class_dir        data/04_apply_curation --output_dir 
+      data/05_create_corrupted --severity_filter     "all:1" --num_workers 8 
+      --subsample_fraction  0.2 --seed                0
+    deps:
+    - path: data/04_apply_curation/test.jsonl
+      hash: md5
+      md5: 40c93b6181413dc9a99b25437a851c93
+      size: 135675
+    - path: data/04_apply_curation/train.jsonl
+      hash: md5
+      md5: bd4110609c8e583cb563e569b4654177
+      size: 588355
+    - path: data/04_apply_curation/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: scripts/create_corrupted.py
+      hash: md5
+      md5: 7ef5e144b86477a6f4c6a04bc60be9c0
+      size: 7697
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/preprocessing/corruptions.py
+      hash: md5
+      md5: 35c33e06d9a13b794fee37e704c5fb90
+      size: 5857
+    outs:
+    - path: data/05_create_corrupted
+      hash: md5
+      md5: 55235a8f10a91bad6b77f4d9faaee703.dir
+      size: 8009982705
+      nfiles: 2853
+  06_detection_degradation:
+    cmd: PYTHONPATH=. uv run python scripts/evaluate_detection_degradation.py 
+      --detection_coco_dir    ../../sw_ai_detection/items/data/07_balanced 
+      --corrupted_test_dir    data/05_create_corrupted/test --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --checkpoint_path 
+      ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth 
+      --config_path 
+      ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py 
+      --sw_ai_detection_root  ../../sw_ai_detection/items --output_dir 
+      data/06_detection_degradation/reports --work_dir 
+      data/06_detection_degradation/work --threshold             0.80 
+      --detection_coco_test   mini_test.json
+    deps:
+    - path: 
+        ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py
+      hash: md5
+      md5: c5cd5a906b4a73986399904914ddcebd
+      size: 10046
+    - path: ../../sw_ai_detection/items/data/07_balanced/mini_test.json
+      hash: md5
+      md5: f6f9077539a6d0c185d3832cfe8964fa
+      size: 3789748
+    - path: ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth
+      hash: md5
+      md5: f4d77a9c90a3c96ffd70bd65063bf845
+      size: 64837463
+    - path: data/05_create_corrupted/test/dataset.jsonl
+      hash: md5
+      md5: 604b37e7db6a6f7ed5c4f6983430bfe2
+      size: 97745
+    - path: scripts/evaluate_detection_degradation.py
+      hash: md5
+      md5: 8a5b98f527d1a4b4fdd7dd30ad3a7681
+      size: 17290
+    - path: src/ood/common/config_loader.py
+      hash: md5
+      md5: cadfc34da027605978edaa2e7a9d3b39
+      size: 2350
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/path_utils.py
+      hash: md5
+      md5: 74a11c074c44c866acd55be463a1ff2a
+      size: 3311
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/evaluation/coco_metrics.py
+      hash: md5
+      md5: 7fcc91575c9a134d1114a1735d77171d
+      size: 5025
+    - path: src/ood/evaluation/detection_degradation.py
+      hash: md5
+      md5: e8482b60ea0271ac166c4f43e83403eb
+      size: 7301
+    params:
+      configs/dvc_config.yaml:
+        detection_degradation:
+          checkpoint_path: 
+            ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth
+          config_path: 
+            ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py
+          sw_ai_detection_root: ../../sw_ai_detection/items
+    outs:
+    - path: data/06_detection_degradation/reports/detection_degradation_bar.png
+      hash: md5
+      md5: 43a4925863d6b1291854eeb25b41f7f1
+      size: 37235
+    - path: 
+        data/06_detection_degradation/reports/detection_degradation_f1_bar.png
+      hash: md5
+      md5: 89f97ec6fcdc958079932f764c532885
+      size: 35223
+    - path: 
+        data/06_detection_degradation/reports/detection_degradation_f1_heatmap.png
+      hash: md5
+      md5: 2617018c8262ba2c955ca2c6f706164e
+      size: 78732
+    - path: 
+        data/06_detection_degradation/reports/detection_degradation_heatmap.png
+      hash: md5
+      md5: a0f7a631137af2685b12c3f9451b1567
+      size: 79506
+    - path: 
+        data/06_detection_degradation/reports/detection_degradation_results.json
+      hash: md5
+      md5: 48eedad7da92d9edba0a5f0c4983fdf2
+      size: 5565
+    - path: data/06_detection_degradation/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: 739ca31074afb8f2bdbac044e968a1e6
+      size: 83
+  07_train:
+    cmd: PYTHONPATH=. uv run python scripts/train.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --train_jsonl              data/04_apply_curation/train.jsonl --val_jsonl 
+      data/04_apply_curation/val.jsonl --corrupted_train_dir 
+      data/05_create_corrupted --models_dir               models/07_train 
+      --ood_filter_file 
+      data/06_detection_degradation/reports/recommended_ood_filter.txt --batch 
+      128 --num_workers              8 --epochs                   12 
+      --epochs_energy            10 --lr                       0.0003 
+      --lr_energy                0.0001 --weight_decay             0.0001 
+      --energy_alpha             0.2 --energy_margin_in         -25.0 
+      --energy_margin_out        -5.0 --freeze_backbone          true 
+      --min_val_acc              0.98 --early_stopping_patience  2
+    deps:
+    - path: data/04_apply_curation/train.jsonl
+      hash: md5
+      md5: bd4110609c8e583cb563e569b4654177
+      size: 588355
+    - path: data/04_apply_curation/val.jsonl
+      hash: md5
+      md5: 4b4c09ba7aaca96dbb180adc484823d6
+      size: 88712
+    - path: data/05_create_corrupted
+      hash: md5
+      md5: 55235a8f10a91bad6b77f4d9faaee703.dir
+      size: 8009982705
+      nfiles: 2853
+    - path: data/06_detection_degradation/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: 739ca31074afb8f2bdbac044e968a1e6
+      size: 83
+    - path: scripts/train.py
+      hash: md5
+      md5: cbf78fbda2fd9c9feac31207d8adb2da
+      size: 18521
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/model.py
+      hash: md5
+      md5: a27ac5e0f73d1e3366a7ac986ee3dc7d
+      size: 1337
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/train/datasets.py
+      hash: md5
+      md5: e6c4c7c216bdb0376d0f7e560c7e7c91
+      size: 2028
+    - path: src/ood/train/trainer.py
+      hash: md5
+      md5: 6d6b83af76c63f389c7e59028052c491
+      size: 13157
+    outs:
+    - path: models/07_train/manifest.json
+      hash: md5
+      md5: fcbe571f5476c4fb2449677b93ade3a0
+      size: 198
+    - path: models/07_train/resnet18_classifier.pt
+      hash: md5
+      md5: dec04a64383ce71ad04d791fb7be74c6
+      size: 44792550
+    - path: models/07_train/resnet18_energy.onnx
+      hash: md5
+      md5: 02599796a4942b352b78e4fa40f0525f
+      size: 44702699
+    - path: models/07_train/resnet18_energy.pt
+      hash: md5
+      md5: 39f6811c4e43f49016a2368051950c77
+      size: 44792046
+  08_eval:
+    cmd: PYTHONPATH=. uv run python scripts/evaluate.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --test_jsonl          data/04_apply_curation/test.jsonl 
+      --corrupted_test_dir  data/05_create_corrupted --corrupted_val_dir 
+      data/05_create_corrupted --models_dir          models/07_train 
+      --output_dir          models/08_eval --ood_filter_file 
+      data/06_detection_degradation/reports/recommended_ood_filter.txt --batch 
+      128 --num_workers         8
+    deps:
+    - path: data/04_apply_curation/test.jsonl
+      hash: md5
+      md5: 40c93b6181413dc9a99b25437a851c93
+      size: 135675
+    - path: data/05_create_corrupted
+      hash: md5
+      md5: 55235a8f10a91bad6b77f4d9faaee703.dir
+      size: 8009982705
+      nfiles: 2853
+    - path: data/06_detection_degradation/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: 739ca31074afb8f2bdbac044e968a1e6
+      size: 83
+    - path: models/07_train/resnet18_energy.pt
+      hash: md5
+      md5: 39f6811c4e43f49016a2368051950c77
+      size: 44792046
+    - path: scripts/evaluate.py
+      hash: md5
+      md5: 874d472597f32f0bd5f1ec09c058f90d
+      size: 14986
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/model.py
+      hash: md5
+      md5: a27ac5e0f73d1e3366a7ac986ee3dc7d
+      size: 1337
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/train/datasets.py
+      hash: md5
+      md5: e6c4c7c216bdb0376d0f7e560c7e7c91
+      size: 2028
+    - path: src/ood/train/evaluator.py
+      hash: md5
+      md5: e64f07f1072f732b3ee4118d0abb5d41
+      size: 2883
+    outs:
+    - path: models/08_eval/ood_results.csv
+      hash: md5
+      md5: 5b28a2413763feaf73462b00a5afdcd4
+      size: 1541
+    - path: models/08_eval/ood_summary.json
+      hash: md5
+      md5: 6a4894f563367bb573f6a3fbb866dbbb
+      size: 378
+  05_create_corrupted_full:
+    cmd: PYTHONPATH=. uv run python scripts/create_corrupted.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --bg_class_dir        data/04_apply_curation --output_dir 
+      data/05_create_corrupted_full --corrupted_full_img_dir 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/full 
+      --severity_filter     all:1 --num_workers         8 --subsample_fraction 1
+      --splits              "train,val,test" --seed                0
+    deps:
+    - path: data/04_apply_curation/test.jsonl
+      hash: md5
+      md5: c0b5944bca3d85328fa5865f32153d97
+      size: 135659
+    - path: data/04_apply_curation/train.jsonl
+      hash: md5
+      md5: 529cc6bc68b3f2b61ebaf2b0a36b2a7c
+      size: 588630
+    - path: data/04_apply_curation/val.jsonl
+      hash: md5
+      md5: b1f66056a88e15964244bfa45cb594f9
+      size: 88429
+    - path: scripts/create_corrupted.py
+      hash: md5
+      md5: 456a63b1bdb7831bd0003ba11058f507
+      size: 8820
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/preprocessing/corruptions.py
+      hash: md5
+      md5: c77001fae991595f9598103c369dd58f
+      size: 9816
+    params:
+      configs/dvc_config.yaml:
+        corruption:
+          num_workers: 8
+          severity_filter: all:1
+          subsample_fraction: 1
+          splits:
+          - train
+          - val
+          - test
+    outs:
+    - path: data/05_create_corrupted_full
+      hash: md5
+      md5: e3f12eb5a35ce2a17cd37a54c4961ae4.dir
+      size: 4554770
+      nfiles: 3
+  06_create_corrupted_crops:
+    cmd: PYTHONPATH=. uv run python scripts/create_corrupted_crops.py 
+      --corrupted_full_dir  data/05_create_corrupted_full --crops_coco_dir 
+      data/04_apply_curation --nas_full_dir 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/full 
+      --nas_crops_dir 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/cropped 
+      --output_dir          data/06_create_corrupted_crops --crop_size 960 
+      --num_workers         8 --splits              "train,val,test"
+    deps:
+    - path: data/04_apply_curation/test_crops.json
+      hash: md5
+      md5: 35ef2b7be8861ed78148b79211ab6c87
+      size: 936035
+    - path: data/04_apply_curation/train_crops.json
+      hash: md5
+      md5: a3ac85ae29c9da110c087d70600e3fd8
+      size: 4487510
+    - path: data/04_apply_curation/val_crops.json
+      hash: md5
+      md5: d66a3930cead60be99385005c2e13b5e
+      size: 856157
+    - path: data/05_create_corrupted_full
+      hash: md5
+      md5: e3f12eb5a35ce2a17cd37a54c4961ae4.dir
+      size: 4554770
+      nfiles: 3
+    - path: scripts/create_corrupted_crops.py
+      hash: md5
+      md5: 1c057bfac2f29f5059a0a03ba92d06f1
+      size: 14812
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/path_utils.py
+      hash: md5
+      md5: 74a11c074c44c866acd55be463a1ff2a
+      size: 3311
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/preprocessing/corruptions.py
+      hash: md5
+      md5: 7e17b812c40b39ad7523a6375a9b1120
+      size: 9061
+    outs:
+    - path: data/06_create_corrupted_crops
+      hash: md5
+      md5: ff41ca06beeab4ae5824345745386675.dir
+      size: 10656863
+      nfiles: 3
+  07_detection_inference:
+    cmd: PYTHONPATH=. uv run python scripts/evaluate_detection_degradation.py 
+      --clean_crops_json          data/04_apply_curation/test_crops.json 
+      --corrupted_crops_json      data/06_create_corrupted_crops/test_crops.json
+      --clean_crops_img_dir 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/airborne_cropped_images
+      --corrupted_crops_img_dir 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/cropped 
+      --checkpoint_path 
+      ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth 
+      --config_path 
+      ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py 
+      --sw_ai_detection_root      ../../sw_ai_detection/items --output_dir 
+      data/07_detection_inference/reports --work_dir 
+      data/07_detection_inference/work --threshold                 0.80
+    deps:
+    - path: 
+        ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py
+      hash: md5
+      md5: c5cd5a906b4a73986399904914ddcebd
+      size: 10046
+    - path: ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth
+      hash: md5
+      md5: f4d77a9c90a3c96ffd70bd65063bf845
+      size: 64837463
+    - path: data/04_apply_curation/test_crops.json
+      hash: md5
+      md5: 35ef2b7be8861ed78148b79211ab6c87
+      size: 936035
+    - path: data/06_create_corrupted_crops/test_crops.json
+      hash: md5
+      md5: 1ce32aab2619b89e240521584600c462
+      size: 1795087
+    - path: scripts/evaluate_detection_degradation.py
+      hash: md5
+      md5: 51e539ab37278b56ca4574f1a4289ff4
+      size: 7617
+    - path: scripts/run_detection_model.py
+      hash: md5
+      md5: de67cc882cb7c585fc3e10fbc7662ee0
+      size: 4410
+    - path: src/ood/common/config_loader.py
+      hash: md5
+      md5: cadfc34da027605978edaa2e7a9d3b39
+      size: 2350
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/path_utils.py
+      hash: md5
+      md5: 74a11c074c44c866acd55be463a1ff2a
+      size: 3311
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/evaluation/coco_metrics.py
+      hash: md5
+      md5: 7fcc91575c9a134d1114a1735d77171d
+      size: 5025
+    - path: src/ood/evaluation/detection_degradation.py
+      hash: md5
+      md5: e8482b60ea0271ac166c4f43e83403eb
+      size: 7301
+    params:
+      configs/dvc_config.yaml:
+        detection_degradation:
+          checkpoint_path: 
+            ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth
+          config_path: 
+            ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py
+          sw_ai_detection_root: ../../sw_ai_detection/items
+    outs:
+    - path: data/07_detection_inference/reports/detection_degradation_bar.png
+      hash: md5
+      md5: eb14efa28d1f3c052725220984b318b4
+      size: 37228
+    - path: data/07_detection_inference/reports/detection_degradation_f1_bar.png
+      hash: md5
+      md5: 865fb2236022049f15fd83ef47888381
+      size: 35225
+    - path: 
+        data/07_detection_inference/reports/detection_degradation_f1_heatmap.png
+      hash: md5
+      md5: d3e0c7460f6456fd58cada0100c15739
+      size: 84354
+    - path: 
+        data/07_detection_inference/reports/detection_degradation_heatmap.png
+      hash: md5
+      md5: 199eeedb1111379fa19c1dc99753af0e
+      size: 86074
+    - path: 
+        data/07_detection_inference/reports/detection_degradation_results.json
+      hash: md5
+      md5: 19c4cd0caa58f46c7e18d00b7c27f35b
+      size: 5702
+    - path: data/07_detection_inference/reports/detection_samples.crops.jsonl
+      hash: md5
+      md5: c68a26cf213d81bd8990a10862b974b1
+      size: 3820030
+    - path: data/07_detection_inference/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: de0987496e342203cd1f5d1f9748d3b8
+      size: 83
+  08_train:
+    cmd: PYTHONPATH=. uv run python scripts/train.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --train_jsonl              data/04_apply_curation/train.jsonl --val_jsonl 
+      data/04_apply_curation/val.jsonl --corrupted_train_dir 
+      data/05_create_corrupted_full --nas_full_dir 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/full 
+      --models_dir               models/08_train --ood_filter_file 
+      data/07_detection_inference/reports/recommended_ood_filter.txt --batch 128
+      --num_workers              8 --epochs                   12 --epochs_energy
+      10 --lr                       0.0003 --lr_energy                0.0001 
+      --weight_decay             0.0001 --energy_alpha             0.2 
+      --energy_margin_in         -25.0 --energy_margin_out        -5.0 
+      --freeze_backbone          true --min_val_acc              0.98 
+      --early_stopping_patience  2
+    deps:
+    - path: data/04_apply_curation/train.jsonl
+      hash: md5
+      md5: 529cc6bc68b3f2b61ebaf2b0a36b2a7c
+      size: 588630
+    - path: data/04_apply_curation/val.jsonl
+      hash: md5
+      md5: b1f66056a88e15964244bfa45cb594f9
+      size: 88429
+    - path: data/05_create_corrupted_full
+      hash: md5
+      md5: e3f12eb5a35ce2a17cd37a54c4961ae4.dir
+      size: 4554770
+      nfiles: 3
+    - path: data/07_detection_inference/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: de0987496e342203cd1f5d1f9748d3b8
+      size: 83
+    - path: scripts/train.py
+      hash: md5
+      md5: 83d01706028562a02529960d0d7118f8
+      size: 18933
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/model.py
+      hash: md5
+      md5: a27ac5e0f73d1e3366a7ac986ee3dc7d
+      size: 1337
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/preprocessing/corruptions.py
+      hash: md5
+      md5: 7e17b812c40b39ad7523a6375a9b1120
+      size: 9061
+    - path: src/ood/train/datasets.py
+      hash: md5
+      md5: be2863c762617c30e50d369291b596aa
+      size: 2289
+    - path: src/ood/train/trainer.py
+      hash: md5
+      md5: 6d6b83af76c63f389c7e59028052c491
+      size: 13157
+    outs:
+    - path: models/08_train/manifest.json
+      hash: md5
+      md5: 86f765e90678e444fcac576d27bdcc11
+      size: 198
+    - path: models/08_train/resnet18_classifier.pt
+      hash: md5
+      md5: dd3a283ce30c9062a22047291ac940a0
+      size: 44792550
+    - path: models/08_train/resnet18_energy.onnx
+      hash: md5
+      md5: 40fa5f86cba738ba325eb58f2ad9185d
+      size: 44702699
+    - path: models/08_train/resnet18_energy.pt
+      hash: md5
+      md5: 993f39965687b327a885e6cdb5e114fc
+      size: 44792046
+  09_eval:
+    cmd: PYTHONPATH=. uv run python scripts/evaluate.py --aot_root 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --test_jsonl          data/04_apply_curation/test.jsonl 
+      --corrupted_test_dir  data/05_create_corrupted_full --corrupted_val_dir 
+      data/05_create_corrupted_full --corrupted_full_img_dir 
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/full 
+      --models_dir          models/08_train --output_dir          models/09_eval
+      --ood_filter_file 
+      data/07_detection_inference/reports/recommended_ood_filter.txt --batch 128
+      --num_workers         8
+    deps:
+    - path: data/04_apply_curation/test.jsonl
+      hash: md5
+      md5: c0b5944bca3d85328fa5865f32153d97
+      size: 135659
+    - path: data/05_create_corrupted_full
+      hash: md5
+      md5: e3f12eb5a35ce2a17cd37a54c4961ae4.dir
+      size: 4554770
+      nfiles: 3
+    - path: data/07_detection_inference/reports/recommended_ood_filter.txt
+      hash: md5
+      md5: de0987496e342203cd1f5d1f9748d3b8
+      size: 83
+    - path: models/08_train/resnet18_energy.pt
+      hash: md5
+      md5: 993f39965687b327a885e6cdb5e114fc
+      size: 44792046
+    - path: scripts/evaluate.py
+      hash: md5
+      md5: 4b0420d96d632618a84a00f1912f1bc0
+      size: 19393
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/common/model.py
+      hash: md5
+      md5: a27ac5e0f73d1e3366a7ac986ee3dc7d
+      size: 1337
+    - path: src/ood/common/transforms.py
+      hash: md5
+      md5: 85d8cc84f20f169e3c09d028acbf2271
+      size: 3173
+    - path: src/ood/preprocessing/corruptions.py
+      hash: md5
+      md5: c77001fae991595f9598103c369dd58f
+      size: 9816
+    - path: src/ood/train/datasets.py
+      hash: md5
+      md5: 271190add5a8d38b744d13a6edb41027
+      size: 2307
+    - path: src/ood/train/evaluator.py
+      hash: md5
+      md5: e64f07f1072f732b3ee4118d0abb5d41
+      size: 2883
+    outs:
+    - path: models/09_eval/ood_per_sample.jsonl
+      hash: md5
+      md5: 0bb533221c6bca2aefcfb85d82f51b0a
+      size: 2106658
+    - path: models/09_eval/ood_results.csv
+      hash: md5
+      md5: fc56309b8adde583b7f6ba1ddc4a459d
+      size: 1494
+    - path: models/09_eval/ood_summary.json
+      hash: md5
+      md5: f3c8b36ff7d511ad98bcdeae1e5f5506
+      size: 378
+  11_build_fiftyone_crops:
+    cmd: FIFTYONE_DATABASE_URI=mongodb://192.168.2.1:27017/fiftyone PYTHONPATH=.
+      uv run --group viz python scripts/build_fiftyone_crops.py 
+      --detection_crops_jsonl 
+      data/07_detection_inference/reports/detection_samples.crops.jsonl 
+      --curated_dir            data/04_apply_curation --ood_samples_jsonl 
+      models/09_eval/ood_per_sample.jsonl --output_dir 
+      data/11_build_fiftyone_crops --dataset_name           ood_crops_visual 
+      --splits                 "train,val,test"
+    deps:
+    - path: data/04_apply_curation/test.jsonl
+      hash: md5
+      md5: c0b5944bca3d85328fa5865f32153d97
+      size: 135659
+    - path: data/04_apply_curation/train.jsonl
+      hash: md5
+      md5: 529cc6bc68b3f2b61ebaf2b0a36b2a7c
+      size: 588630
+    - path: data/04_apply_curation/val.jsonl
+      hash: md5
+      md5: b1f66056a88e15964244bfa45cb594f9
+      size: 88429
+    - path: data/07_detection_inference/reports/detection_samples.crops.jsonl
+      hash: md5
+      md5: c68a26cf213d81bd8990a10862b974b1
+      size: 3820030
+    - path: models/09_eval/ood_per_sample.jsonl
+      hash: md5
+      md5: 0bb533221c6bca2aefcfb85d82f51b0a
+      size: 2106658
+    - path: scripts/build_fiftyone_crops.py
+      hash: md5
+      md5: a0d6f4b7cd86d75eb23c14c1b7d01a7e
+      size: 5694
+    - path: src/ood/common/fiftyone_utils.py
+      hash: md5
+      md5: 4d6b5edb6a55b89efaebb9903a10eec7
+      size: 9159
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    params:
+      configs/dvc_config.yaml:
+        fiftyone:
+          database_uri: mongodb://192.168.2.1:27017/fiftyone
+          dataset_name: ood_cleanlab_audit
+          full_dataset_name: ood_full_visual
+          crops_dataset_name: ood_crops_visual
+        paths:
+          aot_root: 
+            /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset
+          background_classification_dir: data/01_create_dataset
+          audited_classification_dir: data/02_audit_dataset
+          fiftyone_candidates_dir: data/03_cleanlab_to_fiftyone
+          cvat_queue_dir: data/03b_export_cvat_queue
+          cvat_annotations_dir: data/03c_pull_cvat_annotations
+          curation_snapshot_dir: data/03d_build_curation_snapshot
+          curated_classification_dir: data/04_apply_curation
+          corrupted_full_dir: data/05_create_corrupted_full
+          corrupted_crops_dir: data/06_create_corrupted_crops
+          detection_degradation_dir: data/07_detection_inference
+          models_dir: models/08_train
+          eval_dir: models/09_eval
+          fiftyone_full_dir: data/10_build_fiftyone_full
+          fiftyone_crops_dir: data/11_build_fiftyone_crops
+          detection_coco_dir: ../../sw_ai_detection/items/data/07_balanced
+          detection_coco_train: mini_train.json
+          detection_coco_eval: mini_eval.json
+          detection_coco_test: mini_test.json
+          corrupted_full_nas_dir: 
+            /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/full
+          corrupted_crops_nas_dir: 
+            /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/cropped
+          clean_crops_nas_dir: 
+            /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/airborne_cropped_images
+    outs:
+    - path: data/11_build_fiftyone_crops/11_build_fiftyone_crops.stamp
+      hash: md5
+      md5: eff5bc1ef8ec9d03e640fc4370f5eacd
+      size: 3
+    - path: data/11_build_fiftyone_crops/fiftyone_crops_snapshot.jsonl
+      hash: md5
+      md5: 3e18307c9c30bb9d0d2d091536a39bab
+      size: 2036344
+    - path: data/11_build_fiftyone_crops/fiftyone_crops_stats.jsonl
+      hash: md5
+      md5: bd0c2e648f6939895222cf11dab535ac
+      size: 161
+  10_build_fiftyone_full:
+    cmd: FIFTYONE_DATABASE_URI=mongodb://192.168.2.1:27017/fiftyone PYTHONPATH=.
+      uv run --group viz python scripts/build_fiftyone_full.py --aot_root            
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset 
+      --curated_dir         data/04_apply_curation --corrupted_full_dir  
+      data/05_create_corrupted_full --full_dir            
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/full 
+      --ood_samples_jsonl   models/09_eval/ood_per_sample.jsonl --output_dir          
+      data/10_build_fiftyone_full --dataset_name        ood_full_visual --splits              
+      "train,val,test"
+    deps:
+    - path: data/04_apply_curation/test.jsonl
+      hash: md5
+      md5: c0b5944bca3d85328fa5865f32153d97
+      size: 135659
+    - path: data/04_apply_curation/train.jsonl
+      hash: md5
+      md5: 529cc6bc68b3f2b61ebaf2b0a36b2a7c
+      size: 588630
+    - path: data/04_apply_curation/val.jsonl
+      hash: md5
+      md5: b1f66056a88e15964244bfa45cb594f9
+      size: 88429
+    - path: data/05_create_corrupted_full
+      hash: md5
+      md5: e3f12eb5a35ce2a17cd37a54c4961ae4.dir
+      size: 4554770
+      nfiles: 3
+    - path: models/09_eval/ood_per_sample.jsonl
+      hash: md5
+      md5: 0bb533221c6bca2aefcfb85d82f51b0a
+      size: 2106658
+    - path: scripts/build_fiftyone_full.py
+      hash: md5
+      md5: 5b86e523f0d6b2cb42e5038909fb669b
+      size: 6843
+    - path: src/ood/common/fiftyone_utils.py
+      hash: md5
+      md5: 4d6b5edb6a55b89efaebb9903a10eec7
+      size: 9159
+    - path: src/ood/common/io.py
+      hash: md5
+      md5: 88a6214cbe55747ed5ea49811988cef1
+      size: 4140
+    - path: src/ood/preprocessing/corruptions.py
+      hash: md5
+      md5: c77001fae991595f9598103c369dd58f
+      size: 9816
+    params:
+      configs/dvc_config.yaml:
+        fiftyone:
+          database_uri: mongodb://192.168.2.1:27017/fiftyone
+          dataset_name: ood_cleanlab_audit
+          full_dataset_name: ood_full_visual
+          crops_dataset_name: ood_crops_visual
+        paths:
+          aot_root: 
+            /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset
+          background_classification_dir: data/01_create_dataset
+          audited_classification_dir: data/02_audit_dataset
+          fiftyone_candidates_dir: data/03_cleanlab_to_fiftyone
+          cvat_queue_dir: data/03b_export_cvat_queue
+          cvat_annotations_dir: data/03c_pull_cvat_annotations
+          curation_snapshot_dir: data/03d_build_curation_snapshot
+          curated_classification_dir: data/04_apply_curation
+          corrupted_full_dir: data/05_create_corrupted_full
+          corrupted_crops_dir: data/06_create_corrupted_crops
+          detection_degradation_dir: data/07_detection_inference
+          models_dir: models/08_train
+          eval_dir: models/09_eval
+          fiftyone_full_dir: data/10_build_fiftyone_full
+          fiftyone_crops_dir: data/11_build_fiftyone_crops
+          detection_coco_dir: ../../sw_ai_detection/items/data/07_balanced
+          detection_coco_train: mini_train.json
+          detection_coco_eval: mini_eval.json
+          detection_coco_test: mini_test.json
+          corrupted_full_nas_dir: 
+            /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/full
+          corrupted_crops_nas_dir: 
+            /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/cropped
+          clean_crops_nas_dir: 
+            /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/airborne_cropped_images
+    outs:
+    - path: data/10_build_fiftyone_full/10_build_fiftyone_full.stamp
+      hash: md5
+      md5: eff5bc1ef8ec9d03e640fc4370f5eacd
+      size: 3
+    - path: data/10_build_fiftyone_full/fiftyone_full_snapshot.jsonl
+      hash: md5
+      md5: f7b122dbdfa29e8ec3d9585f09f949c9
+      size: 9176882
+    - path: data/10_build_fiftyone_full/fiftyone_full_stats.jsonl
+      hash: md5
+      md5: 0ea5f75ea072f44866d7520b7bea8bfd
+      size: 157

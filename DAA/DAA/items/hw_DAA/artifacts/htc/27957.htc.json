@@ -1,0 +1,26 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-27957: Power Supply - 5V Power Rail",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Check if the hw_DAA regulates its power supply input to a 5V.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Signal +5V close to the the DC/DC converter of the power supply module (C20 pads)",
+        "Other": null
+    },
+    "Outputs":{                  
+        "Variables": null,  
+        "1":{
+            "Expected": "Voltage of 5V.", 
+            "pass criteria":{
+                "error": "+/-1%",
+                "duration": "undefined"
+            }
+        }                                
+    },  
+    "Linked Worked Items": {
+        "traced_to": "27958" 
+    }         
+}

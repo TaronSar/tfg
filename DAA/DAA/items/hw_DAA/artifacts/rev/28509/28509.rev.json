@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28509: FPGA - Programming and Debugging",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_FPGA_AUX_debug_connector.png",
+        "./sch_FPGA_PROG_connector.png"
+    ],
+    "__comment": "Data obtained from the schematic of the FPGA"
+}

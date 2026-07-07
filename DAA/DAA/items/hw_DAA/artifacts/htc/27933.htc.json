@@ -1,0 +1,26 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-27933: Inrush Current Limiter",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Check if the inrush current through the signal VCC meets the requirement when the nominal voltage is abruptly applied.",
+    "Inputs": {
+        "PDIFs": null,
+        "Variables": null,
+        "1": "Current through VCC power input (pins 30, 31, 35 & 36  of the DAA CS harness).",
+        "Other": null
+    },
+    "Outputs": {
+        "Variables": null,
+        "1": {
+            "Expected": "An inrush current smaller than 360mA.",
+            "pass criteria": {
+                "error": null,
+                "duration": "Until C20 is fully charged."
+            }
+        }
+    },
+    "Linked Worked Items": {
+        "traced_to": "27934"
+    }  
+}

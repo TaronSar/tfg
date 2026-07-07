@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Warhead Misactivation Avoidance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be such safe to avoid involuntary warhead activation.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Reliability",
+        "Safety"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61026"
+        ],
+        "is_verified_by": []
+    }
+}

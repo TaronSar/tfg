@@ -1,0 +1,40 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-27933: Inrush Current Limiter",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_inrush_limiter.drawio",
+        "./DAA_inrush_limiter.png"
+    ],
+    "Steps": {
+        "1": "Connect a banana cable between the positive and negative terminals on CH1 of the power supply source.",
+        "2": "Connect the current probe to the oscilloscope.",
+        "3": "Connect the current probe power to the oscilloscope USB port.",
+        "4": "Switch on the power supply source.",
+        "5": "Switch on the oscilloscope.",
+        "6": "Set different voltages on the CH1 of the power supply source.",
+        "7": "Adjust the gain of the current probe to calibrate it, according to the value set in the power supply.",
+        "8": "Solder wires to C20 pad (signal 5V) and GND of the hw_DAA.",
+        "9": "Connect the hw_DAA to a DAA CS harness.",
+        "10": "Set 6.5V and 3A on CH1 of the power supply source.",
+        "11": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, crocodile clips and a switch (according to the attached diagram).",
+        "12": "Press the On/Off button to turn on CH1 of the power supply source.",
+        "13": "Connect the current probe to the oscilloscope (CH2) according the attached diagram.", 
+        "14": "Connect an oscilloscope probe (CH1) to the soldered wire at C20 pads.",
+        "15": "Configure CH1 (5V signal): set the vertical offset to ~-3V and the vertical grid to 2 V/div.",
+        "16": "Configure CH2 (inrush current): set the vertical offset to ~-100mA and the vertical grid to 200 mA/div.",
+        "17": "Set the horizontal grid to 5 ms/div and center the horizontal trigger position at the center of the oscilloscope screen.",
+        "18": "Set the trigger level to ~4V. Ensure the trigger mode is set to rising edge and the trigger source is set to CH1.",
+        "19": "Set CH2 to current unit (A). Press CH2 button -> More -> Unit.",
+        "20": "Press the single button in the oscilloscope.",
+        "21": "Switch on the switch of the power supply connector.",
+        "22": "Using the measure tab, select Vmax at the CH2 (maximum inrush current).",
+        "23": "Take an oscilloscope screenshot.",
+        "24": "Take the measurement of the inrush current and repeat it several times.",
+        "25": "Repeat the measurements with different voltages at the power supply source: 12V, 24V and 36V (using CH1 and CH2 of the power supply source connected in serial).",
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "27935"
+    }
+}

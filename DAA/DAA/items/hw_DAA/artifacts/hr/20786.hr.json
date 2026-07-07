@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "Ethernet Interface - ESD Protection",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The Ethernet interface shall be protected against ESD. Clamping voltage levels shall be less than 6.5V. Diode shall be unidirectional.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Interface",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28315",
+        "traced_to": null
+    },
+    "Designator": [
+        "D24",
+        "D25"
+    ]
+}

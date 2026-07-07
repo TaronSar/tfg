@@ -1,0 +1,14 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28282: Ethernet - Transceiver",
+    "Hyperlinks": "https://www.ti.com/tool/DP83867ERGZ-R-EVM",
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_ethernet_transceiver_specifications.png",
+        "./datasheet_ethernet_transceiver.png",
+        "./sch_ethernet_transceiver.png"
+    ],
+    "__comment": "Data obtained from the datasheet of the Ethernet - Transceiver (DP83867ERGZT)"
+}
+
+

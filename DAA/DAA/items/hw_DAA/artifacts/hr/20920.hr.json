@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "FPGA - Crystal",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPGA shall have a 32.768kHz crystal for RTC functions",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Crystal required by the FPGA for RTC",
+    "Functional": true,
+    "Labels": [
+        "MPU Microcontroller"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28521",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "Y3"
+    ]
+}

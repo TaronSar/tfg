@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - 5V Power Rail",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The device shall regulate its power supply input to a 5V.",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "PMIC needs input level voltage of 5V. CAN interfaces need 5V power supply to comply with CAN FD standard",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Reliability and Quality"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "27957",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC1"
+    ]
+}

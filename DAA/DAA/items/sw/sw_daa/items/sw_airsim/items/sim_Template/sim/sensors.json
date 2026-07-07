@@ -1,0 +1,102 @@
+{
+    "Cameras": {
+      "lidar_right": {
+        "CaptureSettings": [
+          {
+            "ImageType": -1,
+            "FOV_Degrees": 48.5
+          },
+          {
+            "ImageType": 2,
+            "FOV_Degrees": 48.5,
+            "Width": 8,
+            "Height": 8
+          }
+        ],
+        "X": 0, "Y":0.1, "Z": -0.1,
+        "Pitch": 10, "Roll": 0, "Yaw": 90
+      },
+      "lidar_left": {
+        "CaptureSettings": [
+          {
+            "ImageType": -1,
+            "FOV_Degrees": 48.5
+          },
+          {
+            "ImageType": 2,
+            "FOV_Degrees": 48.5,
+            "Width": 8,
+            "Height": 8
+          }
+        ],
+        "X": 0, "Y":-0.1, "Z": -0.1,
+        "Pitch": 10, "Roll": 0, "Yaw":-90
+      },
+      "camera_forward": {
+        "CaptureSettings": [
+          {
+            "ImageType": -1,
+            "FOV_Degrees": 90
+          },
+          {
+            "ImageType": 0,
+            "FOV_Degrees": 90,
+            "Width": 640,
+            "Height": 480
+          }
+        ],
+        "X": 0.1, "Y":0, "Z": -0.1,
+        "Pitch": 0, "Roll": 0, "Yaw": 0
+      },
+      "camera_forward_d": {
+        "CaptureSettings": [
+          {
+            "ImageType": -1,
+            "FOV_Degrees": 90
+          },
+          {
+            "ImageType": 2,
+            "FOV_Degrees": 90,
+            "Width": 640,
+            "Height": 480
+          }
+        ],
+        "X": 0.1, "Y":0, "Z": -0.1,
+        "Pitch": 0, "Roll": 0, "Yaw": 0
+      },
+      "camera_down": {
+        "CaptureSettings": [
+            {
+        "ImageType": -1,
+        "FOV_Degrees": 170.39
+        },
+        {
+            "ImageType": 0,
+            "FOV_Degrees": 170.39,
+            "Width": 848,
+            "Height": 800
+          }
+        ],
+        "X": 0, "Y":0, "Z": 0.1,
+        "Pitch": -90, "Roll": 0, "Yaw": 0
+      }
+    },
+    "Sensors":{
+        "distance_sensor_up": {
+        "SensorType": 5,
+        "Enabled": true,
+        "DrawDebugPoints": false,
+        "Pitch": 90, "Yaw": 0, "Roll": 0,
+        "X": 0, "Y":0, "Z": -0.1,
+        "ExternalController": true
+        },
+        "distance_sensor_down": {
+        "SensorType": 5,
+        "Enabled": true,
+        "DrawDebugPoints": false,
+        "Pitch": -90, "Yaw": 0, "Roll": 0,
+        "X": 0, "Y":0, "Z": 0.1,
+        "ExternalController": true
+        }
+    }
+  }

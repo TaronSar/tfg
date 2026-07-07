@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28232: Image Sensor - Protocols",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_image_sensor_lanes.png",
+        "./sch_jumper_resistors.png"
+    ],
+    "__comment": "Data obtained from the schematic of the hw_DAA: sheet 28 (Image Sensor) & 29 (Sensor Multiplexion)."
+}

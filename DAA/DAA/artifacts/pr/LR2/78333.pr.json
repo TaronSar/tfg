@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Restriction of performance-degrading operations",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "Any operation known to potentially degrade the DAA performance shall be restricted and not accessible from the operational state. This includes, but is not limited to initiating, executing or enabling such operations.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

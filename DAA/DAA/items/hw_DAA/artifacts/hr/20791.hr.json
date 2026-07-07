@@ -1,0 +1,29 @@
+{
+    "Version": "1.1",
+    "Title": "Image Sensor - Synchronization",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The image sensor shall have synchronization signals commanded by the FPGA or the FPD-Link III serializer using jumper resistors.",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Functionality may be needed for stereo work",
+    "Functional": true,
+    "Labels": [
+        "Sensor"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28230",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "IC28",
+        "IC30",
+        "R251",
+        "R252",
+        "R253",
+        "R261",
+        "R262",
+        "R263"
+    ]
+}

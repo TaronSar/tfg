@@ -1,0 +1,193 @@
+<entry-muvar>
+    <id>137</id>
+    <filename>muvar.bin</filename>
+    <version>
+        <major>8</major>
+        <minor>2</minor>
+        <revision>25</revision>
+    </version>
+    <data>
+        <map>
+            <str-tunarray-element>
+                <id>1000</id>
+                <description>
+                    <name>Selected RTH ID</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1001</id>
+                <description>
+                    <name>Vision Th Ini</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1002</id>
+                <description>
+                    <name>Vision Th Min</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1003</id>
+                <description>
+                    <name/>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1012</id>
+                <description>
+                    <name>Vision i computed</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1011</id>
+                <description>
+                    <name>Vision Candidates</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1015</id>
+                <description>
+                    <name>Vision Ransac 1</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1004</id>
+                <description>
+                    <name/>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1009</id>
+                <description>
+                    <name>Vision Track Opt Matches</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1005</id>
+                <description>
+                    <name>Vision SLAM status</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1006</id>
+                <description>
+                    <name>Vision GNSS status</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1007</id>
+                <description>
+                    <name>Vision CM Matches</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1008</id>
+                <description>
+                    <name>Vision Track Matches</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1010</id>
+                <description>
+                    <name>Vision Track LM Matches</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1013</id>
+                <description>
+                    <name>Vision Rel Matches</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1014</id>
+                <description>
+                    <name>Vision Ransac 0</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1016</id>
+                <description>
+                    <name>Vision Ransac 2</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1017</id>
+                <description>
+                    <name>Vision Ransac 3</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1018</id>
+                <description>
+                    <name>Vision Ransac 4</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1019</id>
+                <description>
+                    <name>Vision Ransac 5</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1020</id>
+                <description>
+                    <name>Vision Ransac 6</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1021</id>
+                <description>
+                    <name>Vision Ransac 7</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1022</id>
+                <description>
+                    <name>Vision Ransac 8</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1023</id>
+                <description>
+                    <name>Vision Ransac 9</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1024</id>
+                <description>
+                    <name>Vision Ransac 10</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1025</id>
+                <description>
+                    <name>Vision Ransac 11</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1026</id>
+                <description>
+                    <name>Vision Ransac 12</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1027</id>
+                <description>
+                    <name>Vision Ransac 13</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1028</id>
+                <description>
+                    <name>Vision Ransac 14</name>
+                </description>
+            </str-tunarray-element>
+            <str-tunarray-element>
+                <id>1029</id>
+                <description>
+                    <name>Vision Ransac 15</name>
+                </description>
+            </str-tunarray-element>
+        </map>
+    </data>
+</entry-muvar>

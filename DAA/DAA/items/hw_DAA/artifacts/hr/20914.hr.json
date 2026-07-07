@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "FPGA - Model",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPGA model shall be the from the Zynq Ultrascale+ Xilinx family",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "MPU Microcontroller"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28479",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11"
+    ]
+}

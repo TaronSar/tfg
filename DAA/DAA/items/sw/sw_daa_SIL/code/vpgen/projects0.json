@@ -1,0 +1,186 @@
+{
+  "$schema": "../../../sw_daa/items/_sw_perception/items/Vlibs/vpgen2/schemas/projects.json",
+  "ccFlags": {},
+  "lnFlags": {},
+  "toolChain": {},
+  "generator": {
+    "cmake": {
+      "root_cmake": "",
+      "project_name": "DAA_SIL",
+      "minimum_cmake_version": "3.16"
+    }
+  },
+  "code_path": "../project",
+  "libs": {
+    "DAA_dll": {
+      "dependencies": [
+        "first",
+        "bsp",
+        "base",
+        "maverick",
+        "daa"
+      ],
+      "path": "DAA_dll",
+      "type": "sil",
+      "headers": [
+        "include"
+      ],
+      "sources": [
+        "source"
+      ],
+      "generator": {
+        "cmake": {
+          "generation_subpath": "dll"
+        }
+      },
+      "config": {
+        "sil": {
+          "generator": {
+            "cmake": {
+              "output": "dynamic",
+              "platform": "windows",
+              "cross_compile": {
+                "to_windows": {
+                  "extra_link_options": [
+                    "--target=x86_64-w64-windows-gnu",
+                    "-g",
+                    "-gcodeview",
+                    "-static-libstdc++",
+                    "-static-libgcc",
+                    "-Wl,--whole-archive",
+                    "-l:libpthread.a",
+                    "-Wl,--no-whole-archive"
+                  ],
+                  "extra_libraries": [
+                    "-l:libwinpthread.a",
+                    "-l:libstdc++.a",
+                    "-l:libgcc.a"
+                  ]
+                }
+              }
+            },
+            "qa-misra": {
+              "certificable": false
+            }
+          },
+          "excludeSources": [ ]
+        }
+      }
+    },
+    "DAA_so": {
+      "dependencies": [
+        "first",
+        "bsp",
+        "base",
+        "maverick",
+        "daa"
+      ],
+      "path": "DAA_dll",
+      "type": "sil",
+      "headers": [
+        "include"
+      ],
+      "sources": [
+        "source"
+      ],
+      "generator": {
+        "cmake": {
+          "generation_subpath": "so"
+        }
+      },
+      "config": {
+        "sil": {
+          "generator": {
+            "cmake": {
+              "output": "dynamic",
+              "platform": "linux"
+            },
+            "qa-misra": {
+              "certificable": false
+            }
+          },
+          "excludeSources": [ ]
+        }
+      }
+    }
+  },
+  "exe": {
+    "DAA_SIL_linux": {
+      "path": "DAA_SIL_linux",
+      "dependencies": [
+        "first",
+        "bsp",
+        "base",
+        "maverick",
+        "daa"
+      ],
+      "type": "sil",
+      "headers": [],
+      "sources": [
+        "../DAA_SIL/code/source/DAA_SIL_console.cpp"
+      ],
+      "generator": {
+        "cmake": {
+          "platform": "linux"
+        }
+      },
+      "config": {
+        "sil": {
+          "generator": {
+            "cmake": "default",
+            "qa-misra": {
+              "certificable": false
+            }
+          }
+        }
+      }
+    },
+    "DAA_SIL_windows": {
+      "path": "DAA_SIL_windows",
+      "dependencies": [
+        "first",
+        "bsp",
+        "base",
+        "maverick",
+        "daa"
+      ],
+      "type": "sil",
+      "headers": [],
+      "sources": [
+        "../DAA_SIL/code/source/DAA_SIL_console.cpp"
+      ],
+      "config": {
+        "sil": {
+          "generator": {
+            "cmake": {
+              "output": "console",
+              "platform": "windows",
+              "cross_compile": {
+                "to_windows": {
+                  "extra_link_options": [
+                    "--target=x86_64-w64-windows-gnu",
+                    "-g",
+                    "-gcodeview",
+                    "-static-libstdc++",
+                    "-static-libgcc",
+                    "-Wl,--whole-archive",
+                    "-l:libpthread.a",
+                    "-Wl,--no-whole-archive"
+                  ],
+                  "extra_libraries": [
+                    "-l:libwinpthread.a",
+                    "-l:libstdc++.a",
+                    "-l:libgcc.a"
+                  ]
+                }
+              }
+            },
+            "qa-misra": {
+              "certificable": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

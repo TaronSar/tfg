@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "Ethernet Interface - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The Ethernet interface shall have several power supply: one from a 1.8V power rail, one from a 1V power rail and another from a 2.5V power rail.",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Required voltages from transceiver",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28291",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC27"
+    ]
+}

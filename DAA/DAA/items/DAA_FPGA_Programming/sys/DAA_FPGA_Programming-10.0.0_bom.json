@@ -1,0 +1,20 @@
+{
+    "release": "release/DAA_FPGA_Programming/10.0.0",
+    "item_product_attribute": "DAA_FPGA_Programming",
+    "version": "10.0.0",
+    "product_template_name": "DAA_FPGA_Programming",
+    "odoo_model": "product.template",
+    "pn_items": {
+        "har": [
+            {
+                "product_name": "har_DAA_FPGA_Programming",
+                "emb_internal_code": "P011304",
+                "emb_part_number_code": "har_DAA_FPGA_Programming/BASIC-101010",
+                "required": true,
+                "odoo_model": "product.product",
+                "exceptions": []
+            }
+        ]
+    },
+    "items": {}
+}

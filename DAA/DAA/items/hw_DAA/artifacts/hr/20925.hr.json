@@ -1,0 +1,24 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - PMIC Programming",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The PMIC shall be programmed via I2C",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "I2C is needed for programming the FPGA",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28539",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC3",
+        "IC4",
+        "IC5"
+    ]
+}

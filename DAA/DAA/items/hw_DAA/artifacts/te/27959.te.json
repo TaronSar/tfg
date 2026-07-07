@@ -1,0 +1,8 @@
+{
+    "Version": "1.0",
+    "Title": "TE-27959",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Description": "The Test Environment includes the following equipment: actual target (P0010452), a harness DAA CS 1.0 (P011389), a Linux based PC, a power supply source (MED0023), a multimeter (MED0024), multimeter probes, a DC power connector, banana cables and crocodile clips.",
+    "Computer": "Actual Target"
+}

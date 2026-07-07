@@ -1,0 +1,19 @@
+{
+  "ground_truth": {
+    "type": "detections",
+    "classes": ["airborne", "helicopter", "bird", "drone", "flock", "ufo"],
+    "attributes": {
+      "range_m": {
+        "type": "text",
+        "values": [],
+        "mutable": true
+      },
+      "is_above_horizon": {
+        "type": "select",
+        "values": ["-1", "0", "1"],
+        "default": "-1",
+        "mutable": true
+      }
+    }
+  }
+}

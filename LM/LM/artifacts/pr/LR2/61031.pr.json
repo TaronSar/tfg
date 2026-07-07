@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Maintenance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall not require calibration or maintenance by the end user.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "PDI"
+    ],
+    "Labels": [
+        "Functional",
+        "Operational"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

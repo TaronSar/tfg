@@ -1,0 +1,20 @@
+{
+    "release": "release/Stencil_IMX296/1.0.0",
+    "item_product_attribute": "Stencil_IMX296",
+    "version": "1.0.0",
+    "product_template_name": "Stencil_IMX296",
+    "odoo_model": "product.template",
+    "pn_items": {
+        "hw": [
+            {
+                "product_name": "hw_Stencil_IMX296",
+                "emb_internal_code": "P011882",
+                "emb_part_number_code": "hw_Stencil_IMX296/BASIC-101010",
+                "required": true,
+                "odoo_model": "product.product",
+                "exceptions": []
+            }
+        ]
+    },
+    "items": {}
+}

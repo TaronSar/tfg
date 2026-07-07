@@ -1,0 +1,26 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28084: RS485 - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_RS485_power_supply.drawio",
+        "./DAA_RS485_power_supply.png"
+    ],
+    "Steps": {
+        "1": "Check on schematic that 3V3 power rails supply the RS485 transceiver.",
+        "2": "Connect the hw_DAA to a DAA CS harness.",
+        "3": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "4": "Switch on the power supply source.",
+        "5": "Set 6.5V on the CH1 of the power supply source.",
+        "6": "Turn on the CH1 of the power supply source.",
+        "7": "Switch on the multimeter.",
+        "8": "Set up the multimeter as voltmeter. Ensure it is set to Auto-Range, Run/Hold and DC Voltage.",
+        "9": "Connect the positive lead of the multimeter to the VCC pin of RS485 (pin 13 or 14 of the IC25) and the negative lead to GND (pin 6 or 7 of the IC25).",
+        "10": "Measure with the multimeter and check if it is supplied by 3.3V.",
+        "13": "Repeat the measurements with different voltages at the power supply source: 12V, 24V and 36V (using CH1 and CH2 of the power supply source connected in serial).",
+        "Execution": null 
+    },
+    "Linked Worked Items": {
+        "traced_to": "27959"
+    }
+}

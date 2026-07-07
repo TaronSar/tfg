@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd ../cmake/
+
+echo "Configuring and building hello world ..."
+
+if [ ! -d "build" ]
+then
+    mkdir build
+fi
+cd build/ && \
+    cmake -D CMAKE_BUILD_TYPE=Debug \
+    -D SRC_MAIN=../../../source/main.cpp \
+    -D CCPREFIX=aarch64-none-elf- \
+    -D LDSCRIPT=../../../source/lscript.ld \
+    .. && \
+    make

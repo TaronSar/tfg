@@ -1,0 +1,15 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28515: FPGA - Power supply rails",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./sch_FPGA_PL_power_supply.png",
+        "./sch_FPGA_PS_power_supply.png"
+    ],
+    "__comment1": "Power Rail 3.3V: VCC_3V3.",
+    "__comment2": "Power Rails 1.8V: VCCAUX & PSAVTT.",
+    "__comment3": "Power Rail 1.2V: MGTAVTT.",
+    "__comment4": "Power Rail 0.9V: MGTAVCC.",
+    "__comment5": "Power Rails 0.85V: VCCINT (MAIN) & PSAVCC."
+}

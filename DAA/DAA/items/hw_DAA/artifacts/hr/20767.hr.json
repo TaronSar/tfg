@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "RS-485 Interface - Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The RS-485 interface shall be powered with 3.3V",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Required voltages from transceiver",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Interface"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28084",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC25"
+    ]
+}

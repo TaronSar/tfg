@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Remain Well Clear alerting of collaborative traffic",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall provide to the remote pilot Remain Well Clear alerts towards ADS-B equipped and e-conspicuous manned traffic. ",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

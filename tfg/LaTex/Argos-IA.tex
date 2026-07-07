@@ -1,0 +1,95 @@
+\documentclass[12pt, a4paper]{article}
+
+% =============================================
+% PAQUETES (Configurados para evitar errores)
+% =============================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}       % Corrige el error de "font expansion" en microtype
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{microtype}     % Optimización tipográfica profesional
+
+% Configuración de márgenes
+\geometry{top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm}
+
+% Definición de colores
+\definecolor{primaryblue}{RGB}{0, 51, 102}
+\definecolor{sectionblue}{RGB}{0, 80, 150}
+
+% Formato de secciones
+\titleformat{\section}{\Large\bfseries\color{sectionblue}}{\thesection.}{0.5em}{}
+
+% =============================================
+% INICIO DEL DOCUMENTO
+% =============================================
+\begin{document}
+
+\section*{Alumno: Taron Sargsyan, estudiante de tercer grado de Inteligencia Artificial}
+
+\vspace{4\baselineskip}
+
+\section*{TÍTULO} 
+
+\textbf{ARGOS-AI: Sistema Inteligente de Análisis Táctico-Estratégico de Imágenes Aéreas y Satelitales mediante Deep Learning e IA Generativa} 
+
+\section*{RESUMEN} 
+
+El presente Trabajo de Fin de Grado propone el diseño, desarrollo y evaluación de un sistema integral de inteligencia artificial orientado al análisis automatizado de imágenes captadas por satélites y vehículos aéreos no tripulados (UAVs) en contextos de defensa y seguridad. El sistema, denominado ARGOS-AI, integra múltiples técnicas de visión por computador, aprendizaje profundo y procesamiento de lenguaje natural para proporcionar un pipeline completo que abarca desde la detección y clasificación de activos militares hasta la generación automatizada de informes tácticos y recomendaciones estratégicas.
+
+El proyecto se estructura en torno a varios módulos interconectados: 
+\begin{enumerate}[label=(\arabic*)]
+    \item un motor de detección y segmentación de objetos militares basado en arquitecturas state-of-the-art (YOLOV8, DETR, SAM), entrenado sobre datasets especializados de imágenes aéreas militares; 
+    \item un módulo de análisis temporal que emplea técnicas de change detection para identificar movimientos de tropas, acumulación de fuerzas y evolución del campo de batalla; 
+    \item un sistema de análisis geoespacial que genera mapas de amenazas, calcula líneas de visión, identifica rutas óptimas y evalúa vulnerabilidades del terreno; 
+    \item un motor de razonamiento estratégico basado en un modelo de lenguaje grande (LLM) fine-tuneado con doctrina militar que transforma los datos analíticos en informes de inteligencia estructurados y recomendaciones de cursos de acción (COA); 
+    \item y un dashboard interactivo que integra todas las capas de análisis en una interfaz visual georreferenciada. 
+\end{enumerate}
+
+Se emplearán datasets públicos y sintéticos de imágenes satelitales militares, incluyendo xView, DOTA, DIOR y MASATI, complementados con técnicas de data augmentation y generación sintética para ampliar las clases de objetos detectables. El sistema será evaluado mediante métricas estándar de detección (mAP, precisión, recall) así como mediante la validación cualitativa de los informes generados por expertos en el dominio. 
+
+Este trabajo pretende demostrar la viabilidad de un sistema end-to-end que no solo automatice la fase de detección (IMINT - Imagery Intelligence), sino que aporte una capa de razonamiento y recomendación estratégica hasta ahora reservada a analistas humanos, contribuyendo así a la aceleración del ciclo de decisión en entornos operacionales.
+
+\newpage
+
+\section*{OBJETIVOS} 
+
+\textbf{Objetivo General:}  \\
+Diseñar y desarrollar un sistema de inteligencia artificial capaz de analizar imágenes aéreas y satelitales para detectar, clasificar y evaluar activos militares, generando de forma automatizada informes de inteligencia y recomendaciones estratégicas.
+
+\textbf{Objetivos Específicos:} 
+\begin{enumerate}[label=\arabic*.]
+    \item Implementar y comparar modelos de detección de objetos (YOLOv8, Faster R-CNN, DETR) optimizados para la identificación de vehículos militares, personal, infraestructura defensiva y sistemas de armas en imágenes aéreas.
+    \item Desarrollar un módulo de análisis de cambios temporales que identifique movimientos, acumulaciones y patrones de actividad militar a partir de secuencias de imágenes.
+    \item Construir un sistema de análisis geoespacial táctico que genere mapas de amenazas, evalúe el terreno y calcule rutas y líneas de visión.
+    \item Integrar un modelo de lenguaje grande (LLM) fine-tuneado para la generación automática de informes de inteligencia (INTSUM) y recomendaciones de cursos de acción.
+    \item Diseñar un dashboard interactivo que unifique todas las capas de análisis en una interfaz georreferenciada orientada al usuario operacional.
+    \item Evaluar el rendimiento global del sistema mediante métricas cuantitativas y validación cualitativa.
+\end{enumerate}
+
+\section*{METODOLOGÍA}
+
+El proyecto seguirá una metodología iterativa e incremental: 
+
+\begin{itemize}
+    \item \textbf{Fase 1 Investigación:} Revisión del estado del arte en detección de objetos en imágenes aéreas, GEOINT automatizada y aplicaciones de LLMs en defensa.
+    \item \textbf{Fase 2 Datos:} Recopilación, preprocesamiento y aumento de datasets (xView, DOTA, DIOR, datos sintéticos).
+    \item \textbf{Fase 3 - Desarrollo del motor de detección:} Entrenamiento y optimización de modelos de detección/segmentación.
+    \item \textbf{Fase 4 - Módulos de análisis:} Desarrollo de los módulos temporal, geoespacial y estratégico.
+    \item \textbf{Fase 5 - Integración del LLM:} Fine-tuning y prompt engineering para generación de informes tácticos.
+    \item \textbf{Fase 6 - Dashboard:} Desarrollo de la interfaz interactiva.
+    \item \textbf{Fase 7 - Evaluación:} Testing integral, métricas y validación.
+    \item \textbf{Fase 8 - Documentación:} Redacción de la memoria del TFG.
+\end{itemize}
+
+\section*{TECNOLOGÍAS PREVISTAS} 
+
+Python, PyTorch/TensorFlow, Ultralytics (YOLO), HuggingFace Transformers, LangChain, OpenCV, Rasterio, GeoPandas, QGIS, React/Vue.js, Leaflet/Mapbox, FastAPI, Docker.
+
+\end{document}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Recording of alerts, guidance and track outputs",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall record a log of alerts, guidance, tracks output from track processing, when a warning alert is raised as defined in subparagraph 3.1.4 is raised.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

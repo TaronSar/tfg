@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - CAN BUS Ports",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have a minimum of 2x CAN BUS ports.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

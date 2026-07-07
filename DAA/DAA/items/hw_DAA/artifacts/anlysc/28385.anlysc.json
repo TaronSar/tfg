@@ -1,0 +1,12 @@
+{
+    "Version": "1.2",
+    "Title": "ANLYSC-28385: DDR4 - Length Matching",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Type": "Routes Length Matching",
+    "Pass/Fail Criteria": "The length between the routed signals of the address and control signals of the DDR4 interface shall be the same with a 1% tolerance. The length between the routed signals of the data of the DDR4 interface shall be the same with a 1% tolerance.",
+    "trr": "false",
+    "Linked Worked Items": {
+        "traced_to": "28386"
+    }
+}

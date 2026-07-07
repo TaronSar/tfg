@@ -1,0 +1,36 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28228: Image Sensor - Oscillator",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_ImageSensor_Oscillator.drawio",
+        "./DAA_ImageSensor_Oscillator.png"
+    ],
+    "Steps": {
+        "1": "Review the schematic design of the hw_DAA. Check that the image sensor has an oscillator of 37.125MHz.",
+        "2": "Connect the hw_DAA to a PC. Set up the FPGA to pull data through the RS232 signals (TX & RX).",        
+        "3": "Connect the hw_DAA to a DAA CS harness.",
+        "4": "Connect the power supply to the DAA CS harness power input, using a DC power connector, banana cables, and crocodile clips (according to the attached diagram).",
+        "5": "Switch on the power supply source.",
+        "6": "Set 12V and 3A on the CH1 of the power supply source.",
+        "7": "Turn on the CH1 of the power supply source.",
+        "8": "Switch on the oscilloscope.",
+        "9": "Connect on CH1 an oscilloscope probe to OUT signal (pin 3 of the Y5) with x10 attenuation.",
+        "10": "Set the vertical grid to 500 mV/div.",
+        "11": "Set the horizontal grid to ~100 ns/div and center the horizontal trigger position around the center of the oscilloscope screen.",
+        "12": "Ensure that the attenuation is set to x10 and BW limit to 200 MHz (CH1).",
+        "13": "Set the trigger level to ~1V, rising edge and source the CH1.",
+        "14": "Click on the Stop/Run button to capture the output of the oscillator.",
+        "15": "Using the horizontal menu of the measure tab, click on frequency (Freq).",
+        "16": "Check that the frequency is 37.125MHz.",
+        "17": "Take an oscilloscope screenshot.",
+        "18": "Switch on the multimeter.",
+        "19": "Set up the multimeter as voltmeter. Ensure it is set to Auto-Range, Run/Hold and DC Voltage.",
+        "20": "Connect the positive lead of the multimeter to the OVDD pin of Image Sensor Oscillator (pin 4 of the VCC or at C404 pad) and the negative lead to GND.",
+        "21": "Measure with the multimeter and check if it is supplied by 1.8V.",        
+        "Execution": null
+    },
+    "Linked Worked Items": {
+        "traced_to": "28238" 
+    } 
+}

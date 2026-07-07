@@ -1,0 +1,11 @@
+{
+  "PX4": {
+    "VehicleType": "PX4Multirotor",
+    "UseSerial": false,
+    "LockStep": true,
+    "UseTcp": true,
+    "TcpPort": 4560,
+    "ControlPortLocal": 14540,
+    "ControlPortRemote": 14580
+  }
+}

@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "External Digital I/O - Level Shifter",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "A level shifter shall be used to change the voltage from the FPGA.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28403",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC32"
+    ]
+}

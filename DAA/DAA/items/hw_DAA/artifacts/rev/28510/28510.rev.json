@@ -1,0 +1,11 @@
+{
+    "Version": "1.1",
+    "Title": "REV-28510: FPGA - Temperature sensor",
+    "Hyperlinks": null,
+    "Passed": true,
+    "Attachments": [
+        "./datasheet_Temperature_Sensor.png",
+        "./sch_Temperature_Sensor.png"
+    ],
+    "__comment": "Data obtained from the schematic of the hw_DAA: Sheet 15 (Temperature and reset)."
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Supported collision avoidance manoeuvre formats",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The collision avoidance manoeuvre shall be defined according to the following possibilities: List of waypoints, East/North speed, Vertical speed, Altitude (note 2), Heading (note 2), Predefined pattern (orbit...).",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

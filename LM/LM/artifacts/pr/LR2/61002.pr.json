@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 -  Safety (Reliability)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall operate reliably in demanding tactical environments.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Software",
+        "Hardware"
+    ],
+    "Labels": [
+        "Performance"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

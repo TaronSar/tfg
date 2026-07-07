@@ -1,0 +1,26 @@
+{
+    "Version": "1.1",
+    "Title": "SD Memory - Initialization",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The micro SD card interface shall have a circuit which switches the power supply for the card when the interface is initialize the SD 3.0 protocol",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "The level shifter does not have this functionality",
+    "Functional": true,
+    "Labels": [
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28350",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC11",
+        "IC19",
+        "IC20",
+        "IC21",
+        "IC22",
+        "CN6"
+    ]
+}

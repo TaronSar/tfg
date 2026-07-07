@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Constant-velocity RWC look-ahead time",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall use a minimum Look Ahead Time (LAT) of 50s for predicted ownship and intruder trajectory when computing RWC alerts and ownship not in waypoints navigation mode.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,225 @@
+%YAML:1.0
+
+# Path to vocabulary file
+vocabulary_path: "/root/ORBvoc.txt"
+
+# Path to .yaml file for camera calibration parameters
+#camera_conf_path: "/root/imx296+88-590-0107.yaml"
+#camera_conf_path: "/root/mouser-570-vci-ar0234-cs32-ir.yaml"
+camera_conf_path: "/home/weston/conf/technexion_ar0234_optics_i.yaml"
+
+#--------------------------------------------------------------------------------------------
+# Camera Physical Device Parameters                                                                 
+#--------------------------------------------------------------------------------------------
+# Camera.dev.enabled: true
+# Camera.dev.id: "VCI"
+Cameras.0.enabled: true
+Cameras.0.id: "technexion"
+camera.sz_queue: 1
+camera.color_streaming: 1
+
+# Active systems
+process.slam: 0
+process.pat: 1
+process.vo: 0
+
+# CAN parameters
+# - Device for connection with Veronte
+# - Bitrate
+can.device: "mcu_mcan0"
+can.bitrate: 1000000
+
+# SHS parameter
+shs: 960
+
+# Server IP for video streaming
+ip_server_streaming: "192.168.1.38"
+#ip_server_streaming: "192.168.1.4"
+#ip_server_streaming: "192.168.0.251"
+
+# Server IP and port for VBN SIL
+sil.server_ip: "192.168.10.182"
+sil.server_port: 7034
+
+#Viewer IP port
+viewer_port: 8086
+
+# Frames per second
+fps: 30
+
+# Memory limit in MB
+mem_limit: 2048
+
+# Mode for recording execution or using prerecorded files
+# - mode: 0 (normal execution), 1 (prerecorded input), 2 (recording mode)
+# - path: for mode=1, path to read from
+recorded.mode: 1
+recorded.frame_init: 5000
+#recorded.path: "/home/nvidia2/DAA_agy4/images_yolo_vehicles/a_tmp/records.txt"
+#recorded.path: "/home/nvidia2/DAA_agy4/595ece373b4441bb860a6953264f8a8e3_toy/records.txt"
+# recorded.path: "/workspace/visdrone19_seq126_down2x/"
+# recorded.path: "/workspace/VisDrone2019-SOT-train_part1/VisDrone2019-SOT-train/sequences/uav0000099_02520_s/"
+# recorded.path: "/workspace/visdrone19_seq126_down2x/"
+#recorded.path: "/home/nvidia/datasets/ros_sim_imgs1/records.txt"
+#recorded.path: "/home/nvidia/datasets/00000_24_09_2025/records.txt"
+#recorded.path: "/home/nvidia/datasets/00001_24_09_2025/records.txt"
+#recorded.path: "/root/datasets/3700000000002_140908_1/records.txt"
+#recorded.path: "/root/datasets/00001_24_09_2025/records.txt"
+recorded.path: "/root/datasets/00002_04_03_2026/records_fix.txt"
+# recorded.path: "/workspace/items/sw_daa/images_yolo/"
+# recorded.path: "/workspace/FlightTests/00004_06_02_2025/00004_06_02_2025-10_47_48_sync.txt"
+# recorded.path: "/workspace/FlightTests/00004_06_02_2025/"
+
+# Amount of RAM/Swap available
+ram_limit: 7000
+swap_limit: 1000
+
+# Vbn debug path
+Vbn.LogStatesPathFile: "/home/weston/logs_gnssdenied/vbn_history_state.log"
+Vbn.DebugPath: "/home/weston/logs_gnssdenied/"
+
+# Parameters for DAA config
+daa.classes_path: "/home/weston/test-data/labels.txt"
+#daa.classes_path: "/home/weston/daa_conf/classes_allclasses.txt"
+daa.classes_path: "/home/weston/conf/classes_roboflow_air6.txt"
+daa.anchors_path: "/home/weston/conf/yolo_anchors_allclasses.txt"
+# daa.network_file: "/workspace/items/sw_daa/code/project/configs/yolov3.cfg"
+# daa.model_weights: "/workspace/items/sw_daa/code/project/configs/yolov3.weights"
+# daa.anchors_path: "/workspace/items/sw_daa/code/project/configs/yolov3-tiny_anchors_allclasses.txt"
+# daa.network_file: "/workspace/items/sw_daa/code/project/configs/yolov3-tiny.cfg"
+# daa.network_file: "/workspace/items/sw_daa/code/project/configs/yolov5s.torchscript.pt"
+# daa.network_file: "/workspace/items/sw_daa/code/project/configs/yolov8n.onnx"
+#daa.network_file: "/home/nvidia2/DAA_agy4/items/sw_daa/code/project/configs/yolov3-12.onnx"
+#daa.network_file: "/home/nvidia/yolov4-leaky-416_4classes_20000.onnx"
+#daa.network_file: "/home/weston/model-artifacts/od-ort-ssd-lite_mobilenetv2_fpn/artifacts/"
+#daa.network_file: "/home/weston/model-artifacts/od-ort-yolov4darknet_fpn_02/artifacts/"
+#daa.network_file: "/home/weston/model-artifacts/yolox_s_tidl_lite_tidl/artifacts/"
+#daa.network_file: "/home/weston/model-artifacts/yolox_s_lite_best_coco_bbox_mAP_epoch_145_tidl/artifacts/"
+#daa.network_file: "/home/weston/model-artifacts/old/yolox_s_lite_best_coco_bbox_mAP_epoch_116_simplified_tidl/artifacts/"
+daa.network_file: "/home/weston/model-artifacts/yolox_s_lite_best_coco_bbox_mAP_epoch_105/artifacts/"
+#daa.network_file: "/home/weston/model-artifacts/yolov4_1_3_416_416_static_gabriel/artifacts/"
+#daa.network_file: "/home/weston/model-artifacts/yolox_s_lite_4classes_tidl/artifacts/"
+# daa.network_file: "/workspace/items/sw_daa/code/project/configs/yolov3_fp16_mixed.onnx"
+# daa.model_weights: "/workspace/items/sw_daa/code/project/configs/yolov3-tiny.weights"
+
+daa.score_threshold: 0.5
+daa.nms_threshold: 0.4
+#daa.image_w: 960
+#daa.image_h: 540
+#daa.image_w: 928
+#daa.image_h: 928
+# daa.image_w: 1344
+# daa.image_h: 756
+daa.image_w: 640
+daa.image_h: 480
+daa.input_w: 416
+daa.input_h: 416
+# daa.input_w: 640
+# daa.input_h: 640
+
+
+# DAA system parameters
+daa.n_tracks: 200
+daa.max_pitch_correction: 15.0
+daa.max_yaw_correction: 15.0
+daa.th_min_area: 500.0
+daa.th_max_area: 10000.0
+daa.th_max_growth: 0.1 #0.08
+daa.th_center_radius: 0.2
+daa.w_area: 0.2
+daa.w_area_growth: 0.2  # 0.3, 0.2
+daa.w_vel: 0.2  # 0.2, 0.3
+daa.center_gain: 2.0
+
+# DAA TTC parameters
+daa.ttc.cells_x: 5
+daa.ttc.cells_y: 5
+daa.ttc.th: 500.0
+
+# DAA DBSCAN parameters
+daa.dbscan.eps: 0.15 # 0.15, 0.12, 0.08
+daa.dbscan.minpts: 5 # 8, 8, 6
+daa.dbscan.ttc_w: 1.0 # 0.5
+daa.dbscan.max_clusters: 50
+
+#DAA Matcher parameters
+daa.matcher.hamming_dist: 36
+daa.matcher.lowe_dist_th: 0.85
+daa.matcher.lk_gate_rad: 3.0
+
+# DAA tracker parameters
+daa.tracker.iou_threshold: 0.25
+daa.tracker.max_missed: 5
+daa.tracker.ekf.sigma_position: 2.5
+daa.tracker.ekf.sigma_area: 0.10
+daa.tracker.ekf.sigma_meas_pos: 3.0
+daa.tracker.ekf.sigma_meas_area: 0.25
+daa.tracker.beta_aspect_ratio: 0.5
+
+# PAT parameters
+pat.window_size: 200
+pat.mavlink_port: 14550
+pat.rtsp_port: 8554
+pat.detector.multi_enabled: 0
+pat.detector.size_threshold: 64
+
+# VO parameters
+vo.max_inliers: 1000
+vo.ransac_iterations: 100
+vo.ransac_min_iterations: 30
+vo.ransac_error_threshold: 2.0
+vo.min_good_threshold: 0
+vo.rotation_compensation: 1
+vo.solver_mode: 0
+# Height-above-ground metric scale.
+# altitude_is_agl: 0 = telemetry altitude is absolute (WGS84/MSL); the terrain
+#   elevation below is subtracted. 1 = autopilot already provides AGL altitude
+#   (terrain_elevation_m is then ignored). Next flight will use AGL -> set to 1.
+# terrain_elevation_m: ground elevation of the operating area (MSL metres).
+vo.altitude_is_agl: 0
+vo.terrain_elevation_m: 303.0
+
+# Adaptive baseline (keyframe-by-parallax).
+# adaptive_baseline: 1 = pick an older frame so the ground parallax reaches the
+#   reconstruction threshold (robust triangulation); 0 = always use the previous
+#   frame. baseline_max_lookback: cap on how many frames the search walks back
+#   (must stay below the capture queue depth, 12).
+vo.adaptive_baseline: 1
+vo.baseline_max_lookback: 10
+
+# Minimum triangulated ground points for a reliable AGL metric scale.
+# Frames with fewer points have near-degenerate depth medians that over-scale
+# the baseline; they fall back to the GPS-displacement scale.
+vo.agl_min_tri_points: 50
+
+# Robust temporal scale filter: clamps non-physical per-frame speed spikes
+# (over-scaled AGL baselines) to the rolling-median band [median/factor,
+# median*factor]. Operates on speed (metric_baseline / dt).
+vo.scale_filter_enabled: 1
+vo.scale_median_window: 15
+vo.scale_reject_factor: 1.5
+
+# Matcher spatial candidate window (px). Must span the adaptive-baseline
+# parallax disparity; the legacy 10 px window starves ~half the frames of
+# matches once the baseline widens. 30 px covers the median ~10 px disparity
+# plus the larger edge/low-altitude flow.
+vo.match_search_radius: 30
+
+# Extrinsics parent:autopilot child:camera
+camera.extrinsics.roll: 0.0
+camera.extrinsics.pitch: 0.0
+camera.extrinsics.yaw: 90.0
+camera.extrinsics.x: 0.0
+camera.extrinsics.y: 0.0
+camera.extrinsics.z: 0.0
+
+# Enconder params
+encoder.Bitrate: 4000
+encoder.VbvMaxBitrate: 4000
+encoder.VbvBufferSize: 4000
+encoder.KeyintMax: 1
+encoder.FPS: 30
+encoder.Threads: 1  # NOT CHANGE
+encoder.CoreId: 0
+encoder.Preset: ultrafast
+encoder.Tune: zerolatency

@@ -1,0 +1,5 @@
+torch>=2.1
+torchvision>=0.16
+numpy
+pillow
+open-clip-torch>=2.24   # needed for --backbone clip_vit_b32 (Phase 1)

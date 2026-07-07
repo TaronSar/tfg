@@ -1,0 +1,28 @@
+{
+    "Version": "1.1",
+    "Title": "FPD-Link III Interface - Power-on Coax",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPD-Link III interface shall have a circuit to provide 5V power supply over the coaxial connection",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28443",
+        "traced_to": null
+    },
+    "Designator": [
+        "C2",
+        "C3",
+        "L1",
+        "R3",
+        "FB1",
+        "FB2",
+        "FB3"
+    ]
+}

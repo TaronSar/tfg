@@ -1,0 +1,103 @@
+[project]
+name = "ia-env"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dvc>=3.66.1",
+    "mlflow==3.10.0",
+    "pyyaml>=6.0.3",
+    "fire==0.7.1",
+    "fiftyone==1.16.0",
+    "loguru>=0.7.3",
+    "opencv-python-headless>=4.13.0.92",
+    "pip>=26.0.1",
+    "awscli>=1.44.55",
+    "python-dotenv>=1.2.2",
+    "torch>=2.6.0",
+    "torchvision>=0.21.0",
+    "umap-learn>=0.5.11",
+    "lancedb>=0.29.2",
+    "anywidget>=0.11.0",
+    "ipywidgets>=8.1.8",
+    "pycocotools>=2.0.11",
+    "pandas>=2.3.3",
+    "cleanlab[all]>=2.9.0",
+    "numpy<2.4.0"
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.1",
+    "ruff>=0.15.7",
+    "black>=26.3.1",
+    "mypy>=1.15.0",
+    "types-pyyaml>=6.0.0",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.1.0",
+    "ipykernel>=7.2.0",
+    "nbformat>=4.2.0",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu132"
+url = "https://download.pytorch.org/whl/cu132"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu132" }]
+torchvision = [{ index = "pytorch-cu132" }]
+
+[tool.uv]
+override-dependencies = ["opencv-python-headless>=4.13.0.92"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "I",   # import sorting
+    "B",   # bugbear
+    "UP",  # pyupgrade
+]
+
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+exclude = [
+    "build",
+    "dist",
+    '\\.venv',
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+
+addopts = [
+    "-ra",
+    "-q",
+    "--strict-markers",
+]
+
+testpaths = [
+    "tests"
+]
+
+pythonpath = [
+    "src"
+]

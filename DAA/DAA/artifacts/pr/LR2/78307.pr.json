@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Uplink DAA messages from CMU",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall retrieve, via the UAS datalink, the uplink messages defined in TABLE 34: UPLINK DAA messages, from the UAS CMU component. ",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - ARC-C risk ratio for cooperative intruders",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For ARC-B DAA, the DAA shall demonstrate a risk ratio of at least 0.33 towards cooperative manned intruders.  ",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

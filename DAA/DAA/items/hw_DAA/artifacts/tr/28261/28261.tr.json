@@ -1,0 +1,20 @@
+{
+    "Version": "1.0",
+    "Title": "ANLYSC-28247: MIPI - Length Matching",
+    "Hyperlinks": [
+        "https://github.com/embention/DAA/issues/1016"
+    ],
+    "Attachments": [
+        "./MIPI_length_common_lines.csv",
+        "./MIPI_length_to_FPGA.csv",
+        "./MIPI_length_to_Image_Sensor.csv",
+        "./Length_Matching_Results.pdf"
+    ],
+    "Target Computer Release": "https://github.com/embention/DAA/releases/tag/release%2Fhw_DAA%2FBASIC-101010",
+    "Passed": true,
+    "TE Serial Numbers": null,
+    "Problem Report": null,
+    "Linked Worked Items": {
+        "traced_to": "28247"
+    }
+}

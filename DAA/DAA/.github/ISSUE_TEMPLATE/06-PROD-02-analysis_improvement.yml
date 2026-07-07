@@ -1,0 +1,24 @@
+name: "🏭 [PROD] Analysis / Improvement (CI)"
+description: Continuous improvement (CI) or analysis issue not tied to an implementation.
+title: "[PD] [CI] Analysis - [Analysis subject]"
+labels: ["Analysis", "Comment", "production design"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🏷️ Title Instructions
+        Please edit the title of this issue before creating it:
+
+        Replace `[Analysis subject]` with the purpose of the issue.
+
+        Example: `[PD] [CI] Analysis - Lean Manufacturing Implementation`
+
+        📘 Related procedure: [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Analysis / Improvement description
+      description: Describe the analysis or improvement to be performed, the current problem to be solved and the expected outcome.
+    validations:
+      required: true

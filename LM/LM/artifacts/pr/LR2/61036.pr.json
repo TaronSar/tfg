@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - PCB",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be composed of 2 PCBs: Flight Control Board and Computer Vision Board.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Hardware"
+    ],
+    "Labels": [
+        "Physical and Installation",
+        "Environmental"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "Version": "1.0",
+    "Title": "TE-28541",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Description": "The Test Environment includes the following equipment: actual target (P0010452), a harness DAA CS 1.0 (P011389), TPS65941212EVM development kit, USB cable, Linux based PC, DAA - PMIC Programming Harness (P011297), a power supply source (MED0023), a DC power connector, banana cables, crocodile clips, an oscilloscope (MED0030) and oscilloscope probes.",    
+    "Computer": "Actual Target"
+}

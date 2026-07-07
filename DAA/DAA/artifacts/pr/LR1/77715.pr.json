@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Camera FOV",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA camera shall provide a Field of View (FOV) greater than 120°H and 30°V.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Performance",
+        "Sensors"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

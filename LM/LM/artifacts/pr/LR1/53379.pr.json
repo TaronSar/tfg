@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Warhead Activation",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall include means for warhead activation, operable in both manual and automatic modes.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "It needs to prevent that the warhead is activated unintentionally",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional",
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61023",
+            "61024"
+        ],
+        "is_verified_by": []
+    }
+}

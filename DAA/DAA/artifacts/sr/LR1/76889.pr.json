@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Detect function",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA system shall detect Near Mid-Air Collisions (NMAC) with manned traffic during Very Low Level (VLL) operations providing alerts and guidance.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

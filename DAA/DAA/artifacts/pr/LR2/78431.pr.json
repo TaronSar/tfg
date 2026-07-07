@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - ADS-B detection probability and range",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall detect a minimum of 95% of all ADS-B equipped traffic in a minimum horizontal range of 6km around the RPA from the ground and to minimum altitude of 2000ft AGL.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

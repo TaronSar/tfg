@@ -1,0 +1,21 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - CAN FD buses - external",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall have a minimum of 2x external CAN FD buses for data transmission to the autopilot.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "2x CAN BUS for redundancy (critical)",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Interface",
+        "Physical and Installation"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

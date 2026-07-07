@@ -1,0 +1,5 @@
+{
+        "waypoint_radius": 3.0,
+        "desired_area": [8, 25, 27, 65],
+        "max_prob": 0.40
+}

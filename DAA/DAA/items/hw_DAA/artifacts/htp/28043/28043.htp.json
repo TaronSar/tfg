@@ -1,0 +1,21 @@
+{
+    "Version": "1.0",
+    "Title": "HTC-28042: CAN Communication - Bus Impedance",
+    "Hyperlinks": null,
+    "Attachments": [
+        "./DAA_CAN_bus_impedance.png",
+        "./DAA_CAN_bus_impedance.drawio"
+    ],
+    "Steps": {
+        "1": "Check on schematic and board that CAN transceivers (CAN FD A & CAN FD B) have implemented a split termination.",     
+        "2": "Check the BOM and verify the value of each resistor.",
+        "3": "Switch on the multimeter.",
+        "4": "Configure the multimeter as ohmmeter. Setup the 4-wire mode on it and Auto-Range.",
+        "5": "Connect the multimeter leads to the specified pins.",
+        "6": "Check the resistance between these pins is 120 ohms.",
+        "Execution": null   
+    },
+    "Linked Worked Items": {
+        "traced_to": "28044" 
+    }
+}

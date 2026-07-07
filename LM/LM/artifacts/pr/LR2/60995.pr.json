@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "GNSS Denied Operability",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be able to operate in GNSS denied environment.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Hardware",
+        "Software"
+    ],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "FPD-Link III Interface - Serializer Power Supply",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPD-Link III serializer transceiver shall be powered by a 1.8V power rail",
+    "Verification Method": "Test",
+    "Derived": true,
+    "Rationale": "Voltage needed by the transceiver",
+    "Functional": true,
+    "Labels": [
+        "Power Supply",
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28452",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC30"
+    ]
+}

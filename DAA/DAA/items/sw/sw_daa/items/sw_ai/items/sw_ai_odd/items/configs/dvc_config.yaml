@@ -1,0 +1,93 @@
+paths:
+  aot_root:                      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset
+  background_classification_dir: data/01_create_dataset
+  audited_classification_dir:    data/02_audit_dataset
+  fiftyone_candidates_dir:       data/03_cleanlab_to_fiftyone
+  cvat_queue_dir:                data/03b_export_cvat_queue
+  cvat_annotations_dir:          data/03c_pull_cvat_annotations
+  curation_snapshot_dir:         data/03d_build_curation_snapshot
+  curated_classification_dir:    data/04_apply_curation
+  corrupted_full_dir:            data/05_create_corrupted_full
+  corrupted_crops_dir:           data/06_create_corrupted_crops
+  detection_degradation_dir:     data/07_detection_inference
+  models_dir:                    models/08_train
+  eval_dir:                      models/09_eval
+  fiftyone_full_dir:             data/10_build_fiftyone_full
+  fiftyone_crops_dir:            data/11_build_fiftyone_crops
+  detection_coco_dir:            ../../sw_ai_detection/items/data/07_balanced
+  detection_coco_train:          mini_train.json
+  detection_coco_eval:           mini_eval.json
+  detection_coco_test:           mini_test.json
+  # Persistent corrupted media on the NAS
+  corrupted_full_nas_dir:        /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/full
+  corrupted_crops_nas_dir:       /mnt/Pool_IA/IA_Dataset/datasets/airborne_corrupted_images/cropped
+  # Clean detection crops produced by sw_ai_detection (reused, not regenerated)
+  clean_crops_nas_dir:           /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/airborne_cropped_images
+
+dataset:
+  classes:
+    - Urban
+    - Non-urban
+    - Water
+  mix_category:              Mix
+  prompts:
+    Urban:
+      - "an aerial photo of a mostly dominated city view"
+      - "an aerial photo with a significant amount of buildings, streets and houses and little or no water present"
+      - "an aerial photo of a mostly dominated urban area with roads and rooftops without many natural features"
+      - "an aerial photo of a town, suburb or medium size village without a lot of importance to the vegetation presence"
+      - "an aerial photo of a residential or industrial neighbourhood"
+      - "an aerial photo of a built-up area dominated by man-made structures"
+    Non-urban:
+      - "an aerial photo of a forest sometimes with secondary presence of roads or very few buildings"
+      - "an aerial photo of trees, fields or mountains"
+      - "an aerial photo of natural terrain such as woodland, grassland or crops"
+      - "an aerial photo of farmland, meadows or agricultural fields"
+      - "an aerial photo of mountains, hills or rocky natural landscape"
+      - "an aerial photo of vegetation, jungle or open countryside"
+      - "an aerial photo of undeveloped natural land with no buildings"
+      - "an aerial photo of a desert, dunes or barren ground"
+    Water:
+      - "an aerial photo of the ocean with no land or almost no land visible"
+      - "an aerial photo of a lake, river or sea"
+      - "an aerial photo of a large body of water with no buildings or urban structures"
+      - "an aerial photo of waves or open water with no significant land"
+      - "an aerial photo of the sea surface or a reservoir"
+      - "an aerial photo dominated by water"
+    Mix:
+      - "an aerial photo of a coastline mixing water and land at even proportions"
+      - "an aerial photo showing the edge between an urban area and the countryside"
+      - "an aerial photo with a roughly equal mix of water, land and buildings"
+      - "an ambiguous aerial photo without land or water dominating the scene because it is dominated by the sky"
+
+corruption:
+  num_workers:     8
+  severity_filter:    "all:1"
+  subsample_fraction: 1
+  splits:
+    - train
+    - val
+    - test
+
+fiftyone:
+  database_uri:  mongodb://192.168.2.1:27017/fiftyone
+  dataset_name:  ood_cleanlab_audit
+  full_dataset_name:  ood_full_visual
+  crops_dataset_name: ood_crops_visual
+
+curation:
+  cvat_queue_file: cvat_queue.jsonl
+  cvat_task_file: cvat_task.json
+  cvat_annotations_file: cvat_annotations.jsonl
+  curation_snapshot_file: curation_snapshot.jsonl
+
+train:
+  num_workers:  8
+
+evaluate:
+  num_workers:  8
+
+detection_degradation:
+  checkpoint_path:        ../../sw_ai_detection/items/models/best_coco_bbox_mAP_epoch_38.pth
+  config_path:            ../../sw_ai_detection/items/configs/experiments/yolox_tiny_airborne.py
+  sw_ai_detection_root:   ../../sw_ai_detection/items

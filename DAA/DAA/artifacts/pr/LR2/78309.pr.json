@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Messages retrieval from de CMU",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall retrieve, via the UAS datalink and CMU, the message defined in paragraph 3.1.1.2 TABLE 34 from the DAA airborne system.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

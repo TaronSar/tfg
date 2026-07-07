@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Post-test functional integrity",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "Unless otherwise stated, the design of the DAA for VLL Operation shall be such that, during and after the application of the specified tests, no condition exists which would be detrimental to the subsequent performance of the equipment.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

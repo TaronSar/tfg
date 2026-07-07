@@ -1,0 +1,24 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - Communication standards",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall be compatible with main protocols in the industry including at least STANAG 4586, Cyphal, Mavlink and NMEA 2000 protocol.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Physical and Installation",
+        "Compatibility",
+        "Interface"
+    ],
+    "Potential Effect of Failure Condition": "Major",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

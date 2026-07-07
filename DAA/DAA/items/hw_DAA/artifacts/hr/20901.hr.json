@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "FPD-Link III Interface - Serializer Interface",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The FPD-Link III serializer transceiver shall have a one lane pair MIPI interface and an I2C interface",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Those interfaces are needed by the transceiver",
+    "Functional": true,
+    "Labels": [
+        "Communications"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28422",
+        "traced_to": null
+    },
+    "Designator": [
+        "IC30"
+    ]
+}

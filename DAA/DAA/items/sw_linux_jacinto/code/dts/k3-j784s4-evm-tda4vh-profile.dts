@@ -1,0 +1,17 @@
+#include "k3-j784s4-evm.dts" // Incluimos la configuración completa de la EVM
+
+/ {
+    model = "Texas Instruments J784S4 EVM (TDA4VH Profile)";
+};
+
+/*
+ * El TDA4VH es un SoC de alta gama. Mantiene los componentes principales
+ * del super-set J784S4, incluyendo:
+ * - Quad Core ARM A72
+ * - Dual C7x DSP/MMA
+ * - VPAC (Visión)
+ * - DMPAC (Profundidad/Movimiento)
+ * - GPU
+ *
+ * Por lo tanto, no es necesario deshabilitar ningún nodo principal para este perfil.
+ */

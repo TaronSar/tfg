@@ -1,0 +1,33 @@
+name: Jenkins WH sw_JOB_EMD_Check_Consistency Trigger
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - closed
+      - labeled
+      - unlabeled
+
+jobs:
+  check_label:
+    runs-on: ubuntu-latest
+    outputs:
+      has_doc_label: ${{ steps.check.outputs.has_doc_label }}
+    steps:
+      - name: Check for Doc label
+        id: check
+        run: |
+          if [[ "${{ contains(github.event.pull_request.labels.*.name, 'Doc') }}" == "true" ]]; then
+            echo "✅ PR has 'Doc' label - workflow will proceed"
+            echo "has_doc_label=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ PR does not have 'Doc' label - workflow will be skipped"
+            echo "has_doc_label=false" >> $GITHUB_OUTPUT
+          fi
+  
+  trigger_sw_JOB_EMD_Check_Consistency:
+    needs: check_label
+    if: needs.check_label.outputs.has_doc_label == 'true'
+    uses: embention/sw_CI_Libs/.github/workflows/sw_JOB_EMD_Check_Consistency_REROUTE.yml@develop
+    secrets: inherit

@@ -1,0 +1,108 @@
+[project]
+name = "sw-autoengadgement"
+version = "0.1.0"
+description = "Privacy-preserving few-shot UAV identification (ProtoNet) for the Embention KAI Autonomous Engagement pipeline."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    # Tracking / data / infra (Embention stack)
+    "dvc>=3.66.1",
+    "dvc-ssh>=4.1.1",
+    "mlflow==3.10.0",
+    "fiftyone==1.16.0",
+    "pyyaml>=6.0.3",
+    "fire==0.7.1",
+    "loguru>=0.7.3",
+    "python-dotenv>=1.2.2",
+    "awscli>=1.44.55",
+    "pip>=26.0.1",
+    # Deep learning
+    "torch>=2.6.0",
+    "torchvision>=0.21.0",
+    # YOLOX detector inference (used by crop_from_yolox.py / yolox_crops.py)
+    "onnxruntime>=1.20.1",
+    # Imaging / data
+    "opencv-python-headless>=4.13.0.92",
+    "pillow>=11.0.0",
+    "numpy<2.4.0",
+    "pandas>=2.3.3",
+    # Metrics / analysis
+    "scikit-learn>=1.5.0",
+    "matplotlib>=3.9.0",
+    "tqdm>=4.66.0",
+    # Few-shot specific tooling
+    "grad-cam>=1.5.0",
+    "rembg>=2.0.59",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.1",
+    "ruff>=0.15.7",
+    "black>=26.3.1",
+    "mypy>=1.15.0",
+    "types-pyyaml>=6.0.0",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.1.0",
+    "ipykernel>=7.2.0",
+    "nbformat>=4.2.0",
+]
+
+# RTX 5090 (Vision server) requires CUDA 12.8+. Match the edgeai/DAA stack.
+[[tool.uv.index]]
+name = "pytorch-cu132"
+url = "https://download.pytorch.org/whl/cu132"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu132" }]
+torchvision = [{ index = "pytorch-cu132" }]
+
+[tool.uv]
+override-dependencies = ["opencv-python-headless>=4.13.0.92"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "I",   # import sorting
+    "B",   # bugbear
+    "UP",  # pyupgrade
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+exclude = [
+    "build",
+    "dist",
+    '\\.venv',
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "-ra",
+    "-q",
+    "--strict-markers",
+]
+testpaths = [
+    "test",
+]
+pythonpath = [
+    ".",
+]

@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Configurable Lifetime",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall include a configurable lifetime parameter, locked from end-user modification, after which the system will not reboot.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Market"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61030"
+        ],
+        "is_verified_by": []
+    }
+}

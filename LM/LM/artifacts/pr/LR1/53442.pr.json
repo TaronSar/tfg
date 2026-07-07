@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Software Compatibility",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be compatible with Windows, Linux and iOS operating systems.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "This requirement is created as there is a possibility that another user interface, will be used for the LM.",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional",
+        "Compatibility"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61042"
+        ],
+        "is_verified_by": []
+    }
+}

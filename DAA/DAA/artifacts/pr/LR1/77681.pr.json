@@ -1,0 +1,20 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - GCS communications",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The DAA shall interface with the Ground Control System to exchange data.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Functional"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

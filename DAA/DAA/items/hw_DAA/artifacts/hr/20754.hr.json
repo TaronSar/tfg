@@ -1,0 +1,23 @@
+{
+    "Version": "1.1",
+    "Title": "Power Supply - Power Redundancy",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The device shall be able to be powered from two different power supplies to achieve power redundancy",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "Main connector has enough pins to implement a power supply redundancy",
+    "Functional": true,
+    "Labels": [
+        "Redundant Power Supply"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "27924",
+        "traced_to": null
+    },
+    "Designator": [
+        "CN1",
+        "D8",
+        "D9"
+    ]
+}

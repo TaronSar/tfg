@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Maintenance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall not require calibration or maintenance by the end user.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Maintainability"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61031"
+        ],
+        "is_verified_by": []
+    }
+}

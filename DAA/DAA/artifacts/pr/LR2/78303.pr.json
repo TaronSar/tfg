@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Navigation accuracy assumptions in performance verification",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "When verifying DAA performances, ownship navigation accuracies hypothesis defined in subparagraph 1.13.2 shall be taken into account.",
+    "Verification Method": "Analysis",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "System"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Minor",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,58 @@
+name: mlops_infra
+
+# -----------------------------------------------------------------------------
+# Shared MLOps services for the Vision department. These are normally already
+# running on the NAS server (see IT.980). This compose file is provided for
+# parity / disaster recovery so the stack can be reproduced on any machine.
+# All state is persisted on the NAS via ${LOCAL_NAS_PATH} (see ../.env).
+#
+# Usage:
+#   cd deployment && ln -s ../.env .env && docker compose up -d
+# -----------------------------------------------------------------------------
+
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.10.0
+    container_name: mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ${LOCAL_NAS_PATH}/mlflow:/mlflow
+    environment:
+      - MLFLOW_ENABLE_SYSTEM_METRICS_LOGGING=false
+    command: >
+      mlflow server
+        --host 0.0.0.0 --port 5000
+        --backend-store-uri sqlite:///mlflow/mlflow.db
+        --artifacts-destination /mlflow/artifacts
+        --disable-security-middleware
+    restart: unless-stopped
+
+  fiftyone:
+    container_name: fiftyone
+    image: voxel51/fiftyone:1.13.4
+    ports:
+      - "5151:5151"
+    volumes:
+      - ${LOCAL_NAS_PATH}/fiftyone:/root/.fiftyone
+      - ${LOCAL_NAS_PATH}:${LOCAL_NAS_PATH}
+    environment:
+      - FIFTYONE_DATABASE_URI=mongodb://mongodb_fiftyone:27017/fiftyone
+      - FIFTYONE_HOME=/root/.fiftyone
+      - FIFTYONE_DEFAULT_APP_PORT=5151
+      - FIFTYONE_DEFAULT_APP_ADDRESS=0.0.0.0
+      - FIFTYONE_SERVER_ADDRESS=0.0.0.0
+      - FIFTYONE_SERVER_PORT=5151
+    depends_on:
+      - mongodb_fiftyone
+    command: fiftyone app launch --port 5151 --address 0.0.0.0 --remote
+    restart: unless-stopped
+
+  mongodb_fiftyone:
+    image: mongo:7
+    container_name: mongodb_fiftyone
+    ports:
+      - 27017:27017
+    volumes:
+      - ${LOCAL_NAS_PATH}/mongodb:/data/db
+    restart: unless-stopped

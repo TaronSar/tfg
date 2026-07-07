@@ -1,0 +1,11 @@
+name: Jenkins WH sw_JOB_EMD_Post_Doc Trigger
+
+on:
+  push:
+    tags:
+      - 'release/MD**'
+
+jobs:
+  trigger_sw_JOB_EMD_Post_Doc:
+    uses: embention/sw_CI_Libs/.github/workflows/sw_JOB_EMD_Post_Doc_REROUTE.yml@develop
+    secrets: inherit

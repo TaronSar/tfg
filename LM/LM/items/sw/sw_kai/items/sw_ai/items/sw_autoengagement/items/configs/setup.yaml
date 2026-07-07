@@ -1,0 +1,15 @@
+# ------------------------------------------------------------------ #
+# Machine / environment-specific setup
+# ------------------------------------------------------------------ #
+# Paths and infrastructure config that vary between machines but are
+# NOT experiment hyperparameters (those live in dvc_config.yaml).
+# ------------------------------------------------------------------ #
+
+# ------------------------------------------------------------------ #
+# MLflow tracking server
+# ------------------------------------------------------------------ #
+# Shared with the rest of the Vision department (see IT.980). Override
+# MLFLOW_TRACKING_URI / MLFLOW_EXPERIMENT_NAME in .env for non-default hosts.
+mlflow:
+  tracking_uri:    http://192.168.2.1:5000
+  experiment_name: uav_few_shot_identification

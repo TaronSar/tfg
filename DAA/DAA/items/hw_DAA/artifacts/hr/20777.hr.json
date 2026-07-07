@@ -1,0 +1,22 @@
+{
+    "Version": "1.1",
+    "Title": "PCB Stack-up",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "The PCB Stack-up shall be 16 layers with 6 internal flex layers",
+    "Verification Method": "Review",
+    "Derived": true,
+    "Rationale": "This stack-up is needed to maintain controlled impedance and to keep the prevent the burning of the copper from the current passing through the flex.",
+    "Functional": true,
+    "Labels": [
+        "System Design",
+        "Manufacturability and Assembly"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28059",
+        "traced_to": null
+    },
+    "Designator": [
+        null
+    ]
+}

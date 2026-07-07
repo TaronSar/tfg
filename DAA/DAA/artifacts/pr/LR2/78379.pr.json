@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Time-minimising guidance outside operational limits",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "If no collision-avoidance manoeuvre is compatible with the operational ceiling and the horizontal contingency volume, the DAA shall prioritise trajectories that minimise the time spent outside these limits.",
+    "Verification Method": "Test",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Hazardous",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

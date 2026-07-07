@@ -1,0 +1,1114 @@
+schema: '2.0'
+stages:
+  00_airborne_to_coco@part1:
+    cmd: python -m src.dataset.airborne_tracking_dataset_to_coco
+      --annotations_file
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/part1/ImageSets/groundtruth.json
+      --output_json data/00_raw/part1_airborne_tracking_coco.json --classes
+      airborne helicopter bird drone flock ufo
+    deps:
+    - path: src/dataset/airborne_tracking_dataset_to_coco.py
+      hash: md5
+      md5: 9af18abe86ae0af0466c57954753e030
+      size: 7776
+    outs:
+    - path: data/00_raw/part1_airborne_tracking_coco.json
+      hash: md5
+      md5: 4376565f498650c0a92e54946e4d0e40
+      size: 706450183
+  00_airborne_to_coco@part2:
+    cmd: python -m src.dataset.airborne_tracking_dataset_to_coco
+      --annotations_file
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/part2/ImageSets/groundtruth.json
+      --output_json data/00_raw/part2_airborne_tracking_coco.json --classes
+      airborne helicopter bird drone flock ufo
+    deps:
+    - path: src/dataset/airborne_tracking_dataset_to_coco.py
+      hash: md5
+      md5: 9af18abe86ae0af0466c57954753e030
+      size: 7776
+    outs:
+    - path: data/00_raw/part2_airborne_tracking_coco.json
+      hash: md5
+      md5: e7aefca18d660afbd93a1640421a6481
+      size: 716266297
+  00_airborne_to_coco@part3:
+    cmd: python -m src.dataset.airborne_tracking_dataset_to_coco
+      --annotations_file
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/part3/ImageSets/groundtruth.json
+      --output_json data/00_raw/part3_airborne_tracking_coco.json --classes
+      airborne helicopter bird drone flock ufo
+    deps:
+    - path: src/dataset/airborne_tracking_dataset_to_coco.py
+      hash: md5
+      md5: 9af18abe86ae0af0466c57954753e030
+      size: 7776
+    outs:
+    - path: data/00_raw/part3_airborne_tracking_coco.json
+      hash: md5
+      md5: 3f5658432e8e71949235e95982014ea9
+      size: 678925950
+  00_merge_coco_annotations:
+    cmd: python -m src.dataset.merge_coco_annotations --inputs
+      data/00_raw/part1_airborne_tracking_coco.json
+      data/00_raw/part2_airborne_tracking_coco.json
+      data/00_raw/part3_airborne_tracking_coco.json --images_base_paths
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/part1/Images/
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/part2/Images/
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/part3/Images/
+      --output data/00_raw_merge/airborne_tracking_coco.json
+    deps:
+    - path: data/00_raw/part1_airborne_tracking_coco.json
+      hash: md5
+      md5: 4376565f498650c0a92e54946e4d0e40
+      size: 706450183
+    - path: data/00_raw/part2_airborne_tracking_coco.json
+      hash: md5
+      md5: e7aefca18d660afbd93a1640421a6481
+      size: 716266297
+    - path: data/00_raw/part3_airborne_tracking_coco.json
+      hash: md5
+      md5: 3f5658432e8e71949235e95982014ea9
+      size: 678925950
+    - path: src/dataset/merge_coco_annotations.py
+      hash: md5
+      md5: 9065322b38608ba05481e2671d757251
+      size: 8927
+    outs:
+    - path: data/00_raw_merge/airborne_tracking_coco.json
+      hash: md5
+      md5: 9ceb5624ebedd72ab803d1e841138a74
+      size: 2175194843
+  01_tmp_remove_images_not_in_storage:
+    cmd: python -m src.dataset.remove_images_not_in_storage --input-json
+      data/00_raw_merge/airborne_tracking_coco.json --images-root
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/
+      --output-json
+      data/01_raw_merge/airborne_tracking_coco_only_images_exist.json
+    deps:
+    - path: data/00_raw_merge/airborne_tracking_coco.json
+      hash: md5
+      md5: 9ceb5624ebedd72ab803d1e841138a74
+      size: 2175194843
+    - path: src/dataset/remove_images_not_in_storage.py
+      hash: md5
+      md5: c55a03ec34e9587b4fa8ecb6d205c8a1
+      size: 3357
+    outs:
+    - path: data/01_raw_merge/airborne_tracking_coco_only_images_exist.json
+      hash: md5
+      md5: a7f3b7d2b23b991be14229702e8ca244
+      size: 2175194596
+  02_downsample_videos:
+    cmd: python -m src.preprocessing.downsampling_videos --input-json
+      data/01_raw_merge/airborne_tracking_coco_only_images_exist.json
+      --output-json
+      data/02_downsampled_airborne/airborne_tracking_coco_downsampled.json
+      --keep-every 10
+    deps:
+    - path: data/01_raw_merge/airborne_tracking_coco_only_images_exist.json
+      hash: md5
+      md5: a7f3b7d2b23b991be14229702e8ca244
+      size: 2175194596
+    - path: src/preprocessing/downsampling_videos.py
+      hash: md5
+      md5: 7a25889e2a7855cc2a4840fd78d8557f
+      size: 6101
+    outs:
+    - path: data/02_downsampled_airborne/airborne_tracking_coco_downsampled.json
+      hash: md5
+      md5: 73a7b85fb7661fdb37ba27398750b1c8
+      size: 219158190
+  03_add_size_metadata:
+    cmd: python -m src.preprocessing.add_size_metadata --input-json
+      data/02_downsampled_airborne/airborne_tracking_coco_downsampled.json
+      --output-json data/03_size_metadata/airborne_tracking_coco.json
+      --small-threshold 200 --medium-threshold 2500
+    deps:
+    - path: data/02_downsampled_airborne/airborne_tracking_coco_downsampled.json
+      hash: md5
+      md5: 73a7b85fb7661fdb37ba27398750b1c8
+      size: 219158190
+    - path: src/preprocessing/add_size_metadata.py
+      hash: md5
+      md5: ee6241053ad378932fd2092a07062d8b
+      size: 2455
+    outs:
+    - path: data/03_size_metadata/airborne_tracking_coco.json
+      hash: md5
+      md5: e16f64f4ddcda2b7c25240a3c62e0238
+      size: 171582786
+  03_coco_to_fiftyone:
+    cmd: python -m src.fiftyone.load_data_to_fiftyone --load-mode coco
+      --annotations-path data/03_size_metadata/airborne_tracking_coco.json
+      --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/
+      --dataset-name airborne_tracking --version 10 --override --open-browser
+      --classes airborne helicopter bird drone flock ufo && mkdir -p
+      data/03_coco_to_fiftyone && date >
+      data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+    deps:
+    - path: data/03_size_metadata/airborne_tracking_coco.json
+      hash: md5
+      md5: e16f64f4ddcda2b7c25240a3c62e0238
+      size: 171582786
+    - path: src/fiftyone/load_data_to_fiftyone.py
+      hash: md5
+      md5: 0fa4bc4c7675f23baa24ceecf62dc151
+      size: 27392
+    outs:
+    - path: data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+      hash: md5
+      md5: cffe02092c1987390777f03e4fe8b3e9
+      size: 29
+  03_tag_drone_flock_airborne@drone:
+    cmd: python -m src.fiftyone.label_fiftyone --dataset-name airborne_tracking
+      --version 10 --mode sample --filters
+      "ground_truth.detections.label:==:drone" --tag
+      range_bt_3000_or_drone_flock_airborne && mkdir -p data/03_tag_exclude &&
+      date > data/03_tag_exclude/03_tag_drone.stamp
+    deps:
+    - path: data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+      hash: md5
+      md5: cffe02092c1987390777f03e4fe8b3e9
+      size: 29
+    - path: src/fiftyone/label_fiftyone.py
+      hash: md5
+      md5: f4069b9a91e351c8ea11c9b0d1007710
+      size: 10123
+    outs:
+    - path: data/03_tag_exclude/03_tag_drone.stamp
+      hash: md5
+      md5: 98c8eee9f7e221fa9c0a2b797106074d
+      size: 29
+  03_tag_drone_flock_airborne@airborne:
+    cmd: python -m src.fiftyone.label_fiftyone --dataset-name airborne_tracking
+      --version 10 --mode sample --filters
+      "ground_truth.detections.label:==:airborne" --tag
+      range_bt_3000_or_drone_flock_airborne && mkdir -p data/03_tag_exclude &&
+      date > data/03_tag_exclude/03_tag_airborne.stamp
+    deps:
+    - path: data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+      hash: md5
+      md5: cffe02092c1987390777f03e4fe8b3e9
+      size: 29
+    - path: src/fiftyone/label_fiftyone.py
+      hash: md5
+      md5: f4069b9a91e351c8ea11c9b0d1007710
+      size: 10123
+    outs:
+    - path: data/03_tag_exclude/03_tag_airborne.stamp
+      hash: md5
+      md5: f24c75337162a713feb95800ce4454ac
+      size: 29
+  03_tag_drone_flock_airborne@flock:
+    cmd: python -m src.fiftyone.label_fiftyone --dataset-name airborne_tracking
+      --version 10 --mode sample --filters
+      "ground_truth.detections.label:==:flock" --tag
+      range_bt_3000_or_drone_flock_airborne && mkdir -p data/03_tag_exclude &&
+      date > data/03_tag_exclude/03_tag_flock.stamp
+    deps:
+    - path: data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+      hash: md5
+      md5: cffe02092c1987390777f03e4fe8b3e9
+      size: 29
+    - path: src/fiftyone/label_fiftyone.py
+      hash: md5
+      md5: f4069b9a91e351c8ea11c9b0d1007710
+      size: 10123
+    outs:
+    - path: data/03_tag_exclude/03_tag_flock.stamp
+      hash: md5
+      md5: c3e970131e816c84e43bbe36f89229aa
+      size: 29
+  03_tag_range_bt_3000:
+    cmd: python -m src.fiftyone.label_fiftyone --dataset-name airborne_tracking
+      --version 10 --mode sample --filters
+      "ground_truth.detections.range_m:>:3000" --tag
+      range_bt_3000_or_drone_flock_airborne && mkdir -p data/03_tag_exclude &&
+      date > data/03_tag_exclude/03_tag_range_bt_3000.stamp
+    deps:
+    - path: data/03_coco_to_fiftyone/03_coco_to_fiftyone.stamp
+      hash: md5
+      md5: cffe02092c1987390777f03e4fe8b3e9
+      size: 29
+    - path: src/fiftyone/label_fiftyone.py
+      hash: md5
+      md5: f4069b9a91e351c8ea11c9b0d1007710
+      size: 10123
+    outs:
+    - path: data/03_tag_exclude/03_tag_range_bt_3000.stamp
+      hash: md5
+      md5: f0f7c3d73c30cfa5c23849308e52b912
+      size: 29
+  04_add_version_11:
+    cmd: python -m src.fiftyone.label_fiftyone --dataset-name airborne_tracking
+      --version 10 --mode add-version --tag 11 --exclude-tags
+      range_bt_3000_or_drone_flock_airborne && mkdir -p data/04_add_version_11
+      && date > data/04_add_version_11/04_add_version_11.stamp
+    deps:
+    - path: data/03_tag_exclude/
+      hash: md5
+      md5: eb0f39663a7fc3821e155e6a957a909d.dir
+      size: 207
+      nfiles: 5
+    - path: src/fiftyone/label_fiftyone.py
+      hash: md5
+      md5: f4069b9a91e351c8ea11c9b0d1007710
+      size: 10123
+    outs:
+    - path: data/04_add_version_11/04_add_version_11.stamp
+      hash: md5
+      md5: 9a4ac600d49f553b3407f66b278133f6
+      size: 29
+  04_export_version_11:
+    cmd: python -m src.fiftyone.export_fiftyone_to_coco --dataset-name
+      airborne_tracking --version 11 --output-path
+      data/04_export_version_11/airborne_tracking_coco.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/ --classes
+      airborne helicopter bird drone flock ufo
+    deps:
+    - path: data/04_add_version_11/04_add_version_11.stamp
+      hash: md5
+      md5: 9a4ac600d49f553b3407f66b278133f6
+      size: 29
+    - path: src/fiftyone/export_fiftyone_to_coco.py
+      hash: md5
+      md5: 0aa8d30467cfa7081644103a8f43a6c4
+      size: 11702
+    outs:
+    - path: data/04_export_version_11/airborne_tracking_coco.json
+      hash: md5
+      md5: 861eea074458c4fc5ee5ac387e075f28
+      size: 178553323
+  05_crop_images:
+    cmd: python -m src.preprocessing.crop_images --input-json
+      data/04_export_version_11/airborne_tracking_coco.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset/
+      --output-json data/05_cropped_airborne/airborne_tracking_coco.json
+      --output-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --crop-width 960 --crop-height 960 --overlap 0.25 --bg-ratio 0.15
+      --min-visibility 1 --bg-source annotated
+    deps:
+    - path: data/04_export_version_11/airborne_tracking_coco.json
+      hash: md5
+      md5: 861eea074458c4fc5ee5ac387e075f28
+      size: 178553323
+    - path: src/preprocessing/crop_images.py
+      hash: md5
+      md5: b7dde07a7c54c22b9e51883ce41ff5ac
+      size: 23253
+    outs:
+    - path: data/05_cropped_airborne/airborne_tracking_coco.json
+      hash: md5
+      md5: 213f87f448c197eb7bf5c478d38e9f84
+      size: 289967591
+  06_split_train:
+    cmd: python -m src.preprocessing.dataset_split_random_by_flight --input-json
+      data/05_cropped_airborne/airborne_tracking_coco.json --split-a-json
+      data/06_split/train.json --split-b-json data/06_split/eval_test.json
+      --split-b-ratio 0.3 --seed 42
+    deps:
+    - path: data/05_cropped_airborne/airborne_tracking_coco.json
+      hash: md5
+      md5: 213f87f448c197eb7bf5c478d38e9f84
+      size: 289967591
+    - path: src/preprocessing/dataset_split_random_by_flight.py
+      hash: md5
+      md5: cf40b9006b659c9029918f3a118c270c
+      size: 8103
+    outs:
+    - path: data/06_split/eval_test.json
+      hash: md5
+      md5: de23145060eb1da4a031b174ce350269
+      size: 86253955
+    - path: data/06_split/train.json
+      hash: md5
+      md5: 59eb375d4a0fc44830bf1f7122f3a014
+      size: 203714306
+  06_split_eval_test:
+    cmd: python -m src.preprocessing.dataset_split_random_by_flight --input-json
+      data/06_split/eval_test.json --split-a-json data/06_split/eval.json
+      --split-b-json data/06_split/test.json --split-b-ratio 0.5 --seed 42
+    deps:
+    - path: data/06_split/eval_test.json
+      hash: md5
+      md5: de23145060eb1da4a031b174ce350269
+      size: 86253955
+    - path: src/preprocessing/dataset_split_random_by_flight.py
+      hash: md5
+      md5: cf40b9006b659c9029918f3a118c270c
+      size: 8103
+    outs:
+    - path: data/06_split/eval.json
+      hash: md5
+      md5: d4c52dd55b6577f982df91b0b73f63a4
+      size: 44158982
+    - path: data/06_split/test.json
+      hash: md5
+      md5: cf11d9872761fe813911b40024019ec6
+      size: 42095643
+  06_train_crop_to_fiftyone:
+    cmd: python -m src.fiftyone.load_data_to_fiftyone --load-mode coco
+      --annotations-path data/06_split/train.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --dataset-name airborne_tracking_cropped --version 10 --override --label
+      split=train --classes airborne helicopter bird drone flock ufo && mkdir -p
+      data/06_coco_to_fiftyone && date >
+      data/06_coco_to_fiftyone/full_crop_train.stamp
+    deps:
+    - path: data/06_split/train.json
+      hash: md5
+      md5: 59eb375d4a0fc44830bf1f7122f3a014
+      size: 203714306
+    - path: src/fiftyone/load_data_to_fiftyone.py
+      hash: md5
+      md5: 0fa4bc4c7675f23baa24ceecf62dc151
+      size: 27392
+    outs:
+    - path: data/06_coco_to_fiftyone/full_crop_train.stamp
+      hash: md5
+      md5: 40492902e2c73617e1f5fd6194802ead
+      size: 29
+  06_eval_test_crop_to_fiftyone@eval:
+    cmd: python -m src.fiftyone.load_data_to_fiftyone --load-mode coco
+      --annotations-path data/06_split/eval.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --dataset-name airborne_tracking_cropped --version 10 --append --label
+      split=eval --classes airborne helicopter bird drone flock ufo && mkdir -p
+      data/06_coco_to_fiftyone && date >
+      data/06_coco_to_fiftyone/full_crop_eval.stamp
+    deps:
+    - path: data/06_coco_to_fiftyone/full_crop_train.stamp
+      hash: md5
+      md5: 40492902e2c73617e1f5fd6194802ead
+      size: 29
+    - path: data/06_split/eval.json
+      hash: md5
+      md5: d4c52dd55b6577f982df91b0b73f63a4
+      size: 44158982
+    - path: src/fiftyone/load_data_to_fiftyone.py
+      hash: md5
+      md5: 0fa4bc4c7675f23baa24ceecf62dc151
+      size: 27392
+    outs:
+    - path: data/06_coco_to_fiftyone/full_crop_eval.stamp
+      hash: md5
+      md5: 4f66c016b353381eb54a0b2e9e69527c
+      size: 29
+  06_eval_test_crop_to_fiftyone@test:
+    cmd: python -m src.fiftyone.load_data_to_fiftyone --load-mode coco
+      --annotations-path data/06_split/test.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --dataset-name airborne_tracking_cropped --version 10 --append --label
+      split=test --classes airborne helicopter bird drone flock ufo && mkdir -p
+      data/06_coco_to_fiftyone && date >
+      data/06_coco_to_fiftyone/full_crop_test.stamp
+    deps:
+    - path: data/06_coco_to_fiftyone/full_crop_train.stamp
+      hash: md5
+      md5: 40492902e2c73617e1f5fd6194802ead
+      size: 29
+    - path: data/06_split/test.json
+      hash: md5
+      md5: cf11d9872761fe813911b40024019ec6
+      size: 42095643
+    - path: src/fiftyone/load_data_to_fiftyone.py
+      hash: md5
+      md5: 0fa4bc4c7675f23baa24ceecf62dc151
+      size: 27392
+    outs:
+    - path: data/06_coco_to_fiftyone/full_crop_test.stamp
+      hash: md5
+      md5: 59110056fccb40f9baa0d339db8b0f37
+      size: 29
+  07_balance_mini@train:
+    cmd: "python -m src.preprocessing.sample_coco_dataset --input-json data/06_split/train.json
+      --output-json data/07_balanced/mini_train.json --targets '{\"airplane\": 10000,
+      \"helicopter\": 10000, \"bird\": 10000}' --empty-images 3000 --seed 42"
+    deps:
+    - path: data/06_split/train.json
+      hash: md5
+      md5: 59eb375d4a0fc44830bf1f7122f3a014
+      size: 203714306
+    - path: src/preprocessing/sample_coco_dataset.py
+      hash: md5
+      md5: 346655504d0eb0b1cf8838ced492a76b
+      size: 11127
+    outs:
+    - path: data/07_balanced/mini_train.json
+      hash: md5
+      md5: b8cb724f610973bd2e5ad668dab6c074
+      size: 18918658
+  07_balance_mini@eval:
+    cmd: "python -m src.preprocessing.sample_coco_dataset --input-json data/06_split/eval.json
+      --output-json data/07_balanced/mini_eval.json --targets '{\"airplane\": 2000,
+      \"helicopter\": 2000, \"bird\": 2000}' --empty-images 600 --seed 42"
+    deps:
+    - path: data/06_split/eval.json
+      hash: md5
+      md5: d4c52dd55b6577f982df91b0b73f63a4
+      size: 44158982
+    - path: src/preprocessing/sample_coco_dataset.py
+      hash: md5
+      md5: 346655504d0eb0b1cf8838ced492a76b
+      size: 11127
+    outs:
+    - path: data/07_balanced/mini_eval.json
+      hash: md5
+      md5: b16fc73bb86ebbd80247d38f70f86a24
+      size: 3837607
+  07_balance_mini@test:
+    cmd: "python -m src.preprocessing.sample_coco_dataset --input-json data/06_split/test.json
+      --output-json data/07_balanced/mini_test.json --targets '{\"airplane\": 2000,
+      \"helicopter\": 2000, \"bird\": 2000}' --empty-images 600 --seed 42"
+    deps:
+    - path: data/06_split/test.json
+      hash: md5
+      md5: cf11d9872761fe813911b40024019ec6
+      size: 42095643
+    - path: src/preprocessing/sample_coco_dataset.py
+      hash: md5
+      md5: 346655504d0eb0b1cf8838ced492a76b
+      size: 11127
+    outs:
+    - path: data/07_balanced/mini_test.json
+      hash: md5
+      md5: f6f9077539a6d0c185d3832cfe8964fa
+      size: 3789748
+  08_prediction_test_yolox_tiny_airborne:
+    cmd: python -m src.tools.run_docker test --config
+      configs/experiments/yolox_tiny_airborne.py --checkpoint
+      experiments/yolox_tiny_airborne_20260520_160406/best_coco_bbox_mAP_epoch_38.pth
+    deps:
+    - path: configs/experiments/yolox_tiny_airborne.py
+      hash: md5
+      md5: c5cd5a906b4a73986399904914ddcebd
+      size: 10046
+    - path: src/tools/run_docker.py
+      hash: md5
+      md5: 02969632ad51056b6bef8b399f2ac270
+      size: 5286
+    outs:
+    - path:
+        experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+      hash: md5
+      md5: b525491eb74e2fe2ef3574fd8c9611bf
+      size: 28904557
+  08_prediction_test_yolox_tiny_airborne_to_fiftyone:
+    cmd: python -m src.fiftyone.load_predictions_to_fiftyone --dataset-name
+      airborne_tracking_cropped --version 10 --predictions-path
+      experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+      --annotations-path data/06_split/test.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --label-field
+      predictions_test_yolox_tiny_airborne_20260520_160406_best_epoch --evaluate
+      --report-dir
+      data/08_prediction_yolox_tiny_airborne_20260520_160406_to_fiftyone
+      --include-labels split=test
+    deps:
+    - path: data/06_split/test.json
+      hash: md5
+      md5: cf11d9872761fe813911b40024019ec6
+      size: 42095643
+    - path:
+        experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+      hash: md5
+      md5: b525491eb74e2fe2ef3574fd8c9611bf
+      size: 28904557
+    - path: src/fiftyone/load_predictions_to_fiftyone.py
+      hash: md5
+      md5: 31ae55dbb378f0a93b1200fecea2c823
+      size: 12021
+    outs:
+    - path: data/08_prediction_yolox_tiny_airborne_20260520_160406_to_fiftyone/
+      hash: md5
+      md5: 8bca255fc608545ed65e2beba10f8aae.dir
+      size: 27267614
+      nfiles: 3
+  08_evaluation_test_by_range_size_yolox_tiny_airborne:
+    cmd: python -m src.tools.evaluate_offline --gt data/06_split/test.json
+      --predictions
+      experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+      --range-bins 0 500 1000 1500 2000 2600 2800 3000 3100 3200 3300 3400 3500
+      --area-bins 0 100 200 300 500 2500 1000000000000000 --output
+      data/08_prediction_yolox_tiny_airborne_20260520_160406_by_range_size/results.json
+      --per-class --report-dir
+      data/08_prediction_yolox_tiny_airborne_20260520_160406_by_range_size/
+    deps:
+    - path: data/06_split/test.json
+      hash: md5
+      md5: cf11d9872761fe813911b40024019ec6
+      size: 42095643
+    - path:
+        experiments/yolox_tiny_airborne_20260520_160406/predictions.bbox.json
+      hash: md5
+      md5: b525491eb74e2fe2ef3574fd8c9611bf
+      size: 28904557
+    - path: src/tools/evaluate_offline.py
+      hash: md5
+      md5: bf60caf13808cc036d9b2209074a0988
+      size: 29032
+    outs:
+    - path:
+        data/08_prediction_yolox_tiny_airborne_20260520_160406_by_range_size/
+      hash: md5
+      md5: c03fdbf122f0ac3a29a6611e23dbc3d8.dir
+      size: 991827
+      nfiles: 11
+  09_change_class_based_on_bbox_area@train:
+    cmd: python -m src.preprocessing.change_class_annotation_based --input-json
+      data/06_split/train.json --output-json
+      data/09_changed_class_based_on_area/train.json --filters "area:<:200"
+      --new-category-name undetermined --filter-in-imgs-without-attr
+    deps:
+    - path: data/06_split/train.json
+      hash: md5
+      md5: 59eb375d4a0fc44830bf1f7122f3a014
+      size: 203714306
+    - path: src/preprocessing/change_class_annotation_based.py
+      hash: md5
+      md5: c6ccf102df40cdb90f25ba37e3d9b27a
+      size: 3995
+    outs:
+    - path: data/09_changed_class_based_on_area/train.json
+      hash: md5
+      md5: fe7e0c963d466bd5361a50a1691eaa2b
+      size: 203714341
+  09_change_class_based_on_bbox_area@eval:
+    cmd: python -m src.preprocessing.change_class_annotation_based --input-json
+      data/06_split/eval.json --output-json
+      data/09_changed_class_based_on_area/eval.json --filters "area:<:200"
+      --new-category-name undetermined --filter-in-imgs-without-attr
+    deps:
+    - path: data/06_split/eval.json
+      hash: md5
+      md5: d4c52dd55b6577f982df91b0b73f63a4
+      size: 44158982
+    - path: src/preprocessing/change_class_annotation_based.py
+      hash: md5
+      md5: c6ccf102df40cdb90f25ba37e3d9b27a
+      size: 3995
+    outs:
+    - path: data/09_changed_class_based_on_area/eval.json
+      hash: md5
+      md5: f55c8cb91e7221edfef4bcd68abc1dde
+      size: 44159017
+  09_change_class_based_on_bbox_area@test:
+    cmd: python -m src.preprocessing.change_class_annotation_based --input-json
+      data/06_split/test.json --output-json
+      data/09_changed_class_based_on_area/test.json --filters "area:<:200"
+      --new-category-name undetermined --filter-in-imgs-without-attr
+    deps:
+    - path: data/06_split/test.json
+      hash: md5
+      md5: cf11d9872761fe813911b40024019ec6
+      size: 42095643
+    - path: src/preprocessing/change_class_annotation_based.py
+      hash: md5
+      md5: c6ccf102df40cdb90f25ba37e3d9b27a
+      size: 3995
+    outs:
+    - path: data/09_changed_class_based_on_area/test.json
+      hash: md5
+      md5: e39d3e3fe52c37b7d68524833d5dbe5a
+      size: 42095678
+  09_reclassify_labels:
+    cmd: python -m src.fiftyone.clone_and_reclassify_labels --dataset-name
+      airborne_tracking_cropped --source-version 10 --source-label-field
+      ground_truth --target-label-field ground_truth_v11 --target-version 11
+      --filters "ground_truth.detections.bbox_area:<:200" --new-category-name
+      undetermined --override && mkdir -p data/09_reclassify_labels && date >
+      data/09_reclassify_labels/09_reclassify_labels.stamp
+    deps:
+    - path: data/06_coco_to_fiftyone/
+      hash: md5
+      md5: 86ea15f50edc0a09c2b01e2b2573ef8c.dir
+      size: 154
+      nfiles: 4
+    - path: data/06_split/
+      hash: md5
+      md5: 946bfb2924d95d2f47bcf12173824ac8.dir
+      size: 376222936
+      nfiles: 5
+    - path: src/fiftyone/clone_and_reclassify_labels.py
+      hash: md5
+      md5: 2bb0783db251855703f5d86b6abeb6cd
+      size: 6915
+    outs:
+    - path: data/09_reclassify_labels/09_reclassify_labels.stamp
+      hash: md5
+      md5: 35365d428b1f88552ce228e6ffabdd36
+      size: 32
+  09_export_version_11@train:
+    cmd: python -m src.fiftyone.export_fiftyone_to_coco --dataset-name
+      airborne_tracking_cropped --version 11 --label-field ground_truth_v11
+      --output-path data/09_changed_class_based_on_area/train.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --classes airplane helicopter bird undetermined --include-labels
+      split=train
+    deps:
+    - path: data/09_reclassify_labels/09_reclassify_labels.stamp
+      hash: md5
+      md5: 35365d428b1f88552ce228e6ffabdd36
+      size: 32
+    - path: src/fiftyone/export_fiftyone_to_coco.py
+      hash: md5
+      md5: 7557dda87f3fd0560379a75e91498c13
+      size: 11970
+    outs:
+    - path: data/09_changed_class_based_on_area/train.json
+      hash: md5
+      md5: 045f68ae1ed8ad4510d57eacc0f0de29
+      size: 347991572
+  09_export_version_11@eval:
+    cmd: python -m src.fiftyone.export_fiftyone_to_coco --dataset-name
+      airborne_tracking_cropped --version 11 --label-field ground_truth_v11
+      --output-path data/09_changed_class_based_on_area/eval.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --classes airplane helicopter bird undetermined --include-labels
+      split=eval
+    deps:
+    - path: data/09_reclassify_labels/09_reclassify_labels.stamp
+      hash: md5
+      md5: 35365d428b1f88552ce228e6ffabdd36
+      size: 32
+    - path: src/fiftyone/export_fiftyone_to_coco.py
+      hash: md5
+      md5: 7557dda87f3fd0560379a75e91498c13
+      size: 11970
+    outs:
+    - path: data/09_changed_class_based_on_area/eval.json
+      hash: md5
+      md5: 0ea2b9ce0b26da17dfe868363da0d7cb
+      size: 74970690
+  09_export_version_11@test:
+    cmd: python -m src.fiftyone.export_fiftyone_to_coco --dataset-name
+      airborne_tracking_cropped --version 11 --label-field ground_truth_v11
+      --output-path data/09_changed_class_based_on_area/test.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --classes airplane helicopter bird undetermined --include-labels
+      split=test
+    deps:
+    - path: data/09_reclassify_labels/09_reclassify_labels.stamp
+      hash: md5
+      md5: 35365d428b1f88552ce228e6ffabdd36
+      size: 32
+    - path: src/fiftyone/export_fiftyone_to_coco.py
+      hash: md5
+      md5: 7557dda87f3fd0560379a75e91498c13
+      size: 11970
+    outs:
+    - path: data/09_changed_class_based_on_area/test.json
+      hash: md5
+      md5: f52fd2406d15be39ebbbe47f0c7ced2d
+      size: 85060589
+  10_prediction_yolox_tiny_airborne_v2@train:
+    cmd: python -m src.tools.run_docker test --quantization 0 --config
+      configs/experiments/yolox_tiny_airborne_v2.py --checkpoint
+      experiments/yolox_tiny_airborne_v2_20260528_122830/best_coco_bbox_mAP_epoch_26.pth
+      --output-prefix predictions_train --ann-file
+      data/09_changed_class_based_on_area/train.json
+    deps:
+    - path: configs/experiments/yolox_tiny_airborne_v2.py
+      hash: md5
+      md5: bfa101415d07ddd0a589c11460fcd059
+      size: 11738
+    - path: data/09_changed_class_based_on_area/train.json
+      hash: md5
+      md5: 045f68ae1ed8ad4510d57eacc0f0de29
+      size: 347991572
+    - path: src/tools/run_docker.py
+      hash: md5
+      md5: b3faae783a83ba4cfd1c56f5946b2cc3
+      size: 6125
+    outs:
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_train.bbox.json
+      hash: md5
+      md5: 54b2792985a6e592df0813c63c3ac440
+      size: 791017764
+  10_prediction_yolox_tiny_airborne_v2@eval:
+    cmd: python -m src.tools.run_docker test --quantization 0 --config
+      configs/experiments/yolox_tiny_airborne_v2.py --checkpoint
+      experiments/yolox_tiny_airborne_v2_20260528_122830/best_coco_bbox_mAP_epoch_26.pth
+      --output-prefix predictions_eval --ann-file
+      data/09_changed_class_based_on_area/eval.json
+    deps:
+    - path: configs/experiments/yolox_tiny_airborne_v2.py
+      hash: md5
+      md5: bfa101415d07ddd0a589c11460fcd059
+      size: 11738
+    - path: data/09_changed_class_based_on_area/eval.json
+      hash: md5
+      md5: 0ea2b9ce0b26da17dfe868363da0d7cb
+      size: 74970690
+    - path: src/tools/run_docker.py
+      hash: md5
+      md5: b3faae783a83ba4cfd1c56f5946b2cc3
+      size: 6125
+    outs:
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_eval.bbox.json
+      hash: md5
+      md5: 579e1f2902d2d187025a197908282a16
+      size: 149780161
+  10_prediction_yolox_tiny_airborne_v2@test:
+    cmd: python -m src.tools.run_docker test --quantization 0 --config
+      configs/experiments/yolox_tiny_airborne_v2.py --checkpoint
+      experiments/yolox_tiny_airborne_v2_20260528_122830/best_coco_bbox_mAP_epoch_26.pth
+      --output-prefix predictions_test --ann-file
+      data/09_changed_class_based_on_area/test.json
+    deps:
+    - path: configs/experiments/yolox_tiny_airborne_v2.py
+      hash: md5
+      md5: bfa101415d07ddd0a589c11460fcd059
+      size: 11738
+    - path: data/09_changed_class_based_on_area/test.json
+      hash: md5
+      md5: f52fd2406d15be39ebbbe47f0c7ced2d
+      size: 85060589
+    - path: src/tools/run_docker.py
+      hash: md5
+      md5: b3faae783a83ba4cfd1c56f5946b2cc3
+      size: 6125
+    outs:
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_test.bbox.json
+      hash: md5
+      md5: 9421cab71e7661d9f282e57e007a5b0e
+      size: 140605539
+  11_evaluation_test_by_range_size_yolox_tiny_airborne@test:
+    cmd: python -m src.tools.evaluate_offline --gt
+      data/09_changed_class_based_on_area/test.json --predictions
+      experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_test.bbox.json
+      --range-bins 0 500 1000 1500 2000 2600 2800 3000 3100 3200 3300 3400 3500
+      --area-bins 0 100 200 300 500 2500 1000000000000000 --output
+      data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/test/results.json
+      --per-class --report-dir
+      data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/test
+    deps:
+    - path: data/09_changed_class_based_on_area/test.json
+      hash: md5
+      md5: f52fd2406d15be39ebbbe47f0c7ced2d
+      size: 85060589
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_test.bbox.json
+      hash: md5
+      md5: 9421cab71e7661d9f282e57e007a5b0e
+      size: 140605539
+    - path: src/tools/evaluate_offline.py
+      hash: md5
+      md5: bf60caf13808cc036d9b2209074a0988
+      size: 29032
+    outs:
+    - path:
+        data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/test/
+      hash: md5
+      md5: 5ce916e93a6f4e722c60b2874660cc8d.dir
+      size: 981911
+      nfiles: 11
+  11_evaluation_test_by_range_size_yolox_tiny_airborne@train:
+    cmd: python -m src.tools.evaluate_offline --gt
+      data/09_changed_class_based_on_area/train.json --predictions
+      experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_train.bbox.json
+      --range-bins 0 500 1000 1500 2000 2600 2800 3000 3100 3200 3300 3400 3500
+      --area-bins 0 100 200 300 500 2500 1000000000000000 --output
+      data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/train/results.json
+      --per-class --report-dir
+      data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/train
+    deps:
+    - path: data/09_changed_class_based_on_area/train.json
+      hash: md5
+      md5: 045f68ae1ed8ad4510d57eacc0f0de29
+      size: 347991572
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_train.bbox.json
+      hash: md5
+      md5: 54b2792985a6e592df0813c63c3ac440
+      size: 791017764
+    - path: src/tools/evaluate_offline.py
+      hash: md5
+      md5: bf60caf13808cc036d9b2209074a0988
+      size: 29032
+    outs:
+    - path:
+        data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/train/
+      hash: md5
+      md5: 49b15d40831f410239bbe6e7282d9f8d.dir
+      size: 986601
+      nfiles: 11
+  11_evaluation_test_by_range_size_yolox_tiny_airborne@eval:
+    cmd: python -m src.tools.evaluate_offline --gt
+      data/09_changed_class_based_on_area/eval.json --predictions
+      experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_eval.bbox.json
+      --range-bins 0 500 1000 1500 2000 2600 2800 3000 3100 3200 3300 3400 3500
+      --area-bins 0 100 200 300 500 2500 1000000000000000 --output
+      data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/eval/results.json
+      --per-class --report-dir
+      data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/eval
+    deps:
+    - path: data/09_changed_class_based_on_area/eval.json
+      hash: md5
+      md5: 0ea2b9ce0b26da17dfe868363da0d7cb
+      size: 74970690
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_eval.bbox.json
+      hash: md5
+      md5: 579e1f2902d2d187025a197908282a16
+      size: 149780161
+    - path: src/tools/evaluate_offline.py
+      hash: md5
+      md5: bf60caf13808cc036d9b2209074a0988
+      size: 29032
+    outs:
+    - path:
+        data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_by_range_size/eval/
+      hash: md5
+      md5: 83e50d5253d28e023d23136d25b4c4bd.dir
+      size: 980577
+      nfiles: 11
+  11_prediction_test_yolox_tiny_airborne_to_fiftyone@test:
+    cmd: python -m src.fiftyone.load_predictions_to_fiftyone --dataset-name
+      airborne_tracking_cropped --version 11 --predictions-path
+      experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_test.bbox.json
+      --annotations-path data/09_changed_class_based_on_area/test.json
+      --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --label-field
+      predictions_test_yolox_tiny_airborne_v2_20260528_122830_best_epoch
+      --gt-field ground_truth_v11 --report-dir
+      data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_to_fiftyone/test
+      --evaluate --include-labels split=test
+    deps:
+    - path: data/09_changed_class_based_on_area/test.json
+      hash: md5
+      md5: f52fd2406d15be39ebbbe47f0c7ced2d
+      size: 85060589
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_test.bbox.json
+      hash: md5
+      md5: 9421cab71e7661d9f282e57e007a5b0e
+      size: 140605539
+    - path: src/fiftyone/load_predictions_to_fiftyone.py
+      hash: md5
+      md5: 31ae55dbb378f0a93b1200fecea2c823
+      size: 12021
+    outs:
+    - path:
+        data/11_prediction_yolox_tiny_airborne_v2_20260528_122830_to_fiftyone/test/
+      hash: md5
+      md5: 5d551e6ccf4d3d198ae51efbb0af5b98.dir
+      size: 86847686
+      nfiles: 3
+  12_cleanlab_find_issues@test:
+    cmd: python -m src.cleanlab.find_label_issues --annotations-path
+      data/09_changed_class_based_on_area/test.json --predictions-path
+      experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_test.bbox.json
+      --output-path data/12_cleanlab/test_report.json
+    deps:
+    - path: data/09_changed_class_based_on_area/test.json
+      hash: md5
+      md5: f52fd2406d15be39ebbbe47f0c7ced2d
+      size: 85060589
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_test.bbox.json
+      hash: md5
+      md5: 9421cab71e7661d9f282e57e007a5b0e
+      size: 140605539
+    - path: src/cleanlab/find_label_issues.py
+      hash: md5
+      md5: a04958d82904e010940f2ead58daa367
+      size: 8438
+    outs:
+    - path: data/12_cleanlab/test_report.json
+      hash: md5
+      md5: 3902f9db401209b2ca0a9c0af281ca11
+      size: 20302874
+  12_cleanlab_to_fiftyone@test:
+    cmd: python -m src.fiftyone.load_cleanlab_scores_to_fiftyone --dataset-name
+      airborne_tracking_cropped --version 11 --report-path
+      data/12_cleanlab/test_report.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --score-field yolox_tiny_airborne_v2_20260528_122830 --include-labels
+      split=test && mkdir -p data/12_cleanlab && date >
+      data/12_cleanlab/to_fiftyone_test.stamp
+    deps:
+    - path: data/06_coco_to_fiftyone/
+      hash: md5
+      md5: 86ea15f50edc0a09c2b01e2b2573ef8c.dir
+      size: 154
+      nfiles: 4
+    - path: data/12_cleanlab/test_report.json
+      hash: md5
+      md5: 3902f9db401209b2ca0a9c0af281ca11
+      size: 20302874
+    - path: src/fiftyone/load_cleanlab_scores_to_fiftyone.py
+      hash: md5
+      md5: d7c2fe6f4559705e82527aa3fe75557a
+      size: 5500
+    outs:
+    - path: data/12_cleanlab/to_fiftyone_test.stamp
+      hash: md5
+      md5: 557e78d96cf38311c3f2dc7e349b87ce
+      size: 32
+  12_cleanlab_find_issues@train:
+    cmd: python -m src.cleanlab.find_label_issues --annotations-path
+      data/09_changed_class_based_on_area/train.json --predictions-path
+      experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_train.bbox.json
+      --output-path data/12_cleanlab/train_report.json
+    deps:
+    - path: data/09_changed_class_based_on_area/train.json
+      hash: md5
+      md5: 045f68ae1ed8ad4510d57eacc0f0de29
+      size: 347991572
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_train.bbox.json
+      hash: md5
+      md5: 54b2792985a6e592df0813c63c3ac440
+      size: 791017764
+    - path: src/cleanlab/find_label_issues.py
+      hash: md5
+      md5: a04958d82904e010940f2ead58daa367
+      size: 8438
+    outs:
+    - path: data/12_cleanlab/train_report.json
+      hash: md5
+      md5: fbae567212f0b5501d7e2ffebbc61ae8
+      size: 98987225
+  12_cleanlab_find_issues@eval:
+    cmd: python -m src.cleanlab.find_label_issues --annotations-path
+      data/09_changed_class_based_on_area/eval.json --predictions-path
+      experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_eval.bbox.json
+      --output-path data/12_cleanlab/eval_report.json
+    deps:
+    - path: data/09_changed_class_based_on_area/eval.json
+      hash: md5
+      md5: 0ea2b9ce0b26da17dfe868363da0d7cb
+      size: 74970690
+    - path:
+        experiments/yolox_tiny_airborne_v2_20260528_122830/predictions_eval.bbox.json
+      hash: md5
+      md5: 579e1f2902d2d187025a197908282a16
+      size: 149780161
+    - path: src/cleanlab/find_label_issues.py
+      hash: md5
+      md5: a04958d82904e010940f2ead58daa367
+      size: 8438
+    outs:
+    - path: data/12_cleanlab/eval_report.json
+      hash: md5
+      md5: 49949aa2e1a966f1272421dbeb28a5de
+      size: 21261195
+  12_cleanlab_to_fiftyone@train:
+    cmd: python -m src.fiftyone.load_cleanlab_scores_to_fiftyone --dataset-name
+      airborne_tracking_cropped --version 11 --report-path
+      data/12_cleanlab/train_report.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --score-field yolox_tiny_airborne_v2_20260528_122830 --include-labels
+      split=train && mkdir -p data/12_cleanlab && date >
+      data/12_cleanlab/to_fiftyone_train.stamp
+    deps:
+    - path: data/06_coco_to_fiftyone/
+      hash: md5
+      md5: 86ea15f50edc0a09c2b01e2b2573ef8c.dir
+      size: 154
+      nfiles: 4
+    - path: data/12_cleanlab/train_report.json
+      hash: md5
+      md5: fbae567212f0b5501d7e2ffebbc61ae8
+      size: 98987225
+    - path: src/fiftyone/load_cleanlab_scores_to_fiftyone.py
+      hash: md5
+      md5: d7c2fe6f4559705e82527aa3fe75557a
+      size: 5500
+    outs:
+    - path: data/12_cleanlab/to_fiftyone_train.stamp
+      hash: md5
+      md5: f57329ed76831f031fe721db22c77168
+      size: 32
+  12_cleanlab_to_fiftyone@eval:
+    cmd: python -m src.fiftyone.load_cleanlab_scores_to_fiftyone --dataset-name
+      airborne_tracking_cropped --version 11 --report-path
+      data/12_cleanlab/eval_report.json --images-dir
+      /mnt/Pool_IA/IA_Dataset/datasets/airborne-obj-detection-dataset//airborne_cropped_images/
+      --score-field yolox_tiny_airborne_v2_20260528_122830 --include-labels
+      split=eval && mkdir -p data/12_cleanlab && date >
+      data/12_cleanlab/to_fiftyone_eval.stamp
+    deps:
+    - path: data/06_coco_to_fiftyone/
+      hash: md5
+      md5: 86ea15f50edc0a09c2b01e2b2573ef8c.dir
+      size: 154
+      nfiles: 4
+    - path: data/12_cleanlab/eval_report.json
+      hash: md5
+      md5: 49949aa2e1a966f1272421dbeb28a5de
+      size: 21261195
+    - path: src/fiftyone/load_cleanlab_scores_to_fiftyone.py
+      hash: md5
+      md5: d7c2fe6f4559705e82527aa3fe75557a
+      size: 5500
+    outs:
+    - path: data/12_cleanlab/to_fiftyone_eval.stamp
+      hash: md5
+      md5: 6e294136a0b3e0a3a699210e8ffcf844
+      size: 32
+  09_generate_mini_dataset@train:
+    cmd: "python -m src.preprocessing.sample_coco_dataset --input-json data/09_changed_class_based_on_area/train.json
+      --output-json data/09_changed_class_based_on_area/mini_train.json --targets
+      '{\"airplane\": 10000, \"helicopter\": 10000, \"bird\": 10000}' --empty-images
+      3000 --seed 42"
+    deps:
+    - path: data/09_changed_class_based_on_area/train.json
+      hash: md5
+      md5: 045f68ae1ed8ad4510d57eacc0f0de29
+      size: 347991572
+    - path: src/preprocessing/sample_coco_dataset.py
+      hash: md5
+      md5: 346655504d0eb0b1cf8838ced492a76b
+      size: 11127
+    outs:
+    - path: data/09_changed_class_based_on_area/mini_train.json
+      hash: md5
+      md5: fec1f993890b4f4c098840e786365453
+      size: 27529721
+  09_generate_mini_dataset@eval:
+    cmd: "python -m src.preprocessing.sample_coco_dataset --input-json data/09_changed_class_based_on_area/eval.json
+      --output-json data/09_changed_class_based_on_area/mini_eval.json --targets '{\"\
+      airplane\": 2000, \"helicopter\": 2000, \"bird\": 2000}' --empty-images 600
+      --seed 42"
+    deps:
+    - path: data/09_changed_class_based_on_area/eval.json
+      hash: md5
+      md5: 0ea2b9ce0b26da17dfe868363da0d7cb
+      size: 74970690
+    - path: src/preprocessing/sample_coco_dataset.py
+      hash: md5
+      md5: 346655504d0eb0b1cf8838ced492a76b
+      size: 11127
+    outs:
+    - path: data/09_changed_class_based_on_area/mini_eval.json
+      hash: md5
+      md5: 993bbd54ae56828ca7cfd4b3d1be2774
+      size: 5102557
+  09_generate_mini_dataset@test:
+    cmd: "python -m src.preprocessing.sample_coco_dataset --input-json data/09_changed_class_based_on_area/test.json
+      --output-json data/09_changed_class_based_on_area/mini_test.json --targets '{\"\
+      airplane\": 2000, \"helicopter\": 2000, \"bird\": 2000}' --empty-images 600
+      --seed 42"
+    deps:
+    - path: data/09_changed_class_based_on_area/test.json
+      hash: md5
+      md5: f52fd2406d15be39ebbbe47f0c7ced2d
+      size: 85060589
+    - path: src/preprocessing/sample_coco_dataset.py
+      hash: md5
+      md5: 346655504d0eb0b1cf8838ced492a76b
+      size: 11127
+    outs:
+    - path: data/09_changed_class_based_on_area/mini_test.json
+      hash: md5
+      md5: 99c7f6fd2acd5524ae1c8b6b2f18d904
+      size: 6753733

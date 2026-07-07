@@ -1,0 +1,122 @@
+From 5af6ea62f98386a9b275a4281fa650bcc6b4fa72 Mon Sep 17 00:00:00 2001
+From: Ashok Reddy Soma <ashok.reddy.soma@amd.com>
+Date: Sun, 9 Jul 2023 07:09:58 -0600
+Subject: [PATCH 3/4] zynqmp: config: Add proper dependencies for USB
+
+When CONFIG_CMD_USB and CONFIG_USB are disabled, still some compilation
+errors are seen as below.
+
+In file included from include/configs/xilinx_zynqmp.h:173,
+                 from include/config.h:3,
+                 from include/common.h:16,
+                 from env/common.c:10:
+include/config_distro_bootcmd.h:302:9: error: expected '}' before 'BOOT_TARGET_DEVICES_references_USB_without_CONFIG_CMD_USB'
+  302 |         BOOT_TARGET_DEVICES_references_USB_without_CONFIG_CMD_USB
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/config_distro_bootcmd.h:302:9: note: in definition of macro
+'BOOTENV_DEV_NAME_USB'
+  302 |         BOOT_TARGET_DEVICES_references_USB_without_CONFIG_CMD_USB
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/configs/xilinx_zynqmp.h:77:41: note: in expansion of macro
+'BOOTENV_DEV_NAME'
+   77 | # define BOOT_TARGET_DEVICES_USB(func)  func(USB, usb, 0)
+   func(USB, usb, 1)
+      |                                         ^~~~
+include/configs/xilinx_zynqmp.h:168:9: note: in expansion of macro
+'BOOT_TARGET_DEVICES_USB'
+  168 |         BOOT_TARGET_DEVICES_USB(func) \
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+include/config_distro_bootcmd.h:454:25: note: in expansion of macro
+'BOOT_TARGET_DEVICES'
+  454 |         "boot_targets=" BOOT_TARGET_DEVICES(BOOTENV_DEV_NAME) "\0"
+      |                         ^~~~~~~~~~~~~~~~~~~
+include/config_distro_bootcmd.h:474:9: note: in expansion of macro
+'BOOTENV_BOOT_TARGETS'
+  474 |         BOOTENV_BOOT_TARGETS \
+      |         ^~~~~~~~~~~~~~~~~~~~
+include/configs/xilinx_zynqmp.h:179:9: note: in expansion of macro
+'BOOTENV'
+  179 |         BOOTENV
+      |         ^~~~~~~
+include/env_default.h:120:9: note: in expansion of macro
+'CFG_EXTRA_ENV_SETTINGS'
+  120 |         CFG_EXTRA_ENV_SETTINGS
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+In file included from env/common.c:32:
+include/env_default.h:27:36: note: to match this '{'
+   27 | const char default_environment[] = {
+      |                                    ^
+scripts/Makefile.build:256: recipe for target 'env/common.o' failed
+make[1]: *** [env/common.o] Error 1
+Makefile:1853: recipe for target 'env' failed
+make: *** [env] Error 2
+make: *** Waiting for unfinished jobs....
+
+Add CONFIG_USB_STORAGE as dependency for USB related macro's such as
+BOOT_TARGET_DEVICES_USB() and DFU_DEFAULT_POLL_TIMEOUT and
+CONFIG_THOR_RESET_OFF.
+
+Remove CONFIG_ZYNQMP_USB from Kconfig and also from defconfig since it
+is not used anywhere else.
+
+Signed-off-by: Ashok Reddy Soma <ashok.reddy.soma@amd.com>
+Link: https://lore.kernel.org/r/20230709130958.7666-3-ashok.reddy.soma@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+---
+
+ arch/arm/mach-zynqmp/Kconfig         | 3 ---
+ configs/xilinx_zynqmp_virt_defconfig | 1 -
+ include/configs/xilinx_zynqmp.h      | 4 ++--
+ 3 files changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/mach-zynqmp/Kconfig b/arch/arm/mach-zynqmp/Kconfig
+index fd6f07715a..26b80b7882 100644
+--- a/arch/arm/mach-zynqmp/Kconfig
++++ b/arch/arm/mach-zynqmp/Kconfig
+@@ -84,9 +84,6 @@ config ZYNQMP_SPL_PM_CFG_OBJ_FILE
+ 	  Leave this option empty if your PMU firmware has a hard-coded
+ 	  configuration object or you are loading it by any other means.
+ 
+-config ZYNQMP_USB
+-	bool "Configure ZynqMP USB"
+-
+ config ZYNQMP_NO_DDR
+ 	bool "Disable DDR MMU mapping"
+ 	help
+diff --git a/configs/xilinx_zynqmp_virt_defconfig b/configs/xilinx_zynqmp_virt_defconfig
+index ac5df79661..13fdb0ad73 100644
+--- a/configs/xilinx_zynqmp_virt_defconfig
++++ b/configs/xilinx_zynqmp_virt_defconfig
+@@ -14,7 +14,6 @@ CONFIG_ENV_OFFSET_REDUND=0x1E80000
+ CONFIG_SPL_SPI_FLASH_SUPPORT=y
+ CONFIG_SPL_SPI=y
+ CONFIG_CMD_FRU=y
+-CONFIG_ZYNQMP_USB=y
+ CONFIG_SYS_LOAD_ADDR=0x8000000
+ CONFIG_AHCI=y
+ CONFIG_SYS_MEMTEST_START=0x00000000
+diff --git a/include/configs/xilinx_zynqmp.h b/include/configs/xilinx_zynqmp.h
+index 88b9ff4b87..2f5ac0f6ec 100644
+--- a/include/configs/xilinx_zynqmp.h
++++ b/include/configs/xilinx_zynqmp.h
+@@ -29,7 +29,7 @@
+ 
+ /* Miscellaneous configurable options */
+ 
+-#if defined(CONFIG_ZYNQMP_USB)
++#if defined(CONFIG_USB_STORAGE)
+ #define DFU_DEFAULT_POLL_TIMEOUT	300
+ #define CONFIG_THOR_RESET_OFF
+ 
+@@ -77,7 +77,7 @@
+ # define BOOT_TARGET_DEVICES_SCSI(func)
+ #endif
+ 
+-#if defined(CONFIG_ZYNQMP_USB)
++#if defined(CONFIG_USB_STORAGE)
+ # define BOOT_TARGET_DEVICES_USB(func)	func(USB, usb, 0) func(USB, usb, 1)
+ #else
+ # define BOOT_TARGET_DEVICES_USB(func)
+-- 
+2.17.1
+

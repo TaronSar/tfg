@@ -1,0 +1,20 @@
+# Veronte Kai — Fragmento de bootargs para rootfs en /dev/sda1
+#
+# El rootfs de Veronte Kai reside en una tarjeta microSD conectada
+# vía adaptador USB 2.0. Linux la enumera como /dev/sda1.
+#
+# rootwait es obligatorio: USB 2.0 es lento en la enumeración y sin él
+# el kernel intenta montar el rootfs antes de que el dispositivo esté listo.
+# Añadir rootdelay=5 si aún así falla en algunos arranques.
+#
+# Este fragmento es referencia documental. El cambio efectivo se aplica
+# mediante el parche 0003 sobre rootfs/boot/extlinux/extlinux.conf
+# y mediante CMDLINE_ADD en veronte_kai.conf.
+
+CMDLINE_ADD="root=/dev/sda1 rootwait"
+
+# Línea APPEND resultante en extlinux.conf:
+#   APPEND ${cbootargs} root=/dev/sda1 rootwait
+
+# Opcional — añadir si la enumeración USB tarda más de lo esperado:
+#   CMDLINE_ADD="root=/dev/sda1 rootwait rootdelay=5"

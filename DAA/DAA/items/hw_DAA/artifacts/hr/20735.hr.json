@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Title": "Main Connector",
+    "Hyperlinks": null,
+    "Attachments": null,
+    "Text": "It shall be implement a connector from the LEMO HE series as the main connector. It shall have at least 40 pins and be IP68 rating",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": true,
+    "Labels": [
+        "Circuitry"
+    ],
+    "Linked Worked Items": {
+        "is_verified_by": "28057",
+        "traced_to": null
+    },
+    "Designator": [
+        "CN1"
+    ]
+}

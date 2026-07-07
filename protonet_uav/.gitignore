@@ -1,0 +1,40 @@
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local environment and editor state
+.env
+.env.*
+.vscode/
+
+# Training outputs and generated artifacts
+checkpoints*/
+logs/
+graphs/
+csvs/*
+# Exception: Phase 0/1 measurement baselines must be committed for traceability
+!csvs/phase0_*.csv
+!csvs/phase0_*.json
+!csvs/phase1_*.csv
+!csvs/phase1_*.json
+
+# Datasets and extracted media
+data/
+real4/
+uav_models/
+Ukraine_*/
+
+# Large binary artifacts produced locally
+*.pth
+*.pt
+*.onnx
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.pdf
+
+# OS files
+Thumbs.db
+.DS_Store

@@ -1,0 +1,32 @@
+{
+    "Version": "1.1",
+    "Title": "HTC-28374: DDR4 - Termination resistors",
+    "Hyperlinks": null, 
+    "Attachments": null,
+    "Purpose": "Check if the address and control signals of the DDR4 memories are terminated with a 39 Ohm resistor, connected to the 0.6V power rail.",
+    "Inputs":{
+        "PDIFs": null,
+        "Variables": null,
+        "1": [
+            "R145", "R147", "R148", "R149", "R150",
+            "R154", "R155", "R305", "R306", "R307",
+            "R308", "R309", "R310", "R311", "R312",
+            "R313", "R314", "R315", "R316", "R317",
+            "R318", "R319", "R320", "R321", "R157"
+        ],
+        "Other": null
+    },
+    "Outputs":{                  
+        "Variables": null,  
+        "1":{
+            "Expected": "The value of each resistor should be 39 Ohms.", 
+            "pass criteria":{
+                "error": " +/-1%",
+                "duration": "undefined"
+            }
+        }                                
+    },  
+    "Linked Worked Items": {
+        "traced_to": "28375" 
+    }         
+}

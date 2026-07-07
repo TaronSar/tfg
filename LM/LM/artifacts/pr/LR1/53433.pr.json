@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Warhead Fail-Safe Circuit",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall have interfaces to connect a redundant fail-safe circuit to activate the warhead.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Operational",
+        "Safety"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61025"
+        ],
+        "is_verified_by": []
+    }
+}

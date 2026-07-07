@@ -1,0 +1,44 @@
+repos:
+
+  # General repository checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+
+  # Ruff (lint + format)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.10
+    hooks:
+      - id: ruff
+        args: [--fix]
+        language: system
+      - id: ruff-format
+        language: system
+
+  # Type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        language: system
+
+  # DVC checks
+  - repo: https://github.com/iterative/dvc
+    rev: 3.66.1
+    hooks:
+      - id: dvc-pre-commit
+      - id: dvc-pre-push
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

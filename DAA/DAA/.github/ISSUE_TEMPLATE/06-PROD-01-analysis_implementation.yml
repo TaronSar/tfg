@@ -1,0 +1,29 @@
+name: "🏭 [PROD] Analysis (Linked to Implementation)"
+description: Analysis issue linked to a specific design item and version.
+title: "[PD] [Design item] [SW version] [Process version] Analysis - [Analysis subject]"
+labels: ["Analysis", "Comment", "production design"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🏷️ Title Instructions
+        Please edit the title of this issue before creating it:
+
+        `[PD] [Design item(s)] [SW version] [Process version] Analysis - [Analysis subject]`
+
+        * **[Design item(s)]:** One or more items (e.g., `[1xVeronte]`, `[1xVeronte] [RMID]`).
+        * **[SW version]:** Major/Minor/Revision version (e.g., `[4.12.0]`).
+        * **[Process version]:** Major/Minor version (e.g., `[1.0]`).
+        * **[Analysis subject]:** The purpose (e.g., `CNC Implementation`).
+
+        Example: `[PD] [1xVeronte] [RMID] [4.12.0] [1.0] Analysis - CNC Implementation`
+
+        📘 Related procedure: [P.062 - Create Issue](https://documentation.embention.net/062/en/latest/)
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Analysis description
+      description: Describe the analysis to be carried out, the objectives, the implementation context and the expected deliverables.
+    validations:
+      required: true

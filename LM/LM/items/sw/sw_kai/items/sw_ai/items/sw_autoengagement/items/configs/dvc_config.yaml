@@ -1,0 +1,79 @@
+# =============================================================================
+# DVC pipeline configuration -- single source of truth for pipeline parameters.
+# Interpolated into dvc.yaml stages and loaded by src.uavid.common.config_loader.
+#
+# Convention (matches sw_ai_odd):
+#   * Image datasets are CURATED SOURCE DATA on the NAS under `datasets_root`.
+#     They are NOT `dvc add`-ed; the training stage lists the active dataset as
+#     an external dep, so its hash is recorded in dvc.lock when `dvc repro` runs.
+#   * `data/` holds only small derived artifacts (annotations, manifests, eval
+#     reports) -- these are the DVC-tracked pipeline `outs`.
+# =============================================================================
+
+paths:
+  # --- Source image datasets (NAS, shared department storage; NOT dvc add-ed) ---
+  datasets_root:   /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification
+  # Raw Blender renders produced by stage 00_render (NAS; NOT dvc add-ed).
+  renders_dataset: uav_dataset_rendered
+  # Dataset consumed by training. Manually curated; edits trigger a re-train via
+  # the external dep hash. Full path composed in dvc.yaml as
+  # ${datasets_root}/${active_dataset}.
+  active_dataset:  uav_dataset_yolox_crops
+  uav_models_root: /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_models
+  backgrounds_root: /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/backgrounds
+  yolox_model:     /mnt/Pool_IA/IA_Dataset/models/yolox_tiny_airborne_v2_qat/yolox_tiny_airborne_v2_qat.onnx
+  # --- Derived artifacts in the repo (DVC-tracked pipeline outputs) ---
+  annotations_dir: data/annotations
+  manifests_dir:   data/manifests
+  eval_dir:        data/eval
+  models_dir:      models/00_train
+  # Small-crop exclusion list: train/val crops below filter.min_px are recorded
+  # here (NOT deleted) so the loader skips them while the dataset stays immutable.
+  exclude_json:    data/annotations/excluded_crops.json
+
+# Synthetic rendering (stage 00_render -> scripts/batch_render.py / render_uav.py).
+render:
+  blender:                   blender
+  train_ratio:               0.75
+  samples:                   8
+  width:                     640
+  height:                    640
+  azimuths:                  8
+  elevations:                "-65 -45 -25 -10"
+  colorize:                  operational
+  operational_distance_mult: 32
+  # Distance jitter (min max) the reference 60-120px render relied on; the script
+  # default is None (no jitter), so this must be passed explicitly.
+  operational_distance_jitter: "1.10 1.35"
+
+# Small-crop filtering (stage 02_filter_crops -> scripts/filter_small_crops.py).
+# Crops whose shorter side is below min_px are added to the exclusion JSON.
+filter:
+  min_px: 30
+  splits: "train,val"
+
+operational:
+  # Pixel envelope from KAI sensor geometry: 1920x1080, HFOV 30-45 deg, 50-100 m.
+  min_px:           46
+  max_px:           143
+  model_input_size: 224
+
+split:
+  train_ratio: 0.70
+  val_ratio:   0.15
+  test_ratio:  0.15
+  seed:        42
+
+train:
+  k_shot_range:  "1,3,5,10,15"
+  support_split: enrollment
+  embed_dim:     128
+
+eval:
+  k_shots: "1,3,5,10,15"
+  split:   val
+  agg:     mean
+
+fiftyone:
+  database_uri: mongodb://192.168.2.1:27017/fiftyone
+  dataset_name: uav_few_shot_identification

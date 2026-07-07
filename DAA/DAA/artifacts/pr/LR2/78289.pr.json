@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR2 - ED-330 - Software development assurance per ED-12C (Class 3)",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "For Class 3 (ARC B,C and SAIL V, VI) DAA, Software design shall follow the guidelines specified in document EUROCAE ED-12C \"Software Considerations in Airborne Systems and Equipment Certification\". The software criticality level is to be validated by a competent authority.",
+    "Verification Method": "Review",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [
+        "Software"
+    ],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "Catastrophic",
+    "Linked Worked Items": {
+        "is_refined_by": [],
+        "is_verified_by": []
+    }
+}

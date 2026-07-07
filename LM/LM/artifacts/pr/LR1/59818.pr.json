@@ -1,0 +1,22 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - ARP4761A (ED135) compliance",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall be compliant with ARP4761A (ED135).",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Certification"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "62488"
+        ],
+        "is_verified_by": []
+    }
+}

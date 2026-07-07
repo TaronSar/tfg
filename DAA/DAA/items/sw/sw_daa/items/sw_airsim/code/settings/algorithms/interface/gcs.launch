@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="rviz_config_path" default="/root/interface/config.rviz"/>
+  <arg name="map_path" default=""/>
+
+  <!-- UAVs -->
+  <param name="number_of_uavs" value="3" type="int"/>
+  <param name="global_namespace" value="/uav_" type="string"/>
+
+  <!-- Individual UAVs services -->
+  <param name="takeoff_srv"       value="/colibri_state_machine/take_off"       type="string"/>
+  <param name="land_srv"          value="/colibri_state_machine/land_no_station"          type="string"/>
+  <param name="start_mission_srv" value="/colibri_state_machine/start_go_to_wp" type="string"/>
+  <param name="stop_mission_srv"  value="/colibri_state_machine/stop_go_to_wp"  type="string"/>
+  
+  <!-- Individual UAV topics-->
+  <param name="base_action_waypoint_topic" value="/colibri_state_machine/current_waypoint" type="string"/>
+  <param name="base_action_waypoint_list_topic" value="/colibri_state_machine/mission_array" type="string"/>
+
+  <!-- Mission manager services -->
+  <param name="start_mission_manager_srv" value="/colibri_mission_manager/start_mission" type="string"/>
+  <param name="load_mission_manager_srv"  value="/colibri_mission_manager/send_routes"  type="string"/>
+
+  <!-- Nodes -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-s '' -d $(arg rviz_config_path)" output="screen" required="false"/>
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server" 
+    output="screen" args="$(arg map_path)"> 
+    <param name="frame_id" value ="global"/>
+  </node>
+</launch>

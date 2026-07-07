@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Title": "LR1 - Weight",
+    "Hyperlinks": [],
+    "Attachments": [],
+    "Text": "The LM shall minimize weight without compromising functionality, with a maximum weight of 250g.",
+    "Verification Method": "",
+    "Derived": false,
+    "Rationale": "N/A",
+    "Functional": false,
+    "Allocation": [],
+    "Labels": [
+        "Physical and Installation",
+        "Manufacturing"
+    ],
+    "Potential Effect of Failure Condition": "",
+    "Linked Worked Items": {
+        "is_refined_by": [
+            "61061"
+        ],
+        "is_verified_by": []
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "Version": "1.0",
+    "Title": "ANLYSC-28247: MIPI - Length Matching",
+    "Hyperlinks": null,
+    "Attachments": [
+        "..\\..\\variants\\BASIC\\design\\hw_DAA.sch",
+        "..\\..\\variants\\BASIC\\design\\hw_DAA.brd"
+    ],
+    "Steps": {
+        "1": "Open the schematic and the board of the hw_DAA.",
+        "2": "Run command: 'run length IMX_DMCK_P IMX_DMCK_N IMX_DMO_P IMX_DMO_N'.",
+        "3": "Run command: 'run length MIPI_S_CLK_P MIPI_S_CLK_N MIPI_S_D0_P MIPI_S_D0_N'.",
+        "4": "Run command: 'run length MIPI_CM_CLK_P MIPI_CM_CLK_N MIPI_CM_D0_P MIPI_CM_D0_N'.",
+        "5": "Sum all the lengths of the signals of the MIPI interface.",
+        "6": "Check that the maximum length difference between the routed signals of the MIPI interface is within the expected values."
+    },
+    "Evaluation of Test Results": null
+}
