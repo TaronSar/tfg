@@ -24,7 +24,7 @@ if str(ROOT) not in sys.path:
 from src.uavid.common.transforms import build_transform  # noqa: E402
 from src.uavid.dataset import IdentityIndex  # noqa: E402
 from src.uavid.eval import embed_paths, roc_auc, tpr_at_fpr  # noqa: E402
-from src.uavid.model import ProtoNetEncoder, attention_prototype  # noqa: E402
+from src.uavid.model import ProtoNetEncoder, attention_prototype, build_encoder, BACKBONE_NORM  # noqa: E402
 
 
 def nice_font(size: int):
@@ -39,7 +39,9 @@ def nice_font(size: int):
 def load_model(checkpoint: str | None, device: str):
     embed_dim, image_size = 128, 224
     metric, normalize = "euclidean", True
-    model = ProtoNetEncoder(embed_dim=embed_dim, pretrained=True, l2_normalize=normalize)
+    backbone = "mobilenetv3"
+    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=True,
+                          l2_normalize=normalize)
     label = "zero_shot_imagenet"
     if checkpoint:
         ckpt = torch.load(checkpoint, map_location="cpu", weights_only=True)
@@ -47,14 +49,16 @@ def load_model(checkpoint: str | None, device: str):
         image_size = ckpt.get("image_size", 224)
         metric = ckpt.get("metric", "euclidean")
         normalize = ckpt.get("l2_normalize", True)
-        model = ProtoNetEncoder(embed_dim=embed_dim, pretrained=False, l2_normalize=normalize)
+        backbone = ckpt.get("backbone", "mobilenetv3")
+        model = build_encoder(backbone, embed_dim=embed_dim, pretrained=False,
+                              l2_normalize=normalize)
         model.load_state_dict(ckpt["model"])
         label = Path(checkpoint).parent.name
-        print(f"Loaded {checkpoint} | metric={metric} normalize={normalize}")
+        print(f"Loaded {checkpoint} | backbone={backbone} metric={metric} normalize={normalize}")
     else:
         print("Zero-shot ImageNet features (no checkpoint)")
     model.eval().to(device)
-    return model, image_size, metric, normalize, label
+    return model, image_size, metric, normalize, label, backbone
 
 
 def shuffled_pools(index: IdentityIndex, rng: random.Random) -> dict[str, list[Path]]:
@@ -310,7 +314,7 @@ def main() -> None:
     args = parser.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model, image_size, metric, normalize, run_label = load_model(args.checkpoint, device)
+    model, image_size, metric, normalize, run_label, backbone = load_model(args.checkpoint, device)
     data_root = Path(args.data_root)
     query_index = IdentityIndex(data_root / args.split)
     gallery_split = args.gallery_split or args.split
@@ -320,9 +324,10 @@ def main() -> None:
         print(f"gallery {gallery_split}: same split as query")
     else:
         print(f"gallery {gallery_split}: {gallery_index.stats()}")
-    print(f"device={device} agg={args.agg} k_shots={args.k_shots}\n")
+    print(f"device={device} backbone={backbone} agg={args.agg} k_shots={args.k_shots}\n")
 
-    tfm = build_transform(image_size, train=False)
+    norm_mean, norm_std = BACKBONE_NORM[backbone]
+    tfm = build_transform(image_size, train=False, mean=norm_mean, std=norm_std)
     rows = []
     for k_shot in args.k_shots:
         row = evaluate_kshot(model, tfm, device, query_index, gallery_index, k_shot,

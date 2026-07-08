@@ -1,0 +1,2 @@
+identity,source,support_images,query_frames,mean_score,max_score,topk_frame_mean,min_score
+drone_uav_wing_desert_camo,data\uav_dataset_yolox_crops\enrollment\drone_uav_wing_desert_camo,96,59,0.997901201248169,0.9993683099746704,0.9989899396896362,0.9918941259384155

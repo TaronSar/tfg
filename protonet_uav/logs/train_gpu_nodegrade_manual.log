@@ -1,0 +1,62 @@
+Device: cuda
+Train: 16 identities | images per identity: min=54 max=54 total=864
+Val:   6 identities | images per identity: min=54 max=54 total=324
+Metric: euclidean | L2-normalize: True | train-way: 10 -> test-way: 5
+Shot-robust training: K sampled per-episode from [1, 3, 5]
+epoch 001 | loss 2.0888 | train acc 0.239 | val acc 0.376 | 71.4s | backbone frozen
+  -> new best (0.376) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 002 | loss 1.9166 | train acc 0.309 | val acc 0.405 | 68.5s | backbone frozen
+  -> new best (0.405) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 003 | loss 1.6703 | train acc 0.407 | val acc 0.476 | 71.4s
+  -> new best (0.476) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 004 | loss 1.4098 | train acc 0.517 | val acc 0.484 | 70.0s
+  -> new best (0.484) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 005 | loss 1.2757 | train acc 0.606 | val acc 0.494 | 69.3s
+  -> new best (0.494) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 006 | loss 1.2378 | train acc 0.648 | val acc 0.520 | 69.0s
+  -> new best (0.520) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 007 | loss 1.1618 | train acc 0.728 | val acc 0.544 | 71.7s
+  -> new best (0.544) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 008 | loss 1.1179 | train acc 0.758 | val acc 0.519 | 73.0s
+epoch 009 | loss 1.0927 | train acc 0.775 | val acc 0.552 | 70.5s
+  -> new best (0.552) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 010 | loss 1.0765 | train acc 0.791 | val acc 0.555 | 71.2s
+  -> new best (0.555) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 011 | loss 1.0457 | train acc 0.837 | val acc 0.537 | 71.3s
+epoch 012 | loss 1.0239 | train acc 0.848 | val acc 0.548 | 71.2s
+epoch 013 | loss 1.0112 | train acc 0.852 | val acc 0.565 | 72.0s
+  -> new best (0.565) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 014 | loss 0.9830 | train acc 0.878 | val acc 0.565 | 72.8s
+  -> new best (0.565) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 015 | loss 0.9882 | train acc 0.866 | val acc 0.579 | 72.2s
+  -> new best (0.579) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 016 | loss 0.9597 | train acc 0.886 | val acc 0.591 | 73.1s
+  -> new best (0.591) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 017 | loss 0.9533 | train acc 0.888 | val acc 0.594 | 73.1s
+  -> new best (0.594) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 018 | loss 0.9310 | train acc 0.910 | val acc 0.597 | 74.1s
+  -> new best (0.597) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 019 | loss 0.9234 | train acc 0.910 | val acc 0.637 | 74.2s
+  -> new best (0.637) saved to checkpoints_gpu_nodegrade\best.pth
+epoch 020 | loss 0.9159 | train acc 0.904 | val acc 0.619 | 74.4s
+epoch 021 | loss 0.9130 | train acc 0.915 | val acc 0.616 | 74.2s
+epoch 022 | loss 0.9116 | train acc 0.911 | val acc 0.606 | 73.6s
+epoch 023 | loss 0.8926 | train acc 0.934 | val acc 0.598 | 74.9s
+epoch 024 | loss 0.8932 | train acc 0.927 | val acc 0.598 | 73.8s
+epoch 025 | loss 0.8916 | train acc 0.937 | val acc 0.619 | 75.0s
+epoch 026 | loss 0.8972 | train acc 0.921 | val acc 0.602 | 74.2s
+epoch 027 | loss 0.8942 | train acc 0.918 | val acc 0.609 | 72.4s
+epoch 028 | loss 0.8961 | train acc 0.914 | val acc 0.581 | 74.3s
+epoch 029 | loss 0.8898 | train acc 0.921 | val acc 0.601 | 74.3s
+epoch 030 | loss 0.8872 | train acc 0.932 | val acc 0.592 | 74.8s
+Done. Best val acc: 0.637
+
+Loaded checkpoints_gpu_nodegrade\best.pth | metric=euclidean normalize=True
+val: 6 identities | images per identity: min=54 max=54 total=324
+k_shot=10 agg=mean
+genuine:  n=180 mean=0.7423
+impostor: n=90 mean=0.1072
+ROC-AUC:  0.8543
+TPR @ FPR=1%: 0.272  (threshold 0.9022)
+TPR @ FPR=5%: 0.328  (threshold 0.8855)
+TPR @ FPR=10%: 0.433  (threshold 0.8435)

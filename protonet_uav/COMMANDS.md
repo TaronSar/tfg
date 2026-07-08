@@ -203,15 +203,15 @@ This scoreboard is the reference every future phase is judged against.
 
 ### 2. Per-identity verification AUC + bootstrap CIs + EER (degraded queries)
 
-Queries are always degraded to the 46-143 px operational envelope (`--degrade_p 1.0`).
+Queries use clean images (`--degrade_p 0.0`).
 Gallery/enrollment images stay clean.  The scoreboard reveals which identities
 have unreliable estimates (wide CI) and need more query frames.
 
 ```powershell
 .\.venv\Scripts\python.exe .\scripts\eval_verification_auc.py `
     --checkpoint checkpoints_yolox_crops_mixed_domain_real\best.pth `
-    --data_root  data\uav_dataset_yolox_crops_removed_lt30 `
-    --k_shot 5 --degrade_p 1.0 `
+    --data_root  data\uav_dataset_yolox_crops `
+    --k_shot 5 --degrade_p 0.0 `
     --out_csv csvs\phase0_baseline_k5_degrade100_verification_auc.csv
 ```
 
@@ -220,7 +220,7 @@ have unreliable estimates (wide CI) and need more query frames.
 ```powershell
 .\.venv\Scripts\python.exe .\scripts\eval_verification_auc.py `
     --checkpoint checkpoints_yolox_crops_mixed_domain_real\best.pth `
-    --data_root  data\uav_dataset_yolox_crops_removed_lt30 `
+    --data_root  data\uav_dataset_yolox_crops `
     --k_shot 5 --degrade_p 0.0 `
     --out_csv csvs\phase0_baseline_k5_degrade0_verification_auc.csv
 ```
@@ -253,7 +253,7 @@ DINOv2 ViT-S/14 ≈ 330 MB;  CLIP ViT-B/32 ≈ 350 MB.  Requires internet.
 ```powershell
 .\.venv\Scripts\python.exe -m src.train `
     --backbone dinov2_vits14 `
-    --data_root data\uav_dataset_yolox_crops_removed_lt30 `
+    --data_root data\uav_dataset_yolox_crops `
     --out checkpoints_dinov2_vits14 `
     --epochs 30 --n_way 15 --test_n_way 5 `
     --k_shot_range 1 3 5 10 15 --q_query 5 `
@@ -268,7 +268,7 @@ in early epochs — DINOv2 weights are fragile to high LR.
 ```powershell
 .\.venv\Scripts\python.exe -m src.train `
     --backbone dinov2_vitb14 `
-    --data_root data\uav_dataset_yolox_crops_removed_lt30 `
+    --data_root data\uav_dataset_yolox_crops `
     --out checkpoints_dinov2_vitb14 `
     --epochs 30 --n_way 15 --test_n_way 5 `
     --k_shot_range 1 3 5 10 15 --q_query 5 `
@@ -280,7 +280,7 @@ in early epochs — DINOv2 weights are fragile to high LR.
 ```powershell
 .\.venv\Scripts\python.exe -m src.train `
     --backbone clip_vit_b32 `
-    --data_root data\uav_dataset_yolox_crops_removed_lt30 `
+    --data_root data\uav_dataset_yolox_crops `
     --out checkpoints_clip_vit_b32 `
     --epochs 30 --n_way 15 --test_n_way 5 `
     --k_shot_range 1 3 5 10 15 --q_query 5 `
@@ -294,8 +294,8 @@ Replace `checkpoints_dinov2_vits14` with whichever checkpoint you want to compar
 ```powershell
 .\.venv\Scripts\python.exe .\scripts\eval_verification_auc.py `
     --checkpoint checkpoints_dinov2_vits14\best.pth `
-    --data_root  data\uav_dataset_yolox_crops_removed_lt30 `
-    --k_shot 5 --degrade_p 1.0 `
+    --data_root  data\uav_dataset_yolox_crops `
+    --k_shot 5 --degrade_p 0.0 `
     --out_csv csvs\phase1_dinov2_vits14_k5_degrade100_verification_auc.csv
 ```
 
@@ -304,7 +304,7 @@ K-shot sweep for a full open-set comparison:
 ```powershell
 .\.venv\Scripts\python.exe .\scripts\eval_kshot_sweep.py `
     --checkpoint checkpoints_dinov2_vits14\best.pth `
-    --data_root  data\uav_dataset_yolox_crops_removed_lt30 `
+    --data_root  data\uav_dataset_yolox_crops `
     --split val --agg mean --k_shots 1 3 5 10 15
 ```
 

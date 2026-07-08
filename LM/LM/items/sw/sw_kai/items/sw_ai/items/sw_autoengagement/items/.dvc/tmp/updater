@@ -1,0 +1,1 @@
+{"version": "3.67.1", "packages": {"linux": {"deb": "https://dvc.org/download/linux-deb/dvc-3.67.1", "rpm": "https://dvc.org/download/linux-rpm/dvc-3.67.1"}, "windows": {"exe": "https://dvc.org/download/win/dvc-3.67.1"}, "osx": {"pkg": "https://dvc.org/download/osx/dvc-3.67.1"}}}

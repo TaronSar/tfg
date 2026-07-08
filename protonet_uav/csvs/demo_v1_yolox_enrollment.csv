@@ -1,0 +1,2 @@
+identity,source,support_images,query_frames,mean_score,max_score,topk_frame_mean,min_score
+camera_video_fragmentation_preview,data\demo\real_world_yolox_crops\train\camera_video_fragmentation_preview,70,70,0.5585861206054688,0.8118066191673279,0.779111921787262,-0.11841194331645966

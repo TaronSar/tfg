@@ -1,0 +1,7 @@
+{
+  "best_val_acc": 0.9515999817848205,
+  "embed_dim": 128,
+  "image_size": 224,
+  "backbone": "dinov2_vits14",
+  "epoch": 6
+}

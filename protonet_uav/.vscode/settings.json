@@ -1,0 +1,6 @@
+{
+  "python.defaultInterpreterPath": "C:/Users/trnsr/anaconda3/envs/tfg/python.exe",
+  "code-runner.executorMap": {
+    "python": "C:/Users/trnsr/anaconda3/envs/tfg/python.exe -u"
+  }
+}

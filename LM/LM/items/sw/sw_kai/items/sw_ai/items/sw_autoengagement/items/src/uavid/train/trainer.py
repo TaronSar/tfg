@@ -17,7 +17,7 @@ import torch
 import torch.nn.functional as F
 from loguru import logger
 
-from src.uavid.dataset import IdentityIndex, sample_episode
+from src.uavid.dataset import IdentityIndex, sample_episode, preload_images
 from src.uavid.model import (
     build_encoder,
     BACKBONE_NORM,
@@ -29,11 +29,14 @@ from src.uavid.model import (
 
 def run_episode(model, index, tfm, n_way, k_shot, q_query, device,
                 metric="euclidean", normalize=True, support_index=None,
-                support_tfm=None) -> tuple[torch.Tensor, torch.Tensor]:
+                support_tfm=None, hard_negatives=None,
+                hard_negative_p=0.5) -> tuple[torch.Tensor, torch.Tensor]:
     """Run one episode and return ``(loss, accuracy)``."""
     s_x, s_y, q_x, q_y = sample_episode(index, tfm, n_way, k_shot, q_query,
                                         support_index=support_index,
-                                        support_tfm=support_tfm)
+                                        support_tfm=support_tfm,
+                                        hard_negatives=hard_negatives,
+                                        hard_negative_p=hard_negative_p)
     s_x, s_y = s_x.to(device), s_y.to(device)
     q_x, q_y = q_x.to(device), q_y.to(device)
     actual_n_way = int(s_y.max().item()) + 1
@@ -91,6 +94,11 @@ def train_protonet(
     support_split: str | None = None,
     freeze_backbone_epochs: int = 2,
     backbone: str = "mobilenetv3",
+    grad_accum: int = 1,
+    preload: bool = True,
+    hard_negatives: list[str] | None = None,
+    hard_negative_p: float = 0.5,
+    resume: str | None = None,
     device: str = "cpu",
     on_epoch: Callable[[int, dict[str, float]], None] | None = None,
 ) -> tuple[float, list[dict[str, Any]]]:
@@ -110,8 +118,19 @@ def train_protonet(
         Tuple ``(best_val_acc, history)`` where ``history`` is a list of
         per-epoch metric dicts.
     """
-    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=True,
+    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=(resume is None),
                           l2_normalize=normalize).to(device)
+    if resume:
+        import torch as _torch
+        ckpt = _torch.load(resume, map_location=device, weights_only=True)
+        model.load_state_dict(ckpt["model"])
+        logger.info(f"Resumed from {resume} | val_acc={ckpt.get('val_acc', '?'):.4f} epoch={ckpt.get('epoch', '?')}")
+
+    if preload:
+        indices = [train_index, val_index]
+        if support_index is not None:
+            indices.append(support_index)
+        preload_images(*indices)
     optim = torch.optim.AdamW([
         {"params": model.features.parameters(), "lr": backbone_lr},
         {"params": model.head.parameters(), "lr": lr},
@@ -130,17 +149,21 @@ def train_protonet(
             p.requires_grad = not frozen
 
         t0, losses, accs = time.time(), [], []
-        for _ in range(episodes_per_epoch):
+        optim.zero_grad()
+        for ep_idx in range(episodes_per_epoch):
             k = random.choice(k_shot_range) if k_shot_range else k_shot
             loss, acc = run_episode(model, train_index, train_tfm, n_way, k,
                                     q_query, device, metric, normalize,
                                     support_index=support_index,
-                                    support_tfm=support_tfm)
-            optim.zero_grad()
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
-            optim.step()
-            sched.step()
+                                    support_tfm=support_tfm,
+                                    hard_negatives=hard_negatives,
+                                    hard_negative_p=hard_negative_p)
+            (loss / grad_accum).backward()
+            if (ep_idx + 1) % grad_accum == 0:
+                torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
+                optim.step()
+                sched.step()
+                optim.zero_grad()
             losses.append(loss.item())
             accs.append(acc.item())
 

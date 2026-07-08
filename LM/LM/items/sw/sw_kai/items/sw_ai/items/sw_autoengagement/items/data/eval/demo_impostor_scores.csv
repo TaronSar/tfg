@@ -1,0 +1,2 @@
+identity,source,support_images,query_frames,mean_score,max_score,topk_frame_mean,min_score
+vector_uav,Z:\Pool_IA\IA_Dataset\datasets\uav-few-shot-identification\demo\video_demo_enrollment\vector_uav,6,20,-2.3443048000335693,-1.835366129875183,-2.0938661098480225,-2.699711799621582

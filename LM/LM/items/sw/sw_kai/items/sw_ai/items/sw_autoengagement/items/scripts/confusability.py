@@ -29,7 +29,7 @@ from loguru import logger
 
 from src.uavid.common.transforms import build_transform
 from src.uavid.dataset import IdentityIndex, load_image
-from src.uavid.model import ProtoNetEncoder
+from src.uavid.model import ProtoNetEncoder, build_encoder, BACKBONE_NORM
 
 try:
     from dotenv import load_dotenv
@@ -83,7 +83,8 @@ def main(
     ckpt = torch.load(checkpoint, map_location="cpu", weights_only=True)
     embed_dim = ckpt.get("embed_dim", 128)
     image_size = ckpt.get("image_size", 224)
-    model = ProtoNetEncoder(embed_dim=embed_dim, pretrained=False, l2_normalize=True)
+    backbone = ckpt.get("backbone", "mobilenetv3")
+    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=False, l2_normalize=True)
     model.load_state_dict(ckpt["model"])
     model.to(device)
 
@@ -94,7 +95,8 @@ def main(
         excluded = load_excluded(exclude_json)
     index = IdentityIndex(Path(data_root) / split, exclude=excluded,
                           exclude_root=Path(data_root))
-    tfm = build_transform(image_size, train=False)
+    norm_mean, norm_std = BACKBONE_NORM[backbone]
+    tfm = build_transform(image_size, train=False, mean=norm_mean, std=norm_std)
     logger.info(f"Indexing {len(index.identities)} identities in {split}/")
 
     # Build prototypes

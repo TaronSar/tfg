@@ -1,0 +1,161 @@
+,,,,,
+,,,,,
+,,Preliminary System Safety Assessment (PSSA),,,
+,ID#,Failure Condition,Potential Cause(s),Safety Requirements/Objectives,Mitigation/Control Measures
+,1,Incorrect color space conversion,"Grayscale image generation errors due to processing
+inaccuracies.","- Ensure redundant image processing to avoid 
+data corruption. 
+
+- Implement fallback systems for critical 
+functions.","- Use fallback or secondary image conversion 
+algorithms. 
+
+ - Manual pilot intervention if system degrades."
+,2,Total loss of data transfer,Interruption in data transfer paths,"- Data must br continuously transferred to the 
+PS for accurate map generation.
+
+- Implement redundancy in data paths.","- Use redundant data transfer paths.
+
+- Alert ground pilot for intervention immediate 
+intervention. "
+,3,Loss of ability to generate the map,"System failure leading to total breakdown of map
+generation ","- Critical for GNSS-denied navigation
+
+- Backup map generation system must be in 
+place.","- Fallback systems for map generation.
+
+- Ground pilot intervention for manual control or 
+system recovery."
+,4,Malfunction resulting in incorrect map generation,"Errors in map processing algorithms, image distortion
+
+, data corruption","- Ensure map generation maintains accuracy 
+for safe navigation.
+
+- Use multiple layers of error-checking in map
+data.","- Use redundant processing and correction 
+algorithms.
+
+- Alert ground pilot to monitor and intervene if 
+necessary."
+,5,Loss of ability to store map data,"Failure of RAM storage, corruption of data, insufficient
+storage capacity or failure of memory hardware","- Ensure sufficient meomory or storage 
+capacity for interim map data.
+
+- Backup storage systems should be active.","- Implement redundant memory systems.
+
+- Alert ground pilot and attempt to offload data 
+manually."
+,,,,,
+,6,Malfunction resulting in incorrect RAM storage,"Corruption of stored map data due to RAM failure
+or faults in data writing processes","- RAM storage should be error free for 
+accurate map processing.
+
+- Implement checks for data integrity. ","- Use error-checking algorithms in RAM.
+
+- Implement manual override for map correction and
+storage. "
+,7,Malfunction resulting in incorrect map offloading,"SD card or memory offloading path failure, insufficient
+data throughout or corruption during offload process","- Offloading of data to secondary storage 
+should be reliable and instantaneous.
+
+- Ensure no data is lost in the progress.","- Use redundant offloading paths.
+
+- Alert ground control for manual data management."
+,8,Loss of ability to calculate the postion of the UAS,"Complete failure of GNSS and backup systems, or
+failure of sensors that provide localization data","- Accurate and reliable localization must be 
+maintained.
+
+- Implement fallback localization methods if
+GNSS fails.",- Backup navigation.
+,9,Malfunction resulting in incorrect position calculation,"Mian GPS and GNSS failures occuming 
+simultaneously, positional data errors caused by 
+corrupted calculations","- Ensure positional data accuracy and reliability
+for safe navigation.
+
+- Implement error-checking and validation 
+mechanisms in position calculations.","- Use redundant GNSS or inertial navigation systems
+as backup.
+
+- Implement real-time data validation algorithms to 
+detect and correct errors.
+
+- Provide ground pilot alerts for immediate manual 
+intervention."
+,10,Malfunction resulting in incorrect real-time position updates,"Real-time positional data becoming inconsistent or 
+misaligned","- Ensure real-time positional updates maintain 
+accuracy.
+
+- Detect and mitigate inconsistencies in 
+real-time data streams.","- Implement fallback systems using alternative 
+sensors.
+
+- Validate real-time data against historical trends for 
+anomaly detection.
+
+- Alert ground crew for monitoring and manual control
+in case of failure."
+,,,,,
+,11,Malfunction resulting in incorrect synchronization with autopilot,"Erroneous GNSS data integrated into autopilot 
+systems.","- Maintain synchronization accuracy to prevent
+unsafe autopilot commands.
+
+- Ensure redundant synchronization 
+mechanisms between GNSS and autopilot.","- Use dual-input validation to cross-check GNSS data
+before autopilot integration.
+
+- Implement backup control laws in autopilot for 
+degraded naviagtion modes.
+
+- Pilot override capability for manual navigation 
+adjustments. "
+,12,Malfunction resulting in incorrect GNSS position transmission,"Erros introduced during data transmission via CAN 
+bus","-Ensure accurate data transmission to autopilot.
+
+- Detect and correct errors in GNSS 
+data streams.","- Implement redundancy in CAN-based data 
+transmission.
+
+- Use cyclic redundancy checks.
+
+- Alert ground crew for intervention in case of critical
+failure."
+,13,Malfunction resulting in incorrect CAN data transfer ,"Simultaneous GPS and GNSS failures, confiliciting or 
+corrupted data introduced by redundancy mechanisms.","- Ensure data integrity in CAN-based 
+transmissions.
+
+- Detect and isolate corrupted data packets to 
+avoid unsafe autopilot inputs.","- Use redundant CAN paths with arbitration for 
+conflict resolution.
+
+- Real-time data validation algorithms to filter out 
+erroneous transmissions.
+
+- Manual intervention protocols for pilots in case of 
+navigation failure. 
+"
+,14,Malfunction resulting in incorrect ORB extraction,"Errors in visual feature extraction algorithms leading to
+faulty mapping","- Maintain feature extraction accuracy for 
+reliable navigation.
+
+- Provide backup systems for visual navigation 
+processing. ","- Use secondary processing units for feature 
+extraction as backup.
+
+- Validate ORB extraction results against redundant 
+sensory inputs.
+
+- Alert the pilot for manual override if critical feature 
+extraction fails."
+,15,Malfunction resulting in incorrect coprocessing,"Real-time data mismatches or inaccuracies in 
+coprocessed results","- Maintain coprocessing accuracy to ensure 
+real-time navigation safety.
+
+- Implement safeguards to prevent erronous 
+outputs from affecting navigation.","- Use validation layers to check cross-checks 
+coprocessed data against historical records.
+
+- Provide real-time alerts to ground crew for 
+monitoring and intervention.
+
+- Develop emergency recovery protocols for manual
+control in case of critical failure."

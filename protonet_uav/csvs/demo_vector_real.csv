@@ -1,0 +1,2 @@
+identity,source,support_images,query_frames,mean_score,max_score,topk_frame_mean,min_score
+vector_uav,data\demo\video_demo_enrollment\vector_uav,4,3,0.4297109544277191,0.5579869747161865,0.4297109544277191,0.2823856472969055

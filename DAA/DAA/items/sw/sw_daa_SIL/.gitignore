@@ -1,9 +1,0 @@
-.ninja*
-*.out
-*.o
-*.ninja
-cmake*
-*.a
-compile_commands.json
-**/build/**
-**/bin/**

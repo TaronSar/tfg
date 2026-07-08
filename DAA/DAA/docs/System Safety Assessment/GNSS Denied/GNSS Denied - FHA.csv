@@ -1,0 +1,660 @@
+,,,,,,,
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (1) Image Processing                        ,,,Sub-Function: (1.1) Color Space Conversion (Color to Grayscale)                        ,,,
+,1.1 T1,Total loss of the color space conversion,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Visual data becomes unusable for mapping and localization, leading to loss of navigation capability in
+GNSS-denied conditions.
+
+Crew:
+Increased Stress
+Loss of Situational Awareness",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen. 
+
+The color space conversion function fails completely, and no grayscale images are available 
+for further processing.
+",DAL C
+,1.1 P2,Partial loss of the color space conversion,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Reduced efficiency in mapping and localization, causing slower updates or inaccurate maps.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Some images remain in the original color space due to intermittent processing errors, but 
+others are correctly converted to grayscale.
+",DAL D
+,1.1 M3,Incorrect color space conversion,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Misleading visual data creates erroneous maps, increasing the risk of collision or navigation errors.
+
+Crew:
+Increased Workload",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Grayscale images are generated, but their brightness or contrast levels are incorrect due 
+to processing inaccuracies.
+",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (1) Image Processing                       ,,,Sub-Function: (1.2) Resolution Adjustment                        ,,,
+,1.2 T1,Total loss of resolution adjustment,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Processing burden on PS increases significantly, causing delays in navigation updates or complete 
+system failure.
+
+Crew:
+Increased stress",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- The resolution adjustment function fails entirely, and all images remain at their original 
+resolution.",DAL C
+,1.2 P2,Partial degradation in resolution adjustment,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Processing delays cause slower map generation, leading to suboptimal navigation.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Only some sections of the image are resized to the standard resolution (640x480), while 
+other areas retain the original size.",DAL D
+,1.2 M3, Erroneous resolution adjustment,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Distorted visual data results in incorrect maps, risking navigation errors or collision.
+
+Crew:
+Increased Workload
+Increased Stress",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Images are resized, but incorrect scaling introduces distortions or artifacts that degrade 
+their usability.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (1) Image Processing                        ,,,Sub-Function: (1.3) Data Transfer to Processing System (PS)                        ,,,
+,1.3 T1,Total loss of data transfer,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+-  Mapping and localization functions fail entirely, causing GNSS-denied navigation to become 
+impossible.
+
+Crew:
+Increased workload",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+-  Processed image data is not transferred to the PS, resulting in a complete halt in 
+downstream processing.
+",DAL B
+,1.3 P2,Partial degradation in data transfer,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Reduced navigation precision due to lag in system response.
+
+Crew:
+Increased workload
+Increased stress",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Data transfer occurs intermittently, leading to delays in map generation and localization.",DAL C
+,1.3 M3,Malfunction resulting in incorrect data transfer,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+-  Erroneous maps or positional data increase the risk of collision or straying off-course.
+
+Crew:
+Increased stress
+Increased workload",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Data transferred to the PS contains errors or corruption, leading to incorrect inputs for 
+mapping and localization functions.
+",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (2) Mapping                       ,,,Sub-Function: (2.1) Map Generation                        ,,,
+,2.1 T1,Loss of ability to generate the map,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Loss of GNSS-denied navigation, leading to mission abort or high risk of collision in constrained 
+environments.
+
+Crew:
+Increased stress",Catastrophic,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+-  Map generation fails entirely, and no usable maps are created during GNSS-denied 
+operations.",DAL A
+,2.1 P2,Partial loss in the map generation,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Reduced navigation efficiency, increasing the likelihood of trajectory drift or entry into hazardous 
+zones.
+
+Crew:
+Increased Workload",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Only incomplete maps are generated due to limited processing or missing input data, 
+reducing navigation capability.
+",DAL C
+,2.1 M3,Malfunction resulting in incorrect map generation,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Misleading navigation paths create high collision risks or flight into restricted areas.
+
+Crew:
+Increased Workload
+Increased stress",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Maps generated contain inaccuracies, such as misaligned features or missing landmarks, 
+which could mislead navigation systems.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (2) Mapping                       ,,,Sub-Function: (2.2) RAM Storage for Intermediate Mapping Data                        ,,,
+,2.2 T1,Loss of ability to store,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Map generation is halted due to lack of memory, causing loss of situational awareness. 
+
+Crew:
+Increased Stress
+Loss of Situational Awareness",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+-  RAM storage fails completely, preventing temporary map storage and halting map 
+generation.",DAL C
+,2.2 P2,Partial loss in the RAM storage,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Incomplete maps reduce localization accuracy, causing inefficiencies or errors in trajectory.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Only partial maps are stored in RAM due to insufficient space or errors during storage.",DAL D
+,2.2 M3,Malfunction resulting in incorrect RAM storage,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Erroneous maps lead to incorrect positional data, risking collision or loss of flight control.
+
+Crew:
+Increased Workload
+Increased Stress",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Maps stored in RAM are corrupted, introducing errors that propagate through downstream 
+systems.
+",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (2) Mapping                       ,,,Sub-Function: (2.3) Map Offloading to SD Card                        ,,,
+,2.3 T1,Loss of ability to offload the map,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- RAM becomes full, halting new map generation and degrading navigation performance.
+
+Crew:
+Increased Stress
+Loss of Situational Awareness",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- SD card offloading fails entirely, causing RAM to overflow and halting the map generation 
+process.",DAL C
+,2.3 P2,Partial loss in the offloading the map,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Navigation system responsiveness is reduced due to delays in map availability.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Maps are offloaded intermittently, leading to temporary delays in map generation and 
+navigation performance.",DAL D
+,2.3 M3,Malfunction resulting in incorrect map offloading,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Erroneous maps are loaded in subsequent operations, increasing navigation errors and collision risks.
+
+Crew:
+Increased Workload",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Maps offloaded to the SD card contain corrupted data, affecting future navigation 
+operations when these maps are reloaded.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (3) Localization                        ,,,Sub-Function: (3.1) Position Calculation                         ,,,
+,3.1 T1,Loss of ability to calculate the position of the UAS,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Loss of localization capability, rendering GNSS-denied navigation impossible.
+
+Crew:
+Increased Stress
+Increased Workload",Catastrophic,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Position calculation fails entirely, and no positional data is available to the system.",DAL A
+,3.1 P2,Partial loss in the position data of the UAS,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Reduced localization accuracy, causing inefficiencies and potential path deviations.
+
+Crew:
+Increased Workload",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Position updates occur intermittently, leading to temporary loss of navigation precision.",DAL C
+,3.1 M3,Malfunction resulting in incorrect position calculation,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Erroneous position data leads to navigation errors, risking collisions or unsafe flight paths.
+
+Crew:
+Increased Workload
+Increased stress",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Positional data calculated contains significant errors, leading to incorrect navigation 
+decisions.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (3) Localization                        ,,,Sub-Function: (3.2) Real-Time Update of Position Data                       ,,,
+,3.2 T1,Loss of ability to real time update the position of the UAS,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- System cannot provide updated positional data, resulting in loss of situational awareness and 
+navigation failure.
+
+Crew:
+Increased Workload",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Real-time position updates cease completely, leaving the system with outdated or static 
+positional information.",DAL C
+,3.2 P2,Partial loss in the real time position data of the UAS,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Navigation becomes inefficient or inaccurate, causing minor trajectory deviations.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Position updates are delayed or provided at irregular intervals, causing navigation 
+inefficiencies.",DAL D
+,3.2 M3,Malfunction resulting in incorrect real time position,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Erroneous updates mislead autopilot or pilot, increasing the risk of collision or flight path deviation.
+
+Crew:
+Increased Workload
+Increased stress",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Position updates are incorrect or inconsistent, leading to misalignment with actual flight 
+paths.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (3) Localization                        ,,,Sub-Function: (3.3) GNSS Data Synchronization with Autopilot,,,
+,3.3 T1,Loss of ability to synchronize the data with the autopilot,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Autopilot cannot use positional data for navigation, leading to loss of automation and reduced safety
+margins.
+
+Crew:
+Increased Stress
+Increased Workload",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- GNSS data synchronization with the autopilot fails entirely, leaving the autopilot without 
+positional input.",DAL C
+,3.3 P2,Partial loss in the synchronization with autopilot,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Autopilot adjustments are inefficient or lagged, reducing flight performance.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Synchronization occurs intermittently, leading to occasional lags in autopilot navigation 
+decisions.",DAL D
+,3.3 M3,"Malfunction resulting in incorrect synchronization with 
+autopilot","Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Autopilot may follow erroneous data, causing unsafe flight paths or collision risks. 
+
+Crew:
+Increased Workload
+Increased stress",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Incorrect GNSS data is synchronized with the autopilot, causing the system to rely on 
+inaccurate navigation inputs.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (4) Autopilot Communication                        ,,,Sub-Function: (4.1) Periodic GNSS Position Transission                 ,,,
+,4.1 T1,Loss of ability to transist the GNSS position,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Autopilot is unable to maintain position or flight path, leading to navigation failures or unstable flight.
+
+Crew:
+Increased Workload",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- CAN-based positional data transmission fails completely, halting communication between 
+navigation systems and the autopilot.",DAL C
+,4.1 P2,Partial loss in the transission of the GNSS position,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Autopilot adjustments lag behind, causing inefficient or unstable navigation.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Data transmission over CAN is intermittent, causing occasional lapses in autopilot 
+responsiveness.",DAL D
+,4.1 M3,Malfunction resulting in incorrect transission,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Autopilot follows erroneous positional data, risking unintentional course deviation or collision.
+
+Crew:
+Increased Workload",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Positional data transmitted over CAN contains errors, leading to incorrect autopilot 
+adjustments.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (4) Autopilot Communication                        ,,,Sub-Function: (4.2) Timestamp Integration                   ,,,
+,4.2 T1,Complete loss of Timestamp function,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Loss of temporal alignment causes mismatched or outdated position updates, leading to incorrect
+autopilot decisions.
+
+Crew:
+Increased Workload",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Timestamp synchronization fails completely, leaving the autopilot with outdated or 
+misaligned positional data.",DAL C
+,4.2 P2,Partial loss or degraded timestap integration,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Delayed or incomplete synchronization causes minor autopilot inefficiencies.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Synchronization of timestamps occurs intermittently, leading to minor autopilot 
+inefficiencies.",DAL D
+,4.2 M3,Malfunction resulting in incorrect timestap integration,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Temporal mismatches lead to erroneous positional adjustments, increasing the risk of unplanned 
+maneuvers or collision.
+
+Crew:
+Increased Stress",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Timestamps are incorrect or misaligned, causing temporal mismatches in positional 
+updates.",DAL C
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (4) Autopilot Communication                        ,,,Sub-Function: (4.3) CAN-Based Data Transfer                   ,,,
+,4.3 T1,Loss of ability to transfer data by CAN,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Loss of all position and navigation data transfer to the autopilot, causing system failures.
+
+Crew:
+Increased Workload
+Increased Stress",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- CAN communication redundancy mechanisms fail, leaving the system vulnerable to 
+single-point failures.",DAL C
+,4.3 P2,Partial degradation in CAN data transfer,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Data transfer lags lead to degraded autopilot performance, with reduced precision in navigation.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Redundancy mechanisms activate inconsistently, leading to occasional lapses in 
+communication reliability.",DAL D
+,4.3 M3,Malfunction resulting in incorrect CAN data transfer,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Erroneous positional data sent to the autopilot causes unsafe flight paths or collisions.
+
+Crew:
+Increased Workload",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Redundancy mechanisms introduce conflicting data, causing navigation system errors.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (5) Algorithm Acceleration                        ,,,Sub-Function: (5.1) ORB Extraction via FPGA                      ,,,
+,5.1 T1,Loss of ability to ORB extract,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- All visual processing burden shifts to the PS, leading to significantly reduced system performance or 
+complete navigation failure.
+
+Crew:
+Increased Workload
+Increased Stress",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- ORB extraction via FPGA fails completely, shifting the entire processing burden to the PS.",DAL C
+,5.1 P2,Partial degradation in ORB extraction,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Navigation performance is degraded due to slower map updates.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- ORB extraction occurs intermittently, causing slower feature detection and delayed map 
+generation.",DAL D
+,5.1 M3,Malfunction resulting in incorrect ORB extraction,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Incorrect visual features lead to navigation errors, potentially causing unsafe flight paths or collisions.
+
+Crew:
+Increased Workload",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- ORB extraction results are erroneous, introducing errors in map generation and 
+localization.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (5) Algorithm Acceleration                        ,,,Sub-Function: (5.2) Algorithm Offloading from PS to PL                      ,,,
+,5.2 T1,Loss of ability to offload,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+-  Processing burden on PS increases, reducing system responsiveness or causing a complete failure.
+
+Crew:
+Increased Workload",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Algorithm offloading to the FPGA fails entirely, overburdening the PS and degrading 
+system performance.",DAL C
+,5.2 P2,Partial degradation in offloading,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- System performance is partially degraded, causing inefficiencies in navigation.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Only some portions of the algorithm are offloaded, leading to reduced acceleration and 
+processing inefficiencies.",DAL D
+,5.2 M3,Malfunction resulting in incorrect offloading,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Erroneous positional or map data causes unsafe flight behaviors, increasing collision risks.
+
+Crew:
+Increased Stress",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Algorithms offloaded to the FPGA produce incorrect outputs, causing errors in mapping or 
+localization.",DAL B
+,1,2,3,4,5,6,7
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale,Intial DAL level
+,Aircraft Function: (5) Algorithm Acceleration                       ,,,Sub-Function: (5.3) Real-Time Coprocessing with PL,,,
+,5.3 T1,Loss of ability to coprocess,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Processing burden entirely shifts to PS, leading to slower map updates and degraded localization 
+performance.
+
+Crew:
+Increased Workload",Major,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Real-time coprocessing via PL fails entirely, causing processing bottlenecks and delays in
+navigation performance.",DAL C
+,5.3 P2,Partial degradation in coprocessing,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft: 
+- Slower than expected processing causes lag in map generation or localization, impacting navigation
+efficiency.
+
+Crew:
+Increased Workload",Minor,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Coprocessing occurs intermittently, leading to inconsistent processing speeds and 
+navigation inefficiencies.",DAL D
+,5.3 M3,Malfunction resulting in incorrect coprocessing,"Take-off
+Climb
+Criuse
+Descent
+Approach
+Landing","Aircraft:
+- Erroneous map data or localization calculations lead to unsafe flight behaviors or collision risks.
+
+Crew:
+Increased Stress",Hazardous,"- The main GPS fails and then the GNSS fails too, which is very improbable to happen.
+
+- Real-time coprocessing generates incorrect outputs, introducing errors in positional 
+calculations or map generation.",DAL B

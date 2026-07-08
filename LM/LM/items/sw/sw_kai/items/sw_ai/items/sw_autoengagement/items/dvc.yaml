@@ -226,3 +226,359 @@ stages:
     metrics:
       - data/eval_dinov2_vits14/openset_summary.json:
           cache: true
+
+  # --- 7. Phase 1 v2: DINOv2 ViT-S/14 + enrollment split, full fine-tune ---
+  # Key changes vs 03_train_dinov2_vits14:
+  #   q_query 5  (q_query=15 caused OOM at epoch 6 on 32GB 5090; peak ~18GB fits)
+  #   episodes_per_epoch 400
+  #   backbone_lr 0.00001  (gentler fine-tune of pre-trained weights)
+  #   degrade_p 0.0        (enrollment images are high-res; no sensor sim)
+  #   grad_accum 4         (effective batch = 4 episodes per optimizer step)
+  #   support_split hardcoded to enrollment (not via dvc_config interpolation)
+  #   PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True  (reduces fragmentation)
+  03_train_dinov2_vits14_enrollment:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+      uv run python scripts/train.py
+      --data_root          ${paths.datasets_root}/${paths.active_dataset}
+      --exclude_json       ${paths.exclude_json}
+      --out                models/02_dinov2_vits14_enrollment
+      --support_split      enrollment
+      --backbone           dinov2_vits14
+      --n_way              15
+      --test_n_way         5
+      --k_shot_range       1,3,5,10,15
+      --q_query            5
+      --epochs             30
+      --episodes_per_epoch 400
+      --lr                 0.001
+      --backbone_lr        0.00001
+      --embed_dim          128
+      --image_size         224
+      --degrade_p          0.0
+      --freeze_backbone_epochs 5
+      --grad_accum         4
+    deps:
+      - ${paths.exclude_json}
+      - scripts/train.py
+      - src/uavid/train/trainer.py
+      - src/uavid/model/encoder.py
+    outs:
+      - models/02_dinov2_vits14_enrollment/best.pth
+      - models/02_dinov2_vits14_enrollment/last.pth
+
+  # --- 8. Evaluation for 03_train_dinov2_vits14_enrollment ------------------
+  04_eval_dinov2_vits14_enrollment:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/eval_kshot_sweep.py
+      --checkpoint models/02_dinov2_vits14_enrollment/best.pth
+      --data_root  ${paths.datasets_root}/${paths.active_dataset}
+      --gallery_split enrollment
+      --split      val
+      --agg        mean
+      --k_shots    1 3 5 10 15
+      --out_csv    data/eval_dinov2_vits14_enrollment/openset_results.csv
+      --out_graph  data/eval_dinov2_vits14_enrollment/kshot_sweep.png
+    deps:
+      - scripts/eval_kshot_sweep.py
+      - models/02_dinov2_vits14_enrollment/best.pth
+    outs:
+      - data/eval_dinov2_vits14_enrollment/openset_results.csv:
+          cache: true
+      - data/eval_dinov2_vits14_enrollment/kshot_sweep.png:
+          cache: true
+
+  # --- 9. Same-split evaluation (gallery=val, query=val, standard few-shot) -
+  # Complement to 04_eval_dinov2_vits14_enrollment: no dedicated enrollment,
+  # gallery and query come from the same val pool (k_shot images enrolled,
+  # remainder used as queries).
+  04_eval_dinov2_vits14_same_split:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/eval_kshot_sweep.py
+      --checkpoint models/02_dinov2_vits14_enrollment/best.pth
+      --data_root  ${paths.datasets_root}/${paths.active_dataset}
+      --split      val
+      --agg        mean
+      --k_shots    1 3 5 10 15
+      --out_csv    data/eval_dinov2_vits14_same_split/openset_results.csv
+      --out_graph  data/eval_dinov2_vits14_same_split/kshot_sweep.png
+    deps:
+      - scripts/eval_kshot_sweep.py
+      - models/02_dinov2_vits14_enrollment/best.pth
+    outs:
+      - data/eval_dinov2_vits14_same_split/openset_results.csv:
+          cache: true
+      - data/eval_dinov2_vits14_same_split/kshot_sweep.png:
+          cache: true
+
+  # --- 10. Confusability matrix (DINOv2 checkpoint, val split) --------------
+  # Step 1 of 2 for hard-pair AUC: compute cosine similarity between all val
+  # identity pairs to find the hardest (most look-alike) pairs.
+  05_confusability_dinov2_val:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/confusability.py
+      --data_root  ${paths.datasets_root}/${paths.active_dataset}
+      --checkpoint models/02_dinov2_vits14_enrollment/best.pth
+      --split      val
+      --top_k      10
+      --report_dir data/eval_dinov2_vits14_enrollment
+    deps:
+      - scripts/confusability.py
+      - models/02_dinov2_vits14_enrollment/best.pth
+    outs:
+      - data/eval_dinov2_vits14_enrollment/confusability_val.csv:
+          cache: true
+      - data/eval_dinov2_vits14_enrollment/confusability_val_summary.json:
+          cache: true
+
+  # --- 11. Hard-pair AUC (DINOv2, top-6 hardest val pairs) -----------------
+  # Step 2 of 2: pairwise verification AUC for the top-6 hardest pairs.
+  # Key pair to watch: orbiter-2m vs shahed (was 0.660 with MobileNetV3).
+  05_hardpair_auc_dinov2_val:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/hardpair_auc.py
+      --data_root          ${paths.datasets_root}/${paths.active_dataset}
+      --checkpoint         models/02_dinov2_vits14_enrollment/best.pth
+      --confusability_csv  data/eval_dinov2_vits14_enrollment/confusability_val.csv
+      --split              val
+      --top_k              6
+      --report_dir         data/eval_dinov2_vits14_enrollment
+    deps:
+      - scripts/hardpair_auc.py
+      - models/02_dinov2_vits14_enrollment/best.pth
+      - data/eval_dinov2_vits14_enrollment/confusability_val.csv
+    outs:
+      - data/eval_dinov2_vits14_enrollment/hardpair_auc_val.csv:
+          cache: true
+    metrics:
+      - data/eval_dinov2_vits14_enrollment/hardpair_auc_val_summary.json:
+          cache: true
+
+  # ==========================================================================
+  # VIDEO → YOLOX CROPS PIPELINE
+  #
+  # Pattern for every new .mp4 sighting:
+  #
+  #   Step A — extract frames:
+  #     07_extract_<video>_frames:  extract_frames.py --video ... --output ...
+  #   Step B — YOLOX crop:
+  #     07_yolox_<video>:           crop_from_yolox.py --flat ... --identity ...
+  #
+  # Then add the crop folder as a dep/query in the demo stage below.
+  # Copy-paste the two blocks and replace <video> / paths for each new file.
+  # ==========================================================================
+
+  # --- Skywalker X8 video ---------------------------------------------------
+  07_extract_skywalker_x8_frames:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/extract_frames.py
+      --video   /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/demo/skywalker_x8.mp4
+      --output  data/demo/skywalker_x8/frames
+      --every_sec 0.5
+      --max_frames 120
+      --overwrite
+    deps:
+      - scripts/extract_frames.py
+    outs:
+      - data/demo/skywalker_x8/frames
+
+  07_yolox_skywalker_x8:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/crop_from_yolox.py
+      --model    ${paths.yolox_model}
+      --flat     data/demo/skywalker_x8/frames
+      --identity skywalker_x8
+      --split    train
+      --out_root data/demo/skywalker_x8/crops
+      --min_px   15
+    deps:
+      - scripts/crop_from_yolox.py
+      - data/demo/skywalker_x8/frames
+    params:
+      - configs/dvc_config.yaml:
+          - paths.yolox_model
+    outs:
+      - data/demo/skywalker_x8/crops
+
+  # --- Hornet video ---------------------------------------------------------
+  07_extract_hornet_frames:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/extract_frames.py
+      --video   /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/demo/video_hornet.mp4
+      --output  data/demo/hornet/frames
+      --every_sec 0.5
+      --max_frames 120
+      --overwrite
+    deps:
+      - scripts/extract_frames.py
+    outs:
+      - data/demo/hornet/frames
+
+  07_yolox_hornet:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/crop_from_yolox.py
+      --model    ${paths.yolox_model}
+      --flat     data/demo/hornet/frames
+      --identity hornet
+      --split    train
+      --out_root data/demo/hornet/crops
+      --min_px   15
+    deps:
+      - scripts/crop_from_yolox.py
+      - data/demo/hornet/frames
+    params:
+      - configs/dvc_config.yaml:
+          - paths.yolox_model
+    outs:
+      - data/demo/hornet/crops
+
+  # --- Skywalker vs Hornet discrimination demo (DINOv2) ---------------------
+  # Enrollment: close Skywalker reference images (not from video).
+  # Candidates: YOLOX crops from Skywalker video (genuine) and Hornet (impostor).
+  # MobileNetV3 gap was 0.066 — DINOv2 should widen it significantly.
+  07_demo_dinov2_skywalker_vs_hornet:
+    frozen: true
+    cmd: >-
+      mkdir -p data/demo/query_candidates/skywalker_x8 data/demo/query_candidates/hornet &&
+      cp -rn data/demo/skywalker_x8/crops/train/skywalker_x8/. data/demo/query_candidates/skywalker_x8/ 2>/dev/null || true &&
+      cp -rn data/demo/hornet/crops/train/hornet/. data/demo/query_candidates/hornet/ 2>/dev/null || true &&
+      PYTHONPATH=. uv run python scripts/demo_real_world.py
+      --checkpoint  models/02_dinov2_vits14_enrollment/best.pth
+      --enrollment  /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/demo/video_demo_enrollment/skywalker_x8
+      --queries     data/demo/query_candidates
+      --gallery_out data/demo/dinov2_skywalker_gallery.npy
+      --csv_out     data/demo/dinov2_skywalker_vs_hornet.csv
+      --agg mean
+    deps:
+      - scripts/demo_real_world.py
+      - models/02_dinov2_vits14_enrollment/best.pth
+      - data/demo/skywalker_x8/crops
+      - data/demo/hornet/crops
+    outs:
+      - data/demo/dinov2_skywalker_vs_hornet.csv:
+          cache: true
+
+  # ==========================================================================
+  # PHASE 2 — HARD-NEGATIVE EPISODIC MINING
+  #
+  # Motivation (from Phase 0/1 baseline): orbiter-2m and shahed are the
+  # hardest confusable pair in val (AUC 0.848 and 0.932 respectively).
+  # Training episodes rarely contain both at once by chance (with 42 train
+  # identities and n_way=15, the probability of sampling any specific pair
+  # is ~2*(15/42)*(14/41) ≈ 27%). Hard-negative mining raises this to 50%
+  # for the identities the model currently confuses most.
+  #
+  # Workflow:
+  #   Step 1: run 08_confusability_train_dinov2 -> confusability_train.csv
+  #   Step 2: inspect top rows of that CSV (hardest training identity pairs)
+  #   Step 3: fill --hard_negatives below with the top-4 train identity names
+  #   Step 4: run 08_train_phase2_hardneg
+  # ==========================================================================
+
+  # --- Phase 2, Step 1: Confusability on train split (DINOv2 checkpoint) ---
+  08_confusability_train_dinov2:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/confusability.py
+      --data_root  ${paths.datasets_root}/${paths.active_dataset}
+      --checkpoint models/02_dinov2_vits14_enrollment/best.pth
+      --split      train
+      --top_k      10
+      --report_dir data/eval_phase2
+    deps:
+      - scripts/confusability.py
+      - models/02_dinov2_vits14_enrollment/best.pth
+    outs:
+      - data/eval_phase2/confusability_train.csv:
+          cache: true
+      - data/eval_phase2/confusability_train_summary.json:
+          cache: true
+
+  # --- Phase 2, Step 2: Training with hard-negative episodic mining ---------
+  # Fill --hard_negatives with the top-4 hardest TRAIN identity names from
+  # data/eval_phase2/confusability_train.csv (identity_a,identity_b columns).
+  # Example: --hard_negatives "lancet,baykar_bayraktar_tb2,uav_2,uav_bl"
+  08_train_phase2_hardneg:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+      uv run python scripts/train.py
+      --data_root          ${paths.datasets_root}/${paths.active_dataset}
+      --exclude_json       ${paths.exclude_json}
+      --out                models/03_dinov2_phase2_hardneg
+      --support_split      enrollment
+      --backbone           dinov2_vits14
+      --n_way              15
+      --test_n_way         5
+      --k_shot_range       1,3,5,10,15
+      --q_query            5
+      --epochs             50
+      --episodes_per_epoch 400
+      --lr                 0.00002
+      --backbone_lr        0.000005
+      --embed_dim          128
+      --image_size         224
+      --degrade_p          0.0
+      --freeze_backbone_epochs 0
+      --hard_negatives     morok_uav_drone_3d_model,neg_kf-280_uav,uav_2,uav_bl
+      --hard_negative_p    0.5
+      --resume             models/02_dinov2_vits14_enrollment/best.pth
+    deps:
+      - ${paths.exclude_json}
+      - scripts/train.py
+      - src/uavid/train/trainer.py
+      - src/uavid/dataset/episodic.py
+      - models/02_dinov2_vits14_enrollment/best.pth
+    outs:
+      - models/03_dinov2_phase2_hardneg/best.pth
+      - models/03_dinov2_phase2_hardneg/last.pth
+
+  # --- Phase 2, Step 3: Evaluation ------------------------------------------
+  08_eval_phase2_hardneg:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/eval_kshot_sweep.py
+      --checkpoint models/03_dinov2_phase2_hardneg/best.pth
+      --data_root  ${paths.datasets_root}/${paths.active_dataset}
+      --gallery_split enrollment
+      --split      val
+      --agg        mean
+      --k_shots    1 3 5 10 15
+      --out_csv    data/eval_phase2/openset_results.csv
+      --out_graph  data/eval_phase2/kshot_sweep.png
+    deps:
+      - scripts/eval_kshot_sweep.py
+      - models/03_dinov2_phase2_hardneg/best.pth
+    outs:
+      - data/eval_phase2/openset_results.csv:
+          cache: true
+      - data/eval_phase2/kshot_sweep.png:
+          cache: true
+
+  # --- 9. Cross-domain k-shot sweep: 02_enrollment checkpoint, yolox_crops val ---
+  04_eval_dinov2_vits14_enrollment_cross:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/eval_kshot_sweep.py
+      --checkpoint    models/02_dinov2_vits14_enrollment/best.pth
+      --data_root     ${paths.datasets_root}/${paths.active_dataset}
+      --gallery_split enrollment
+      --split         val
+      --agg           mean
+      --k_shots       1 3 5 10 15
+      --out_csv       logs/eval_dinov2_mixed_domain_cross.csv
+    deps:
+      - scripts/eval_kshot_sweep.py
+      - models/02_dinov2_vits14_enrollment/best.pth
+    outs:
+      - logs/eval_dinov2_mixed_domain_cross.csv:
+          cache: true

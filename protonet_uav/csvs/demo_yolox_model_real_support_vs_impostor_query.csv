@@ -1,0 +1,2 @@
+identity,source,support_images,query_frames,mean_score,max_score,topk_frame_mean,min_score
+without_bg,data\demo\video_demo\without_bg,5,5,-0.040128450840711594,0.10459829121828079,-0.040128450840711594,-0.2554287314414978

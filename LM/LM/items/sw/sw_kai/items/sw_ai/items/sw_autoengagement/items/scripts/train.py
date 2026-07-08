@@ -36,7 +36,7 @@ except ImportError:  # python-dotenv is optional
 
 
 def _log_artifacts(out_dir: Path, best_acc: float, history: list[dict],
-                   embed_dim: int, image_size: int) -> None:
+                   embed_dim: int, image_size: int, backbone: str = "mobilenetv3") -> None:
     """Log checkpoints, manifest and training history to MLflow.
 
     Args:
@@ -91,6 +91,10 @@ def main(
     support_split: str | None = "enrollment",
     freeze_backbone_epochs: int = 2,
     backbone: str = "mobilenetv3",
+    grad_accum: int = 1,
+    hard_negatives: str | None = None,
+    hard_negative_p: float = 0.5,
+    resume: str | None = None,
     exclude_json: str | None = None,
     seed: int = 42,
     mlflow_tracking: bool = True,
@@ -167,7 +171,7 @@ def main(
         "degrade_p": degrade_p, "support_split": support_split,
         "freeze_backbone_epochs": freeze_backbone_epochs, "device": device,
         "n_train_identities": len(train_index), "n_val_identities": len(val_index),
-        "backbone": backbone,
+        "backbone": backbone, "grad_accum": grad_accum,
     }
 
     cfg = load_mlflow_config()
@@ -212,11 +216,15 @@ def main(
             embed_dim=embed_dim, image_size=image_size, metric=metric,
             normalize=normalize, degrade_p=degrade_p, support_split=support_split,
             freeze_backbone_epochs=freeze_backbone_epochs, backbone=backbone,
+            grad_accum=grad_accum,
+            hard_negatives=[n.strip() for n in hard_negatives.split(",") if n.strip()] if hard_negatives else None,
+            hard_negative_p=hard_negative_p,
+            resume=resume,
             device=device, on_epoch=_on_epoch,
         )
         if active:
             mlflow.set_tags({"best_val_acc": f"{best_acc:.4f}"})
-            _log_artifacts(Path(out), best_acc, history, embed_dim, image_size)
+            _log_artifacts(Path(out), best_acc, history, embed_dim, image_size, backbone)
     finally:
         if active:
             mlflow.end_run()

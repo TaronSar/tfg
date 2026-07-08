@@ -1,0 +1,14 @@
+# Machine-specific DVC overrides for Windows workstation.
+# This file is git-ignored (.dvc/.gitignore). The shared .dvc/config keeps
+# the NAS-local paths that the Vision server uses. This file overrides only
+# what is different on a Windows machine:
+#   - remote URL: SSH instead of a local NAS mount path
+#   - cache: local Windows path (NAS mount not available on Windows)
+
+[cache]
+    dir = ~/.cache/dvc
+
+['remote "nas"']
+    url = ssh://192.168.2.1/mnt/Pool_IA/IA_Dataset/dvc-storage
+    user = vision
+    keyfile = ~/.ssh/id_ed25519

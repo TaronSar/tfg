@@ -1,0 +1,70 @@
+{
+  "split": "val",
+  "top_k": 6,
+  "n_pairs_evaluated": 6,
+  "mean_hardpair_auc": 0.8109806889147503,
+  "min_hardpair_auc": 0.659972299168975,
+  "hardest_pair": "orbiter-2m vs shahed",
+  "pairs": [
+    {
+      "identity_a": "orbiter-2m",
+      "identity_b": "shahed",
+      "proto_cosine_sim": 0.8684380054473877,
+      "auc": 0.659972299168975,
+      "genuine_mean": 0.7220101356506348,
+      "impostor_mean": 0.6270210146903992,
+      "genuine_n": 38,
+      "impostor_n": 38
+    },
+    {
+      "identity_a": "baykar_k2_kamikaze_uav_-_baykar_k2_kamikaze_iha",
+      "identity_b": "general_atomics",
+      "proto_cosine_sim": 0.8073281645774841,
+      "auc": 0.7198,
+      "genuine_mean": 0.6542240381240845,
+      "impostor_mean": 0.47089987993240356,
+      "genuine_n": 100,
+      "impostor_n": 100
+    },
+    {
+      "identity_a": "heavy_killer_drone",
+      "identity_b": "uav_gerbera_low-poly",
+      "proto_cosine_sim": 0.9390504360198975,
+      "auc": 0.7901,
+      "genuine_mean": 0.9407594799995422,
+      "impostor_mean": 0.8861904740333557,
+      "genuine_n": 100,
+      "impostor_n": 100
+    },
+    {
+      "identity_a": "orion_uav_war_thunder",
+      "identity_b": "wing_loong_i_uav_war_thunder",
+      "proto_cosine_sim": 0.7898679375648499,
+      "auc": 0.8895,
+      "genuine_mean": 0.8949615359306335,
+      "impostor_mean": 0.6986539363861084,
+      "genuine_n": 100,
+      "impostor_n": 100
+    },
+    {
+      "identity_a": "Ukraine_PD-2_UAV",
+      "identity_b": "Ukraine_pavilion",
+      "proto_cosine_sim": 0.8531931638717651,
+      "auc": 0.8920118343195266,
+      "genuine_mean": 0.8860496282577515,
+      "impostor_mean": 0.7559716701507568,
+      "genuine_n": 26,
+      "impostor_n": 26
+    },
+    {
+      "identity_a": "bayraktar_kalkan_diha",
+      "identity_b": "uav_gerbera_low-poly",
+      "proto_cosine_sim": 0.8662828207015991,
+      "auc": 0.9145,
+      "genuine_mean": 0.9362425804138184,
+      "impostor_mean": 0.7986528277397156,
+      "genuine_n": 100,
+      "impostor_n": 100
+    }
+  ]
+}

@@ -19,7 +19,7 @@ from pathlib import Path
 import torch
 import torch.nn.functional as F
 
-from src.dataset import IdentityIndex, build_transform, sample_episode
+from src.dataset import IdentityIndex, build_transform, sample_episode, preload_images
 from src.model import (ProtoNetEncoder, build_prototypes, euclidean_logits,
                        cosine_logits, build_encoder, BACKBONE_NORM)
 
@@ -88,6 +88,10 @@ def main():
                     default="mobilenetv3",
                     help="Feature backbone. dinov2_*/clip_* download weights on "
                          "first use and require no TIDL/ONNX constraints.")
+    ap.add_argument("--grad_accum", type=int, default=1,
+                    help="Gradient accumulation steps. Effective batch = grad_accum "
+                         "episodes. Use 4-8 to increase effective batch size without "
+                         "extra memory cost.")
     ap.add_argument("--metric", choices=["euclidean", "cosine"], default="euclidean",
                     help="euclidean = Bregman-justified ProtoNet (Snell et al.).")
     ap.add_argument("--no_l2norm", action="store_true",
@@ -103,6 +107,14 @@ def main():
                          "Queries still come from train/val.")
     ap.add_argument("--freeze_backbone_epochs", type=int, default=2,
                     help="Train only the projection head for the first E epochs")
+    ap.add_argument("--hard_negatives", default=None,
+                    help="Comma-separated identity names guaranteed to co-occur "
+                         "in hard-negative episodes (Phase 2 mining).")
+    ap.add_argument("--hard_negative_p", type=float, default=0.5,
+                    help="Fraction of episodes that are hard-negative episodes. Default 0.5.")
+    ap.add_argument("--resume", default=None,
+                    help="Path to a checkpoint to warm-start from (Phase 2: load Phase 1 "
+                         "weights into both backbone and head before training).")
     args = ap.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -136,8 +148,20 @@ def main():
                                    mean=norm_mean, std=norm_std)
                    if support_index else None)
 
-    model = build_encoder(args.backbone, embed_dim=args.embed_dim, pretrained=True,
+    model = build_encoder(args.backbone, embed_dim=args.embed_dim,
+                          pretrained=(args.resume is None),
                           l2_normalize=normalize).to(device)
+    if args.resume:
+        import torch as _t
+        ckpt = _t.load(args.resume, map_location=device, weights_only=True)
+        model.load_state_dict(ckpt["model"])
+        print(f"Resumed from {args.resume} | val_acc={ckpt.get('val_acc', '?'):.4f} epoch={ckpt.get('epoch', '?')}")
+
+    # Preload all images into RAM to eliminate NAS/disk open latency
+    _preload_indices = [train_index, val_index]
+    if support_index:
+        _preload_indices.append(support_index)
+    preload_images(*_preload_indices)
 
     if args.paper_schedule:
         # Snell et al.: Adam, lr 1e-3, halve every 2000 episodes, no weight decay
@@ -158,6 +182,11 @@ def main():
     if args.k_shot_range:
         print(f"Shot-robust training: K sampled per-episode from {args.k_shot_range}")
 
+    hard_neg_list = ([n.strip() for n in args.hard_negatives.split(",") if n.strip()]
+                     if args.hard_negatives else [])
+    if hard_neg_list:
+        print(f"Phase-2 hard-negative mining: p={args.hard_negative_p} | {hard_neg_list}")
+
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
     best_acc = 0.0
@@ -168,19 +197,23 @@ def main():
             p.requires_grad = not frozen
 
         t0, losses, accs = time.time(), [], []
-        for _ in range(args.episodes_per_epoch):
+        optim.zero_grad()
+        for ep_idx in range(args.episodes_per_epoch):
             k = (random.choice(args.k_shot_range) if args.k_shot_range
                  else args.k_shot)
             loss, acc = run_episode(model, train_index, train_tfm,
                                     args.n_way, k, args.q_query, device,
                                     args.metric, normalize,
                                     support_index=support_index,
-                                    support_tfm=support_tfm)
-            optim.zero_grad()
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
-            optim.step()
-            sched.step()
+                                    support_tfm=support_tfm,
+                                    hard_negatives=hard_neg_list,
+                                    hard_negative_p=args.hard_negative_p)
+            (loss / args.grad_accum).backward()
+            if (ep_idx + 1) % args.grad_accum == 0:
+                torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
+                optim.step()
+                sched.step()
+                optim.zero_grad()
             losses.append(loss.item())
             accs.append(acc.item())
 

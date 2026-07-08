@@ -1,5 +1,0 @@
-platform/
-*.log
-.*
-!.gitignore
-!CMakeLists.txt

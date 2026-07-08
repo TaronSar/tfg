@@ -1,0 +1,25 @@
+{
+  "checkpoint": "checkpoints_dinov2_vits14_enrollment\\best.pth",
+  "backbone": "dinov2_vits14",
+  "data_root": "C:\\Users\\tsa3\\Desktop\\TFG\\protonet_uav\\data\\uav_dataset_yolox_crops",
+  "split": "val",
+  "gallery_split": "val",
+  "k_shot": 5,
+  "degrade_p": 0.0,
+  "degrade_px": [
+    46,
+    143
+  ],
+  "agg": "mean",
+  "n_boot": 2000,
+  "seed": 42,
+  "n_identities": 15,
+  "skipped": [],
+  "global_auc": 0.9756,
+  "global_eer": 0.081,
+  "global_auc_ci": [
+    0.9686,
+    0.982
+  ],
+  "run_utc": "2026-07-07T14:17:00+00:00"
+}

@@ -1,0 +1,6 @@
+EAGLE Version 7.5.0 Copyright (c) 1988-2015 CadSoft
+List of signals with lengthSignal	l [mm]	diff. [mm]	diff. [%]	unrouted [mm]
+IMX_DMCK_N	38.129023941	0.000000000	0.000	--
+IMX_DMO_P	38.143237503	0.014213562	0.037	--
+IMX_DMO_N	38.143237503	0.014213562	0.037	--
+IMX_DMCK_P	38.187602584	0.058578644	0.154	--

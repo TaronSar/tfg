@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "ninja",
+            "args": [
+                "DAA_SIL_linux__sil"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/code/project/build"
+            }
+        },
+        {
+            "label": "cmake-configure-clang",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "cmake.clang"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/code/project"
+            }
+        }
+    ]
+}

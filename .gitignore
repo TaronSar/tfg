@@ -8,13 +8,12 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*$py.class
 
-# Editor / OS
-.vscode/
-.DS_Store
-Thumbs.db
+# Video files
+*.mp4
+*.avi
+*.mov
+*.mkv
 
-# Files exceeding GitHub's 100MB limit
-protonet_uav/videoplayback.mp4
+# Files exceeding GitHub's 100MB hard limit
 protonet_uav/uav_models/morok_uav_drone_3d_model/morok_uav_drone_3d_model.glb

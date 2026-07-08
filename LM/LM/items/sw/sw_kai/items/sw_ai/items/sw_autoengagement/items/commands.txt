@@ -1,0 +1,122 @@
+===============================================================
+ WORKING DIRECTORY (run all commands from here)
+===============================================================
+cd "C:\Users\tsa3\Desktop\TFG\LM\LM\items\sw\sw_kai\items\sw_ai\items\sw_autoengadgement\items"
+$env:PYTHONPATH = "."
+
+===============================================================
+ NAS PATHS
+===============================================================
+NAS datasets root (Windows via rclone Z:):
+  Z:\Pool_IA\IA_Dataset\datasets\uav-few-shot-identification\
+
+NAS datasets root (Linux server / SSH):
+  /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/
+
+Active training dataset:
+  Windows: Z:\Pool_IA\IA_Dataset\datasets\uav-few-shot-identification\uav_dataset_yolox_crops
+  Linux:   /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_dataset_yolox_crops
+
+Mount NAS (if not already mounted):
+  rclone mount nas: Z: --vfs-cache-mode full --no-console
+
+===============================================================
+ 1. ADD IMAGES TO THE DATASET
+===============================================================
+# Windows -> NAS (via Z: mount, just copy in Explorer or):
+Copy-Item -Recurse my_new_identity "Z:\Pool_IA\IA_Dataset\datasets\uav-few-shot-identification\uav_dataset_yolox_crops\train\"
+
+# On the server (SSH):
+# cp -r /path/to/my_new_identity /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_dataset_yolox_crops/train/
+
+===============================================================
+ 2. AUDIT THE DATASET
+===============================================================
+# Windows:
+uv run python scripts/audit_dataset.py `
+  --data_root "Z:\Pool_IA\IA_Dataset\datasets\uav-few-shot-identification\uav_dataset_yolox_crops"
+
+# Server:
+# PYTHONPATH=. uv run python scripts/audit_dataset.py \
+#   --data_root /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_dataset_yolox_crops
+
+===============================================================
+ 3. REBUILD EXCLUSION LIST  (only when adding new YOLOX crops)
+===============================================================
+# Windows:
+uv run python scripts/filter_small_crops.py `
+  --data_root "Z:\Pool_IA\IA_Dataset\datasets\uav-few-shot-identification\uav_dataset_yolox_crops" `
+  --out data/annotations/excluded_crops.json
+
+# Server:
+# PYTHONPATH=. uv run python scripts/filter_small_crops.py \
+#   --data_root /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_dataset_yolox_crops \
+#   --out data/annotations/excluded_crops.json
+
+===============================================================
+ 4. TRAIN  (logs to MLflow automatically -> http://192.168.2.1:5000)
+===============================================================
+# Windows:
+uv run python scripts/train.py `
+  --data_root "Z:\Pool_IA\IA_Dataset\datasets\uav-few-shot-identification\uav_dataset_yolox_crops" `
+  --exclude_json data/annotations/excluded_crops.json `
+  --n_way 15 --test_n_way 5 --k_shot_range "1,3,5,10,15"
+
+# Server:
+# PYTHONPATH=. uv run python scripts/train.py \
+#   --data_root /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_dataset_yolox_crops \
+#   --exclude_json data/annotations/excluded_crops.json \
+#   --n_way 15 --test_n_way 5 --k_shot_range "1,3,5,10,15"
+
+===============================================================
+ 5. EVALUATE  (writes data/eval/ + logs to MLflow)
+===============================================================
+# Windows:
+uv run python scripts/evaluate.py `
+  --data_root "Z:\Pool_IA\IA_Dataset\datasets\uav-few-shot-identification\uav_dataset_yolox_crops" `
+  --exclude_json data/annotations/excluded_crops.json `
+  --checkpoint models/00_train/best.pth `
+  --split val --gallery_split enrollment --agg mean
+
+# Server:
+# PYTHONPATH=. uv run python scripts/evaluate.py \
+#   --data_root /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_dataset_yolox_crops \
+#   --exclude_json data/annotations/excluded_crops.json \
+#   --checkpoint models/00_train/best.pth \
+#   --split val --gallery_split enrollment --agg mean
+
+===============================================================
+ 6. RECORD THE EXPERIMENT
+===============================================================
+uv run dvc push
+git add dvc.lock data/annotations/excluded_crops.json data/eval/ models/
+git commit -m "experiment: ..."
+git push origin feature/3099-sw-autoengadgement
+
+===============================================================
+ 7. TEST WITH NEW UAV IMAGES / VIDEOS  (client-side runtime)
+===============================================================
+# Enroll a target (produces gallery.npy)
+uv run python scripts/enroll.py --images my_ref_photos/ --out gallery.npy
+
+# Identify YOLOX-cropped query images
+uv run python scripts/identify.py --gallery gallery.npy --images query_crops/
+
+# Live video scoring
+uv run python scripts/demo_video_identity_scores.py --gallery gallery.npy --video uav.mp4
+
+===============================================================
+ SYNC NAS CLONE (after committing code changes on Windows)
+===============================================================
+cd "C:\Users\tsa3\Desktop\TFG\LM\LM"
+$prev = "<last-NAS-commit-sha>"   # e.g. e5a23e2
+git bundle create "$env:TEMP\upd.bundle" "${prev}..HEAD"
+scp "$env:TEMP\upd.bundle" truenas:/tmp/upd.bundle
+ssh truenas "cd /mnt/Pool_IA/home/vision/tsa3/LM && git bundle unbundle /tmp/upd.bundle && git reset --hard <new-sha> && rm /tmp/upd.bundle"
+Remove-Item "$env:TEMP\upd.bundle" -Force
+
+NAS mount:
+Stop-Service RcloneNAS
+Start-Service RcloneNAS
+Restart-Service RcloneNAS
+Get-Service RcloneNAS

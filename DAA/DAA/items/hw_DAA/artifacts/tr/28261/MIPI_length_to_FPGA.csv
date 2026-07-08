@@ -1,0 +1,6 @@
+EAGLE Version 7.5.0 Copyright (c) 1988-2015 CadSoft
+List of signals with lengthSignal	l [mm]	diff. [mm]	diff. [%]	unrouted [mm]
+MIPI_S_D0_P	56.117545443	0.000000000	0.000	--
+MIPI_S_D0_N	56.117545443	0.000000000	0.000	--
+MIPI_S_CLK_P	56.206275606	0.088730163	0.158	--
+MIPI_S_CLK_N	56.206275606	0.088730163	0.158	--

@@ -1,0 +1,2 @@
+identity,source,support_images,query_frames,mean_score,max_score,topk_frame_mean,min_score
+without_bg,data\demo\video_demo_enrollment\without_bg,5,80,-0.016370641067624092,0.03109844960272312,0.013233556412160397,-0.07089051604270935

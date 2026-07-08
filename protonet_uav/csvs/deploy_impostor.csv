@@ -1,0 +1,6 @@
+frame,detected,det_conf,crop_px,score,verdict
+crop_0001.jpg,0,0.0,0,,NO_DETECTION
+crop_0006.jpg,0,0.0,0,,NO_DETECTION
+crop_0008.jpg,0,0.0,0,,NO_DETECTION
+crop_0017.jpg,0,0.0,0,,NO_DETECTION
+crop_0022.jpg,0,0.0,0,,NO_DETECTION

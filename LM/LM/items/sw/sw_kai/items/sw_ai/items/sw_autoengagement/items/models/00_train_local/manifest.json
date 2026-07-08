@@ -1,0 +1,7 @@
+{
+  "best_val_acc": 0.8129999786615372,
+  "embed_dim": 128,
+  "image_size": 224,
+  "epochs_run": 50,
+  "best_pth_md5": "f27293bb8e2f568adcbedbd1aa09de83"
+}

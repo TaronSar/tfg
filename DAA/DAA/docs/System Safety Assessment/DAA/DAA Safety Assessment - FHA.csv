@@ -1,0 +1,412 @@
+,,,,,,
+,,,,,,
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.1) Sensor Data                        ,,
+,Sub-Function: (1.1.1) Intialization,,,,,
+,1.1.1 T1,Total loss of the intialization function,All Phases ,"Aircraft: 
+- No initial calibration, sensors unusable.
+
+Crew:
+Increased Stress
+Loss of Situational Awareness",Catastrophic,"- Without initialization, all sensors fail, and the pilot must take manual control, risking 
+collision or failure to navigate safely."
+,1.1.1 P2,Partial loss of the intialization ,All Phases ,"Aircraft: 
+- Some sensors uncalibrated, along with partial data loss.
+
+Crew:
+Increased Workload",Major,"- Some sensors available or pilot may still operate with increased vigilance and engage 
+emergency return if necessary.
+"
+,1.1.1 M3,Incorrect intialization data,All Phases ,"Aircraft:
+- Inconsistent calibration data.
+- Unreliable sensor readings.
+
+Crew:
+Increased Workload",Major,"- Errors detected by system self-checks.
+
+- Pilot can intervene if anomalies arise.
+"
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.1) Sensor Data                        ,,
+,Sub-Function: (1.1.2) Data Collection,,,,,
+,1.1.2 T1,Total loss of data collection function,All Phases,"Aircraft: 
+- Complete loss of real-time sensor data.
+
+- Undetected obstacles or changes.
+
+Crew:
+Increased workload
+Loss of Situational Awareness",Hazardeous,"- No backup data source available; critical loss leads to reliance on emergency functions 
+like Return to Home.
+
+- Manual intervention is essential
+"
+,1.1.2 P2,Partial degradation in data collection,All Phases,"Aircraft: 
+- Gaps in data stream
+
+- Intermittent detection of obstacles.
+
+Crew:
+Increased Workload",Major,- Degradation allows time for manual input.
+,1.1.2 M3, Erroneous data collection,All Phases,"Aircraft:
+- Erroneous data collection results in misleading readings
+
+Crew:
+Increased Workload",Major,"- The system may flag errors, allowing the pilot to take corrective action or initiate 
+emergency functions."
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.1) Sensor Data                        ,,
+,Sub-Function: (1.1.3) Signal Processing,,,,,
+,1.1.3 T1,Total loss of signal processing,All Phases,"Aircraft: 
+-  Unfiltered raw data results in overwhelming noise, compromising sensor utility.
+
+Crew:
+Increased workload
+Increased Stress",Hazardeous,"- The pilot may need to navigate without reliable input, risking situational awareness and 
+control."
+,1.1.3 P2,Partial degradation in signal processing,All Phases,"Aircraft: 
+- Some filtering occurs, but significant noise remains, reducing the quality of data.
+
+Crew:
+Increased workload",Major,"- Pilot can still operate the aircraft but may need to rely on manual inputs and possibly 
+invoke emergency protocols."
+,1.1.3 M3,Malfunction resulting in incorrect signal processing ,All Phases,"Aircraft:
+-  Inconsistent filtering results in conflicting data outputs.
+
+Crew:
+Increased Confusion
+Increased workload",Major,"- Alerts are provided for discrepancies, allowing the pilot to intervene and manually adjust 
+as necessary."
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.2) Object Detection and Classifications                        ,,
+,Sub-Function: (1.2.1) Identification,,,,,
+,1.2.1 T1,Loss of ability to identify the danger,All Phases,"Aircraft: 
+- Inability to detect any objects within the flight path, resulting in high collision risks.
+
+Crew:
+Increased Stress
+Loss of Situational Awareness",Catastrophic,"- The pilot must take immediate manual control and may initiate emergency return 
+functions."
+,1.2.1 P2,Partial loss in the identification function,All Phases,"Aircraft: 
+- Some objects detected, but others missed, increasing collision risk.
+
+Crew:
+Increased Workload",Major,"- The pilot has partial data to work with but must remain vigilant 
+and may activate emergency procedures if necessary."
+,1.2.1 M3,Malfunction resulting in incorrect identification,All Phases,"Aircraft:
+- Inconsistent identification leads to false positives or negatives.
+
+Crew:
+Increased Workload",Major,"- The system will alert the pilot to discrepancies, allowing for manual assessment and 
+adjustment."
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.2) Object Detection and Classifications                        ,,
+,Sub-Function: (1.2.2) Categorization,,,,,
+,1.2.2 T1,Complete loss of categorization function,All Phases,"Aircraft: 
+- No categorization of detected objects, leading to improper responses to threats.
+
+Crew:
+Increased Stress
+Loss of Situational Awareness",Catastrophic,"- The pilot's ability to react is compromised, necessitating manual navigation and 
+emergency procedures."
+,1.2.2 P2,Partial loss or degraded categorization capability,All Phases,"Aircraft: 
+- Some categories identified, however, critical classifications may be missed.
+
+Crew:
+Increased Workload",Major,"- Partial information allows for some decision-making, but the pilot must remain vigilant 
+and may initiate emergency functions if threats are misidentified."
+,1.2.2 M3,Categorization sends incorrect data,All Phases,"Aircraft:
+- Incorrect classifications leading to improper maneuvers.
+
+Crew:
+Increased Workload",Major,"- Alerts will signal classification errors, allowing the pilot to intervene as needed."
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.2) Object Detection and Classifications                        ,,
+,Sub-Function: (1.2.3) Anomaly Detection,,,,,
+,1.2.3 T1,Loss of ability to detect anomalies,All Phases,"Aircraft: 
+- Failure to detect unusual or unexpected objects, heightening collision risk.
+
+Crew:
+Increased Stress
+Loss of Situational Awareness",Catastrophic,"- Pilot must take manual control and navigate without assistance, potentially initiating 
+emergency functions."
+,1.2.3 P2,Partial degradation in anomaly detection,All Phases,"Aircraft: 
+- Some anomalies detected, but critical ones may be missed.
+
+Crew:
+Increased Workload",Major,"- The pilot can manage some threats, but must be ready to take evasive action or initiate 
+emergency protocols."
+,1.2.3 M3,Malfunction resulting in incorrect anomaly detection,All Phases,"Aircraft:
+- Erroneous detection or false alarms increase workload.
+
+Crew:
+Increased Stress",Major,"- Alerts for detection errors allow pilots to make necessary adjustments and manually 
+verify anomalies."
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.3) Position and Velocity Estimation of Detected Objects                         ,,
+,Sub-Function: (1.3.1) Position Calculation,,,,,
+,1.3.1 T1,Loss of ability to calculate the position of the object,All Phases,"Aircraft: 
+- Inability to determine the aircraft's position relative to other objects, leading to critical 
+collision risks.
+
+Crew:
+Increased Stress
+Increased Workload",Catastrophic,"- The pilot must take immediate manual control and may initiate emergency return 
+functions."
+,1.3.1 P2,Partial loss in the position data of the object,All Phases,"Aircraft: 
+- Inconsistent position outputs create confusion regarding navigation.
+
+Crew:
+Increased Workload",Major,"- Some position data is available and pilots must remain vigilant and may need to initiate 
+emergency actions if position drift occurs."
+,1.3.1 M3,Malfunction resulting in incorrect position calculation,All Phases,"Aircraft:
+- Inconsistent position outputs create confusion regarding navigation.
+
+Crew:
+Increased Workload",Major,"- The system will alert pilots to inconsistencies, allowing them to make necessary 
+corrections manually."
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.3) Position and Velocity Estimation of Detected Objects                       ,,
+,Sub-Function: (1.3.2) Velocity Estimation ,,,,,
+,1.3.2 T1,Complete loss of velocity estimation function,All Phases,"Aircraft: 
+- Unknown speed and direction of objects increase collision risk.
+
+Crew:
+Increased Stress
+Loss of Situational Awareness",Catastrophic,"- The pilot must manually estimate speeds and take evasive action, possibly initiating 
+emergency procedures."
+,1.3.2 P2,Partial loss or degraded velocity estimation capability,All Phases,"Aircraft: 
+-  Incomplete velocity data increases uncertainty regarding object movements.
+
+Crew:
+Increased Workload",Major,"- Pilots may use partial data to make decisions, but should remain alert to initiate 
+emergency functions if critical data is missing."
+,1.3.2 M3,Estimator sends incorrect velocity estimation,All Phases,"Aircraft:
+- Inconsistent or incorrect speed readings lead to potential misjudgments.
+
+Crew:
+Increased Workload",Major,"- System flags will alert pilots to discrepancies, allowing for manual adjustments."
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.3) Position and Velocity Estimation of Detected Objects                         ,,
+,Sub-Function: (1.3.3) Trajectory Predection,,,,,
+,1.3.3 T1,Loss of ability to predict the trajectory of the object,All Phases,"Aircraft: 
+-  Inability to predict future object paths increases collision risks.
+
+Crew:
+Increased Stress
+Loss of Situational Awareness",Hazardeous,"- The pilot must manually assess trajectories and may initiate emergency return functions 
+if needed.
+"
+,1.3.3 P2,Partial degradation in the predection of the trajectory,All Phases,"Aircraft: 
+-  Limited trajectory predictions may lead to miscalculations in evasive maneuvers.
+
+Crew:
+Increased Workload",Major,"- Some trajectory data allows for action, but pilots must stay vigilant and ready to 
+respond to unexpected changes.
+"
+,1.3.3 M3,"Malfunction resulting in incorrect trajectory predection of the
+object",All Phases,"Aircraft:
+- Erroneous trajectory predictions increase risk of improper responses.
+
+Crew:
+Increased Workload",Major,- Alerts for trajectory errors provide pilots the opportunity to manually intervene.
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.4) Data Fusion and Filtering                     ,,
+,Sub-Function: (1.4.1) Fusion,,,,,
+,1.4.1 T1,Loss of ability to fuison the data collected,All Phases,"Aircraft: 
+- Loss of integrated sensor data.
+
+- Reliance on individual sensors reduces situational awareness.
+
+Crew:
+Increased Workload",Hazardeous,"- The pilot can manually control and assess information but may need to use emergency
+functions if necessary."
+,1.4.1 P2,Partial loss in the fusion function,All Phases,"Aircraft: 
+- Incomplete data fusion results in gaps in information.
+
+Crew:
+Increased Workload",Major,"- Some useful data exists, but pilots must remain alert for potential discrepancies and 
+take corrective actions as necessary."
+,1.4.1 M3,Malfunction resulting in incorrect data fusion,All Phases,"Aircraft:
+- Inconsistent fusion leads to confilicting sensor information.
+
+Crew:
+Increased Workload",Major,- Alerts to fusion errors allow pilots to intervene and verify data manually.
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.4) Data Fusion and Filtering                    ,,
+,Sub-Function: (1.4.2) Filtering,,,,,
+,1.4.2 T1,Complete loss of filtering function,All Phases,"Aircraft: 
+- High levels of noise in sensor data, leading to significant reductions in accuracy.
+
+Crew:
+Increased Workload",Hazardeous,"- The pilot may need to manually navigate using visual cues, risking situational 
+awareness."
+,1.4.2 P2,Partial loss or degraded filtering,All Phases,"Aircraft: 
+- Noise persists but some filtering is applied, leading to moderate data quality.
+
+Crew:
+Increased Workload",Major,"- Pilots can still operate with some data and may need to initiate emergency procedures if
+data quality does not improve."
+,1.4.2 M3,Malfunction resulting in incorrect filtering,All Phases,"Aircraft:
+- Erroneous filtering leads to false positives or negatives.
+
+Crew:
+Increased Workload",Major,- System alerts will allow pilots to correct course based on perrceived inconsistencies.
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.4) Data Fusion and Filtering                   ,,
+,Sub-Function: (1.4.3) Consistency Check,,,,,
+,1.4.3 T1,Loss of ability to consistency check,All Phases,"Aircraft: 
+- Inconsistent sensor data without verfication reduces trust in situational awareness.
+
+Crew:
+Increased Workload",Hazardeous,- The pilot can rely on their judgment and initiate emergency return if necessary.
+,1.4.3 P2,Partial degradation in consistency check,All Phases,"Aircraft: 
+- Limited data verification leads to increased potentialo for conflicting information.
+
+Crew:
+Increased Workload",Major,- Alerts notify pilots of inconsistencies and manage flight paths accordingly.
+,1.4.3 M3,Malfunction resulting in incorrect consistency check,All Phases,"Aircraft:
+- Inconsistent checks result in unreliable data.
+
+Crew:
+Increased Workload",Major,- Alerts will prompt pilots to verify inconsistencies and manage flight paths accordingly.
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.5) Threat Level Assessment                      ,,
+,Sub-Function: (1.5.1) Proximity Analysis ,,,,,
+,1.5.1 T1,Complete loss of proximity analysis ,All Phases,"Aircraft: 
+- Inability to calculate distances to nearby objects increases collision risk significantly.
+
+Crew:
+Increased Workload",Catastrophic,- The pilot must take control immediately and may need to invoke emergency functions.
+,1.5.1 P2,Partial loss in the proximity analysis function,All Phases,"Aircraft: 
+- Limited proximity data, raising the possibility of undected nearby threats.
+
+Crew:
+Increased Workload",Hazardeous,"- Some proximity data available.
+
+- The pilot should prepare for emergency action if required."
+,1.5.1 M3,Malfunction resulting in incorrect proximity analysis,All Phases,"Aircraft:
+- Inaccurate distance measurements increase the likehood of collision.
+
+Crew:
+Increased Workload",Major,- Alerts for proximity errors enable pilots to correct course and manage navigation.
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.5) Threat Level Assessment                    ,,
+,Sub-Function: (1.5.2) Collision Estimation,,,,,
+,1.5.2 T1,Complete loss of collision estimation,All Phases,"Aircraft: 
+- Inability to assess collision risk leads to heightened potential for mid-air incidents.
+
+Crew:
+Increased Workload
+Increased Stress",Catastrophic,- Critical loss necessitates manual navigation and potential emergency procedures.
+,1.5.2 P2,Partial loss or degraded collision estimation,All Phases,"Aircraft: 
+- Limited collision estimation may lead to missed threats.
+
+Crew:
+Increased Workload
+Increased Confusion",Hazardeous,"- Some collision data exists, enabling pilots to monitor risks and potentially execute 
+emergency maneuvers."
+,1.5.2 M3,Malfunction resulting in incorrect collision estimation,All Phases,"Aircraft:
+- Incorrect collision assessments may mislead pilots into unnecessary evasive actions
+
+Crew:
+Increased Workload",Major,- Alerts for errors allow pilots to confirm or adjust actions as necessary.
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.5) Threat Level Assessment                   ,,
+,Sub-Function: (1.5.3) Priority Ranking,,,,,
+,1.5.3 T1,Loss of ability to priority rank,All Phases,"Aircraft: 
+- Inability to prioritize threats results in critical misjudgments
+
+Crew:
+Increased Workload",Catastrophic,"- Manual control is essential.
+
+- Emergency functions may be necessary to ensure safety."
+,1.5.3 P2,Partial degradation in priorty ranking,All Phases,"Aircraft: 
+- Incomplete threat assessments may delay appropriate responses to critical risks.
+
+Crew:
+Increased Workload",Major,"- Some priority data allows pilots to respond, but vigilance and manual adjustments 
+are needed."
+,1.5.3 M3,Malfunction resulting in incorrect priority ranking,All Phases,"Aircraft:
+- Erroneous prioritization of threats increases risk of focusing on less critical issues.
+
+Crew:
+Increased Workload",Major,"- Alerts notify pilots of discrepancies, enabling manual re-assessment of priorities."
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.6) Enviroment Sensing                    ,,
+,Sub-Function: (1.6.1) Weather Acquisition,,,,,
+,1.6.1 T1,Complete loss of weather acquisition,All Phases,"Aircraft: 
+- Complete lack of weather data, risking exposure to hazardous conditions.
+
+Crew:
+Increased Workload
+Increased Stress",Catastrophic,"- The pilot must manually navigate, potentially invoking emergency return protocols if 
+necessary."
+,1.6.1 P2,Partial loss in the weather acquisition function,All Phases,"Aircraft: 
+- Limited weather data may lead to encountering unexpected severe conditions.
+
+Crew:
+Increased Workload",Hazardeous,"- The pilot can utilize partial weather data to navigate but must stay alert and prepared for 
+emergency actions."
+,1.6.1 M3,Malfunction resulting in incorrect weather acquisition,All Phases,"Aircraft:
+- Inaccurate weather readings increase the risk of misjudging environmental conditions.
+
+Crew:
+Increased Workload",Major,- Alerts for weather inconsistencies provide pilots the opportunity to reassess and adjust.
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.6) Enviroment Sensing                    ,,
+,Sub-Function: (1.6.2) Terrain Mapping ,,,,,
+,1.6.2 T1,Loss of terrain mapping function ,All Phases,"Aircraft: 
+- Lack of terrian data increases risk of collisions with unseen obstacles.
+
+Crew:
+Increased Workload
+Loss of situation awareness",Catastrophic,"- The pilot must use visual navigation, potentially invoking emergency return functions."
+,1.6.2 P2,Partial loss or degraded terrian mapping ,All Phases,"Aircraft: 
+- Incomplete terrain data may lead to undetected hazards.
+
+Crew:
+Increased Workload
+Increased Confusion",Hazardeous,"- Some terrain data allows for informed navigation, but pilots must stay alert and prepared
+for emergencies."
+,1.6.2 M3,Malfunction resulting in incorrect terrian mapping,All Phases,"Aircraft:
+- Erroneous terrain data may lead to undetected hazards.
+
+Crew:
+Increased Workload",Major,- System alerts allow pilots to check for discrepancies and correct navigation.
+,1,2,3,4,5,6
+,ID#,Failure Condition,Flight Phase,Effects of failure condition on aircraft and crew,Severity Classification,Assumptions or Rationale
+,Aircraft Function: (1) Detect                        ,,,Sub-Function: (1.6) Enviroment Sensing                   ,,
+,Sub-Function: (1.6.3) Hazard Detection,,,,,
+,1.6.3 T1,Loss of ability to detect hazards ,All Phases,"Aircraft: 
+- Failure to detect enviromental hazards significantly increases operational risk.
+
+Crew:
+Increased Workload",Hazardeous,- Critical failure necessitates manual monitoring and potential emergency return.
+,1.6.3 P2,Partial degradation in hazard detection,All Phases,"Aircraft: 
+- Limited hazard detection may miss critical threats.
+
+Crew:
+Increased Workload",Major,"- Partial detection allows for some threat assessment, but vigilance is essential."
+,1.6.3 M3,Malfunction resulting in incorrect hazard detection,All Phases,"Aircraft:
+- Inaccurate hazard detection results in false alarms or missed threats.
+
+Crew:
+Increased Workload",Major,"- Alerts notify pilots of detection issues, enabling manual verification of hazards from path."

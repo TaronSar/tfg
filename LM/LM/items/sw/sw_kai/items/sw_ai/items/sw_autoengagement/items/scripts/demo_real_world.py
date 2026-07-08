@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.uavid.common.constants import IMG_EXTS
 from src.uavid.common.transforms import build_transform
 from src.uavid.dataset import load_image
-from src.uavid.model import ProtoNetEncoder, attention_prototype
+from src.uavid.model import ProtoNetEncoder, attention_prototype, build_encoder, BACKBONE_NORM
 
 
 @torch.no_grad()
@@ -33,10 +33,12 @@ def load_model(checkpoint, device):
     embed_dim = ckpt.get("embed_dim", 128)
     image_size = ckpt.get("image_size", 224)
     normalize = ckpt.get("l2_normalize", True)
-    model = ProtoNetEncoder(embed_dim=embed_dim, pretrained=False, l2_normalize=normalize)
+    backbone = ckpt.get("backbone", "mobilenetv3")
+    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=False, l2_normalize=normalize)
     model.load_state_dict(ckpt["model"])
     model.eval().to(device)
-    return model, image_size, normalize, ckpt
+    norm_mean, norm_std = BACKBONE_NORM[backbone]
+    return model, image_size, normalize, ckpt, norm_mean, norm_std
 
 
 def score_queries(query_embeddings, gallery, normalize, agg, tau):
@@ -86,8 +88,8 @@ def main():
     args = parser.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model, image_size, normalize, ckpt = load_model(args.checkpoint, device)
-    transform = build_transform(image_size, train=False)
+    model, image_size, normalize, ckpt, norm_mean, norm_std = load_model(args.checkpoint, device)
+    transform = build_transform(image_size, train=False, mean=norm_mean, std=norm_std)
 
     enrollment_paths = image_paths(args.enrollment)
     if not enrollment_paths:

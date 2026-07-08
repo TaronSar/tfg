@@ -1,0 +1,2 @@
+identity,source,support_images,query_frames,mean_score,max_score,topk_frame_mean,min_score
+skywalker_x8,Z:\Pool_IA\IA_Dataset\datasets\uav-few-shot-identification\demo\video_demo_enrollment\skywalker_x8,4,20,-1.566786527633667,-1.1550517082214355,-1.2846614122390747,-2.087141513824463

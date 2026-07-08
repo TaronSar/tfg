@@ -1,0 +1,2 @@
+identity,source,support_images,query_frames,mean_score,max_score,topk_frame_mean,min_score
+impostor,data\demo\video_demo\impostor,5,70,-0.2318790704011917,0.42715102434158325,0.192334845662117,-0.5712988376617432

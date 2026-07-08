@@ -1,0 +1,75 @@
+Device: cuda
+Train: 36 identities | images per identity: min=96 max=96 total=3456
+Val:   11 identities | images per identity: min=96 max=96 total=1056
+Support (enrollment): 31 identities | images per identity: min=96 max=96 total=2976
+Mixed-domain train identities: 20 shared train/support
+Mixed-domain val identities:   11 shared val/support
+Metric: euclidean | L2-normalize: True | train-way: 15 -> test-way: 5
+Shot-robust training: K sampled per-episode from [1, 3, 5, 10, 15]
+epoch 001 | loss 2.5365 | train acc 0.156 | val acc 0.386 | 193.6s | backbone frozen
+  -> new best (0.386) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 002 | loss 2.3763 | train acc 0.213 | val acc 0.439 | 181.5s | backbone frozen
+  -> new best (0.439) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 003 | loss 2.0882 | train acc 0.314 | val acc 0.534 | 193.2s
+  -> new best (0.534) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 004 | loss 1.8659 | train acc 0.402 | val acc 0.564 | 187.2s
+  -> new best (0.564) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 005 | loss 1.7744 | train acc 0.457 | val acc 0.570 | 189.6s
+  -> new best (0.570) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 006 | loss 1.7137 | train acc 0.503 | val acc 0.586 | 214.9s
+  -> new best (0.586) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 007 | loss 1.6627 | train acc 0.529 | val acc 0.602 | 221.7s
+  -> new best (0.602) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 008 | loss 1.6188 | train acc 0.551 | val acc 0.615 | 272.3s
+  -> new best (0.615) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 009 | loss 1.5585 | train acc 0.593 | val acc 0.614 | 349.1s
+epoch 010 | loss 1.5367 | train acc 0.604 | val acc 0.621 | 378.4s
+  -> new best (0.621) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 011 | loss 1.5196 | train acc 0.614 | val acc 0.613 | 367.9s
+epoch 012 | loss 1.4995 | train acc 0.626 | val acc 0.610 | 327.2s
+epoch 013 | loss 1.4793 | train acc 0.637 | val acc 0.618 | 242.6s
+epoch 014 | loss 1.4553 | train acc 0.662 | val acc 0.604 | 238.1s
+epoch 015 | loss 1.4446 | train acc 0.675 | val acc 0.606 | 216.1s
+epoch 016 | loss 1.4217 | train acc 0.695 | val acc 0.617 | 223.5s
+epoch 017 | loss 1.4146 | train acc 0.702 | val acc 0.613 | 191.1s
+epoch 018 | loss 1.4093 | train acc 0.710 | val acc 0.611 | 217.9s
+epoch 019 | loss 1.3960 | train acc 0.727 | val acc 0.629 | 194.7s
+  -> new best (0.629) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 020 | loss 1.3894 | train acc 0.733 | val acc 0.624 | 205.8s
+epoch 021 | loss 1.3785 | train acc 0.750 | val acc 0.603 | 213.6s
+epoch 022 | loss 1.3665 | train acc 0.770 | val acc 0.624 | 219.0s
+epoch 023 | loss 1.3594 | train acc 0.772 | val acc 0.632 | 201.4s
+  -> new best (0.632) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 024 | loss 1.3648 | train acc 0.772 | val acc 0.620 | 193.6s
+epoch 025 | loss 1.3430 | train acc 0.795 | val acc 0.631 | 217.4s
+epoch 026 | loss 1.3438 | train acc 0.791 | val acc 0.623 | 223.9s
+epoch 027 | loss 1.3352 | train acc 0.805 | val acc 0.624 | 199.3s
+epoch 028 | loss 1.3215 | train acc 0.812 | val acc 0.619 | 202.7s
+epoch 029 | loss 1.3296 | train acc 0.807 | val acc 0.629 | 186.4s
+epoch 030 | loss 1.3139 | train acc 0.827 | val acc 0.633 | 200.2s
+  -> new best (0.633) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 031 | loss 1.3158 | train acc 0.826 | val acc 0.621 | 198.8s
+epoch 032 | loss 1.3099 | train acc 0.828 | val acc 0.623 | 188.2s
+epoch 033 | loss 1.2984 | train acc 0.842 | val acc 0.633 | 197.2s
+  -> new best (0.633) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 034 | loss 1.3020 | train acc 0.836 | val acc 0.627 | 191.8s
+epoch 035 | loss 1.2977 | train acc 0.843 | val acc 0.632 | 186.5s
+epoch 036 | loss 1.2910 | train acc 0.853 | val acc 0.631 | 195.8s
+epoch 037 | loss 1.2915 | train acc 0.851 | val acc 0.635 | 190.7s
+  -> new best (0.635) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 038 | loss 1.2830 | train acc 0.856 | val acc 0.633 | 196.3s
+epoch 039 | loss 1.2860 | train acc 0.857 | val acc 0.627 | 194.0s
+epoch 040 | loss 1.2769 | train acc 0.866 | val acc 0.636 | 197.8s
+  -> new best (0.636) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 041 | loss 1.2852 | train acc 0.859 | val acc 0.628 | 193.8s
+epoch 042 | loss 1.2853 | train acc 0.854 | val acc 0.627 | 186.0s
+epoch 043 | loss 1.2746 | train acc 0.868 | val acc 0.621 | 198.1s
+epoch 044 | loss 1.2771 | train acc 0.865 | val acc 0.616 | 203.4s
+epoch 045 | loss 1.2780 | train acc 0.865 | val acc 0.645 | 207.5s
+  -> new best (0.645) saved to checkpoints_mixed_domain_enrollment_support_15way\best.pth
+epoch 046 | loss 1.2788 | train acc 0.867 | val acc 0.633 | 200.7s
+epoch 047 | loss 1.2816 | train acc 0.856 | val acc 0.622 | 191.9s
+epoch 048 | loss 1.2754 | train acc 0.866 | val acc 0.628 | 204.2s
+epoch 049 | loss 1.2707 | train acc 0.867 | val acc 0.611 | 219.6s
+epoch 050 | loss 1.2756 | train acc 0.866 | val acc 0.633 | 201.9s
+Done. Best val acc: 0.645

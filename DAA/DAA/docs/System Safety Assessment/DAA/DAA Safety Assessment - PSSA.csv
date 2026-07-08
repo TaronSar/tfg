@@ -1,0 +1,88 @@
+,,,,,
+,,Preliminary System Safety Assessment (PSSA),,,
+,ID#,Failure Condition,Potential Cause(s),Safety Requirements/Objectives,Mitigation/Control Measures
+,1,Total loss of the initialization function,"Sensor initialization failure, software error in calibration 
+process","- Ensure that all sensors are calibrated and 
+operational before flight. 
+
+- Loss of function should trigger manual takeover.","- Implement redundant initialization procedures with 
+self-checks and alerts to notify the pilot of any 
+initialization issues."
+,2,Total loss of data collection function,Complete sensor failure or data bus failure,"- Maintain real-time data collection. 
+
+- Immediate alert to the pilot for manual 
+intervention if data collection fails.","- Implement redundant data collection systems with 
+cross-verification and immediate alert notifications for 
+manual navigation.
+"
+,3,Total loss of signal processing,"Processing module failure, software or hardware error","- Ensure processed sensor data is accurate and 
+noise-free.
+
+- Fallback to manual intervention if 
+processing fails.","- Implement redundant processing systems; error 
+detection to notify pilot and switch to alternative data 
+if processing fails."
+,4,Loss of ability to identify the danger,Sensor failure or signal interference,"- Ensure reliable identification of objects.
+
+- Initiate manual control upon detection loss.","- Implement redundant identification systems.
+
+- Cross-verification and alert to pilot for immediate 
+manual intervention."
+,5,Complete loss of categorization function,Categorization algorithm failure or data corruption,"- Ensure fallback categorization or manual 
+override.
+ 
+- Pilot notified of categorization failure.","- Implement redundant categorization algorithms with 
+alerts to pilot for manual categorization when needed."
+,,,,,
+,6,Loss of ability to detect anomalies,Software malfunction in anomaly detection module,"- Ensure system reliably detects anomalous 
+objects.
+
+- Pilot alerted for manual control if detection fails.","- Redundant anomaly detection algorithms with alerts
+and error notifications to pilot to monitor manually."
+,7,Loss of ability to calculate position,Sensor failure or algorithm malfuntion,"- Maintain accurate positioning.
+
+- Notify pilot for immediate manual control if 
+calculation fails.","
+- Redundant position calculation algorthims with alerts
+to pilot to manage navigation if critical positiong issue
+is detected.
+"
+,8,Complete loss of velocity estimation,Velocity estimation algorithm failure or sensor malfunction,"- Ensure accurate velocity data. 
+
+- Notify pilot to take manual control if velocity 
+estimation fails.","
+- Redundant velocity estimation systems with alerts 
+for manual control if velocity estimation fails
+"
+,9,Complete loss of proximity analysis ,Algorithm failure or sensor data loss,"- Ensure pilot is notified for manual takeover 
+upon proximity analysis failure.","
+- Redundant proximity analysis algorthims with alerts
+for manual takeover if system cannot maintain 
+accurate proximity data.
+"
+,10,Complete loss of collision estimation,Collision estimation algorthim failure ,"- Ensure pilot is notified to take manual control 
+upon collision estimation failure","
+- Redundant threat ranking algorthims with cross-
+verification and alerts for emergency pilot intervention.
+"
+,,,,,
+,11,Loss of ability to priority rank threats,Ranking algorithm failure or data corruption,"- Ensure pilot can manually prioritize threats if
+ranking fails. ","- Redundant threat ranking algorithms with cross-
+verification and alerts for emergency pilot assessment 
+and manual prioritization."
+,12,Complete loss of weather acquisition,Weather sensor failure or communication loss," - Provide alerts for manual weather monitoring 
+if system loses weather data.","- Redundant weather sensors with alerts to pilot to 
+monitor weather manually if automatic weather 
+acquisition fails."
+,13,Loss of terrain mapping function,"Sensor failure or algorithm malfunction in terrain data
+processing","- Enable manual navigation.
+
+- Pilot notified for immediate situational 
+awareness.","
+- Redundant terrian mapping systems with alerts to 
+pilot for manual navigation and terrain awareness if 
+terrain data is lost.
+"
+,14,Loss of hazard detection ability,Hazard detection algorthim failure or sesnor malfunction,"- Provide alerts for manual hazard detection if 
+automated detection fails. ","- Redundant hazard detection algorthims with alerts
+for pilot to monitor hazards manually."

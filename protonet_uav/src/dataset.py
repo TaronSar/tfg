@@ -26,7 +26,32 @@ IMAGENET_STD  = [0.229, 0.224, 0.225]
 # CLIP (OpenAI) visual encoder normalisation — different from ImageNet.
 CLIP_MEAN = [0.48145466, 0.4578275,  0.40821073]
 CLIP_STD  = [0.26862954, 0.26130258, 0.27577711]
+# ---------------------------------------------------------------------------
+# Module-level image cache — populated by preload_images() before training.
+# ---------------------------------------------------------------------------
+_IMAGE_CACHE: dict = {}
 
+
+def preload_images(*indices) -> None:
+    """Preload all images from the given IdentityIndex objects into RAM.
+
+    Eliminates per-file NAS open latency. The dataset is typically only a few
+    MB of small JPEG crops and fits comfortably in RAM.  Safe to call multiple
+    times; already-cached paths are skipped.
+    """
+    from pathlib import Path as _Path
+    all_paths: set = set()
+    for index in indices:
+        for imgs in index.identities.values():
+            all_paths.update(imgs)
+    to_load = all_paths - _IMAGE_CACHE.keys()
+    if not to_load:
+        return
+    print(f"Preloading {len(to_load)} images into RAM...")
+    for p in to_load:
+        with Image.open(p) as im:
+            _IMAGE_CACHE[p] = im.convert("RGB").copy()
+    print(f"  cached {len(_IMAGE_CACHE)} images total")
 
 class DegradeToOperational:
     """Simulate the operational pixel envelope.
@@ -124,17 +149,38 @@ class IdentityIndex:
 
 
 def load_image(path: Path, tfm) -> torch.Tensor:
+    if path in _IMAGE_CACHE:
+        return tfm(_IMAGE_CACHE[path])
     with Image.open(path) as im:
         return tfm(im.convert("RGB"))
 
 
 def sample_episode(index: IdentityIndex, tfm, n_way: int, k_shot: int,
                    q_query: int, support_index: IdentityIndex | None = None,
-                   support_tfm=None):
-    """Returns support (N*K,C,H,W), support_labels, query (N*Q,C,H,W), query_labels."""
+                   support_tfm=None,
+                   hard_negatives=None, hard_negative_p: float = 0.5):
+    """Returns support (N*K,C,H,W), support_labels, query (N*Q,C,H,W), query_labels.
+
+    Phase-2 hard-negative mining: when hard_negatives is set, with probability
+    hard_negative_p at least 2 of the listed identities (present in the index)
+    are guaranteed to co-occur in the episode.
+    """
+    hard_negatives = hard_negatives or []
+
+    def _choose_with_hard(pool, n):
+        valid_hard = [x for x in hard_negatives if x in pool]
+        if len(valid_hard) >= 2 and random.random() < hard_negative_p:
+            forced = random.sample(valid_hard, min(2, len(valid_hard), n))
+            rest_pool = [x for x in pool if x not in forced]
+            n_rest = max(0, n - len(forced))
+            rest = (random.sample(rest_pool, n_rest)
+                    if len(rest_pool) >= n_rest else rest_pool)
+            return forced + rest
+        return random.sample(pool, min(n, len(pool)))
+
     if support_index is None:
         n_way = min(n_way, len(index))
-        chosen = random.sample(index.names, n_way)
+        chosen = _choose_with_hard(index.names, n_way)
         s_imgs, s_lbls, q_imgs, q_lbls = [], [], [], []
         for c, name in enumerate(chosen):
             pool = index.identities[name]
@@ -158,7 +204,7 @@ def sample_episode(index: IdentityIndex, tfm, n_way: int, k_shot: int,
             f"and support split {support_index.root}"
         )
     n_way = min(n_way, len(names))
-    chosen = random.sample(names, n_way)
+    chosen = _choose_with_hard(names, n_way)
     s_imgs, s_lbls, q_imgs, q_lbls = [], [], [], []
     for c, name in enumerate(chosen):
         support_pool = support_index.identities[name]
