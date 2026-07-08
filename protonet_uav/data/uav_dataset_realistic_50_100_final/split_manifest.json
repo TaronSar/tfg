@@ -1,0 +1,79 @@
+{
+  "train": [
+    "orion_uav_war_thunder",
+    "mq-9_reaper_uav_drone",
+    "drone_uav_wing_desert_camo",
+    "uav",
+    "uav_gerbera_low-poly",
+    "mq_1_predator_uav",
+    "uj-32_lastvika_uav",
+    "neg_aknc_uav",
+    "neg_animated_drone",
+    "neg_bald_eagle_flying_bird_model",
+    "neg_bionic_dragonfly_four-axis_uav_aircraft",
+    "neg_flying_animated_bird",
+    "neg_kf-280_uav",
+    "neg_md-500_defender_helicopter",
+    "neg_pigeon_in_flight",
+    "neg_uav_drone_shop_war_thunder_props",
+    "neg_vampire_uav_babayaga"
+  ],
+  "train_positives": [
+    "orion_uav_war_thunder",
+    "mq-9_reaper_uav_drone",
+    "drone_uav_wing_desert_camo",
+    "uav",
+    "uav_gerbera_low-poly",
+    "mq_1_predator_uav",
+    "uj-32_lastvika_uav"
+  ],
+  "train_negatives": [
+    "neg_aknc_uav",
+    "neg_animated_drone",
+    "neg_bald_eagle_flying_bird_model",
+    "neg_bionic_dragonfly_four-axis_uav_aircraft",
+    "neg_flying_animated_bird",
+    "neg_kf-280_uav",
+    "neg_md-500_defender_helicopter",
+    "neg_pigeon_in_flight",
+    "neg_uav_drone_shop_war_thunder_props",
+    "neg_vampire_uav_babayaga"
+  ],
+  "val": [
+    "general_atomics",
+    "mq-1_uav_war_thunder",
+    "attack_uav",
+    "baykar_k2_kamikaze_uav_-_baykar_k2_kamikaze_iha",
+    "uav_low_poly"
+  ],
+  "enrollment": [
+    "orion_uav_war_thunder",
+    "mq-9_reaper_uav_drone",
+    "drone_uav_wing_desert_camo",
+    "uav",
+    "uav_gerbera_low-poly",
+    "mq_1_predator_uav",
+    "uj-32_lastvika_uav",
+    "general_atomics",
+    "mq-1_uav_war_thunder",
+    "attack_uav",
+    "baykar_k2_kamikaze_uav_-_baykar_k2_kamikaze_iha",
+    "uav_low_poly"
+  ],
+  "note": "neg_* folders are train-only operational negatives: no val split and no enrollment. Positive folders are split into train/val and enrollment is rendered for all positives.",
+  "realistic_postprocess": {
+    "train_variants": 2,
+    "val_variants": 1,
+    "enrollment_variants": 1,
+    "effects": [
+      "crop_jitter",
+      "low_resolution",
+      "motion_blur",
+      "defocus_blur",
+      "haze",
+      "color_jitter",
+      "sensor_noise",
+      "jpeg_artifacts"
+    ]
+  }
+}
