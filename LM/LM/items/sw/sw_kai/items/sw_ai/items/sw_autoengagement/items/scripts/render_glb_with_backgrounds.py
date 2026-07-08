@@ -1,5 +1,5 @@
-"""
-Render UAV GLB models directly over real backgrounds in Blender.
+"""Render UAV GLB models directly over real backgrounds in Blender.
+
 No segmentation/rembg: model and background are rendered natively in Blender.
 
 Example:
@@ -22,7 +22,6 @@ import tempfile
 
 import bpy
 from mathutils import Euler, Matrix, Vector
-
 
 IDENTITIES = [
     "Ukraine_pavilion",
@@ -63,35 +62,57 @@ def parse_args():
     p.add_argument("--seed", type=int, default=123)
     p.add_argument("--distance", type=float, default=38.0)
     p.add_argument("--focal_mm", type=float, default=200.0)
-    p.add_argument("--top_shift", type=float, default=0.22,
-                   help="Look-below offset. Larger -> UAV appears higher in frame")
-    p.add_argument("--jitter_x", type=float, default=0.09,
-                   help="Target jitter in X/Y plane")
-    p.add_argument("--jitter_y", type=float, default=0.05,
-                   help="Vertical jitter around top placement")
-    p.add_argument("--identities", default="all",
-                   help="Comma-separated identities or 'all'")
-    p.add_argument("--limit", type=int, default=0,
-                   help="If >0, render only first N images per identity")
-    p.add_argument("--colorize", choices=["none", "mild"], default="mild",
-                   help="Apply mild body/accent recoloring similar to color_mild_clean")
-    p.add_argument("--degrade", choices=["none", "mild"], default="mild",
-                   help="Apply mild jpeg/quality jitter per frame")
-    p.add_argument("--uav_scale", type=float, default=0.45,
-                   help="Scale factor applied to UAV layer before compositing")
-    p.add_argument("--venv_python",
-                   default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                                        ".venv", "Scripts", "python.exe"),
-                   help="Path to venv Python used for PIL compositing step")
+    p.add_argument(
+        "--top_shift",
+        type=float,
+        default=0.22,
+        help="Look-below offset. Larger -> UAV appears higher in frame",
+    )
+    p.add_argument("--jitter_x", type=float, default=0.09, help="Target jitter in X/Y plane")
+    p.add_argument(
+        "--jitter_y", type=float, default=0.05, help="Vertical jitter around top placement"
+    )
+    p.add_argument("--identities", default="all", help="Comma-separated identities or 'all'")
+    p.add_argument(
+        "--limit", type=int, default=0, help="If >0, render only first N images per identity"
+    )
+    p.add_argument(
+        "--colorize",
+        choices=["none", "mild"],
+        default="mild",
+        help="Apply mild body/accent recoloring similar to color_mild_clean",
+    )
+    p.add_argument(
+        "--degrade",
+        choices=["none", "mild"],
+        default="mild",
+        help="Apply mild jpeg/quality jitter per frame",
+    )
+    p.add_argument(
+        "--uav_scale",
+        type=float,
+        default=0.45,
+        help="Scale factor applied to UAV layer before compositing",
+    )
+    p.add_argument(
+        "--venv_python",
+        default=os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            ".venv",
+            "Scripts",
+            "python.exe",
+        ),
+        help="Path to venv Python used for PIL compositing step",
+    )
     return p.parse_args(argv)
 
 
 def clear_scene():
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
-    for block in bpy.data.meshes:
+    for block in list(bpy.data.meshes):
         bpy.data.meshes.remove(block)
-    for block in bpy.data.materials:
+    for block in list(bpy.data.materials):
         bpy.data.materials.remove(block)
 
 
@@ -246,12 +267,24 @@ def parse_pose_from_name(filename):
     return float(m.group(1)), float(m.group(2))
 
 
-def composite_over_bg(uav_png, bg_path, out_jpg, width, height, quality, seed, uav_scale, venv_python):
+def composite_over_bg(
+    uav_png, bg_path, out_jpg, width, height, quality, seed, uav_scale, venv_python
+):
     """Call the venv Python PIL compositor to blend UAV PNG over background."""
     helper = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_composite_uav_over_bg.py")
     subprocess.run(
-        [venv_python, helper, uav_png, bg_path, out_jpg,
-         str(width), str(height), str(quality), str(seed), str(uav_scale)],
+        [
+            venv_python,
+            helper,
+            uav_png,
+            bg_path,
+            out_jpg,
+            str(width),
+            str(height),
+            str(quality),
+            str(seed),
+            str(uav_scale),
+        ],
         check=True,
     )
 
@@ -304,7 +337,9 @@ def render_identity(identity, glb_path, before_dir, out_dir, backgrounds, cfg):
 
     os.makedirs(out_dir, exist_ok=True)
 
-    src_images = [n for n in os.listdir(before_dir) if n.lower().endswith((".jpg", ".jpeg", ".png"))]
+    src_images = [
+        n for n in os.listdir(before_dir) if n.lower().endswith((".jpg", ".jpeg", ".png"))
+    ]
     src_images.sort()
     if len(src_images) != 30:
         raise RuntimeError(f"{identity}: expected 30 source images, found {len(src_images)}")
@@ -362,7 +397,7 @@ def render_identity(identity, glb_path, before_dir, out_dir, backgrounds, cfg):
         except OSError:
             pass
 
-        print(f"[{identity}] {i+1:02d}/30 -> {src_name} <- {os.path.basename(bg_path)}")
+        print(f"[{identity}] {i + 1:02d}/30 -> {src_name} <- {os.path.basename(bg_path)}")
 
 
 def main():

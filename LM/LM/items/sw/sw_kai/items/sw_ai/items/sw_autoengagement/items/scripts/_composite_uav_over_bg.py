@@ -1,5 +1,4 @@
-"""
-Internal helper: composite a rendered UAV PNG (with alpha) over a background image.
+"""Internal helper: composite a rendered UAV PNG (with alpha) over a background image.
 
 Behavior:
 - Background keeps original quality.
@@ -7,8 +6,10 @@ Behavior:
 - Blur is applied only to UAV layer.
 
 Usage:
-    python _composite_uav_over_bg.py <uav_png> <bg_path> <out_jpg> <width> <height> [jpeg_quality] [seed] [uav_scale]
+    python _composite_uav_over_bg.py <uav_png> <bg_path> <out_jpg> \
+        <width> <height> [jpeg_quality] [seed] [uav_scale]
 """
+
 import random
 import sys
 from pathlib import Path
@@ -26,7 +27,9 @@ def fit_cover(img: Image.Image, width: int, height: int) -> Image.Image:
     return img.crop((left, top, left + width, top + height))
 
 
-def transform_uav_layer(uav: Image.Image, out_w: int, out_h: int, uav_scale: float) -> tuple[Image.Image, tuple[int, int]]:
+def transform_uav_layer(
+    uav: Image.Image, out_w: int, out_h: int, uav_scale: float
+) -> tuple[Image.Image, tuple[int, int]]:
     """Resize UAV and place it in top 15% with random x/y offsets."""
     uav_scale = max(0.1, min(1.5, float(uav_scale)))
     uw, uh = uav.size
@@ -63,16 +66,19 @@ def blur_uav_only(uav: Image.Image) -> Image.Image:
 
 def main():
     if len(sys.argv) < 6:
-        print("Usage: _composite_uav_over_bg.py <uav_png> <bg_path> <out_jpg> <width> <height> [quality] [seed]")
+        print(
+            "Usage: _composite_uav_over_bg.py <uav_png> <bg_path> <out_jpg> "
+            "<width> <height> [quality] [seed]"
+        )
         sys.exit(1)
 
     uav_png = sys.argv[1]
     bg_path = sys.argv[2]
     out_jpg = sys.argv[3]
-    width   = int(sys.argv[4])
-    height  = int(sys.argv[5])
+    width = int(sys.argv[4])
+    height = int(sys.argv[5])
     quality = int(sys.argv[6]) if len(sys.argv) > 6 else 95
-    seed    = int(sys.argv[7]) if len(sys.argv) > 7 else None
+    seed = int(sys.argv[7]) if len(sys.argv) > 7 else None
     uav_scale = float(sys.argv[8]) if len(sys.argv) > 8 else 0.45
 
     if seed is not None:

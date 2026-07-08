@@ -2,8 +2,11 @@
 """Sweep open-set evaluation over multiple k-shot values.
 
 Usage:
-    python scripts/eval_kshot_sweep.py --checkpoint checkpoints/best.pth --data_root data/uav_dataset
-    python scripts/eval_kshot_sweep.py --checkpoint checkpoints/best.pth --data_root data/uav_dataset --gallery_split enrollment --split val --k_shots 1 3 5 10 15
+    python scripts/eval_kshot_sweep.py \
+        --checkpoint checkpoints/best.pth --data_root data/uav_dataset
+    python scripts/eval_kshot_sweep.py \
+        --checkpoint checkpoints/best.pth --data_root data/uav_dataset \
+        --gallery_split enrollment --split val --k_shots 1 3 5 10 15
 """
 
 import argparse
@@ -24,7 +27,11 @@ if str(ROOT) not in sys.path:
 from src.uavid.common.transforms import build_transform  # noqa: E402
 from src.uavid.dataset import IdentityIndex  # noqa: E402
 from src.uavid.eval import embed_paths, roc_auc, tpr_at_fpr  # noqa: E402
-from src.uavid.model import ProtoNetEncoder, attention_prototype, build_encoder, BACKBONE_NORM  # noqa: E402
+from src.uavid.model import (  # noqa: E402
+    BACKBONE_NORM,
+    attention_prototype,
+    build_encoder,
+)
 
 
 def nice_font(size: int):
@@ -40,8 +47,7 @@ def load_model(checkpoint: str | None, device: str):
     embed_dim, image_size = 128, 224
     metric, normalize = "euclidean", True
     backbone = "mobilenetv3"
-    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=True,
-                          l2_normalize=normalize)
+    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=True, l2_normalize=normalize)
     label = "zero_shot_imagenet"
     if checkpoint:
         ckpt = torch.load(checkpoint, map_location="cpu", weights_only=True)
@@ -50,8 +56,9 @@ def load_model(checkpoint: str | None, device: str):
         metric = ckpt.get("metric", "euclidean")
         normalize = ckpt.get("l2_normalize", True)
         backbone = ckpt.get("backbone", "mobilenetv3")
-        model = build_encoder(backbone, embed_dim=embed_dim, pretrained=False,
-                              l2_normalize=normalize)
+        model = build_encoder(
+            backbone, embed_dim=embed_dim, pretrained=False, l2_normalize=normalize
+        )
         model.load_state_dict(ckpt["model"])
         label = Path(checkpoint).parent.name
         print(f"Loaded {checkpoint} | backbone={backbone} metric={metric} normalize={normalize}")
@@ -71,9 +78,20 @@ def shuffled_pools(index: IdentityIndex, rng: random.Random) -> dict[str, list[P
 
 
 @torch.no_grad()
-def evaluate_kshot(model, tfm, device, query_index: IdentityIndex, gallery_index: IdentityIndex,
-                   k_shot: int, max_queries_per_id: int, agg: str, tau: float,
-                   metric: str, normalize: bool, seed: int) -> dict[str, float | int]:
+def evaluate_kshot(
+    model,
+    tfm,
+    device,
+    query_index: IdentityIndex,
+    gallery_index: IdentityIndex,
+    k_shot: int,
+    max_queries_per_id: int,
+    agg: str,
+    tau: float,
+    metric: str,
+    normalize: bool,
+    seed: int,
+) -> dict[str, float | int]:
     rng = random.Random(seed + k_shot * 1009)
     query_pools = shuffled_pools(query_index, rng)
     gallery_pools = shuffled_pools(gallery_index, rng)
@@ -95,11 +113,13 @@ def evaluate_kshot(model, tfm, device, query_index: IdentityIndex, gallery_index
                 skipped_no_queries += 1
                 continue
             enroll_paths = query_paths_all[:k_shot]
-            query_paths = query_paths_all[k_shot:k_shot + max_queries_per_id]
+            query_paths = query_paths_all[k_shot : k_shot + max_queries_per_id]
         else:
-            enroll_paths = (rng.sample(gallery_paths_all, k_shot)
-                            if len(gallery_paths_all) >= k_shot
-                            else rng.choices(gallery_paths_all, k=k_shot))
+            enroll_paths = (
+                rng.sample(gallery_paths_all, k_shot)
+                if len(gallery_paths_all) >= k_shot
+                else rng.choices(gallery_paths_all, k=k_shot)
+            )
             query_paths = query_paths_all[:max_queries_per_id]
             if not query_paths:
                 skipped_no_queries += 1
@@ -112,13 +132,13 @@ def evaluate_kshot(model, tfm, device, query_index: IdentityIndex, gallery_index
         else:
             mean_proto = gallery.mean(dim=0)
 
-        def score(q_emb):
+        def score(q_emb, current_gallery=gallery, current_mean_proto=mean_proto):
             out = []
             for q in q_emb:
                 if agg == "attention" and normalize:
-                    proto = attention_prototype(q, gallery, tau=tau)
+                    proto = attention_prototype(q, current_gallery, tau=tau)
                 else:
-                    proto = mean_proto
+                    proto = current_mean_proto
                 if metric == "cosine" or normalize:
                     out.append(float(q @ proto))
                 else:
@@ -168,22 +188,23 @@ def save_csv(rows: list[dict[str, float | int]], path: Path) -> None:
         writer.writerows(rows)
 
 
-def map_points(xs: list[int], ys: list[float], box: tuple[int, int, int, int],
-               y_min: float, y_max: float) -> list[tuple[int, int]]:
+def map_points(
+    xs: list[int], ys: list[float], box: tuple[int, int, int, int], y_min: float, y_max: float
+) -> list[tuple[int, int]]:
     left, top, right, bottom = box
     width, height = right - left, bottom - top
     x_min, x_max = min(xs), max(xs)
     x_span = max(x_max - x_min, 1)
     y_span = max(y_max - y_min, 1e-9)
     return [
-        (left + round((x - x_min) * width / x_span),
-         bottom - round((y - y_min) * height / y_span))
-        for x, y in zip(xs, ys)
+        (left + round((x - x_min) * width / x_span), bottom - round((y - y_min) * height / y_span))
+        for x, y in zip(xs, ys, strict=False)
     ]
 
 
-def draw_line_chart(draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int]],
-                    box: tuple[int, int, int, int]) -> None:
+def draw_line_chart(
+    draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int]], box: tuple[int, int, int, int]
+) -> None:
     left, top, right, bottom = box
     title_font = nice_font(24)
     label_font = nice_font(15)
@@ -205,7 +226,12 @@ def draw_line_chart(draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int]
         x = map_points(k_values, [0.0] * len(k_values), plot_box, 0.0, 1.0)[k_values.index(k)][0]
         draw.line((x, plot_bottom, x, plot_bottom + 5), fill=(60, 65, 70), width=1)
         draw.text((x - 10, plot_bottom + 14), str(k), fill=(80, 85, 90), font=small_font)
-    draw.text((plot_left + (plot_right - plot_left) // 2 - 24, bottom - 28), "k-shot", fill=(80, 85, 90), font=small_font)
+    draw.text(
+        (plot_left + (plot_right - plot_left) // 2 - 24, bottom - 28),
+        "k-shot",
+        fill=(80, 85, 90),
+        font=small_font,
+    )
 
     series = [
         ("ROC-AUC", "roc_auc", (38, 112, 214)),
@@ -226,8 +252,12 @@ def draw_line_chart(draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int]
             draw.ellipse((x - 4, y - 4, x + 4, y + 4), fill=color)
 
 
-def draw_summary(draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int]],
-                 args, box: tuple[int, int, int, int]) -> None:
+def draw_summary(
+    draw: ImageDraw.ImageDraw,
+    rows: list[dict[str, float | int]],
+    args,
+    box: tuple[int, int, int, int],
+) -> None:
     left, top, right, bottom = box
     title_font = nice_font(20)
     font = nice_font(15)
@@ -248,15 +278,16 @@ def draw_summary(draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int]],
     y = top + 52
     max_chars = max(30, (right - left - 36) // 8)
     for line in lines:
-        for chunk in [line[i:i + max_chars] for i in range(0, len(line), max_chars)]:
+        for chunk in [line[i : i + max_chars] for i in range(0, len(line), max_chars)]:
             if y > bottom - 24:
                 return
             draw.text((left + 18, y), chunk, fill=(45, 50, 55), font=font)
             y += 24
 
 
-def draw_means_chart(draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int]],
-                     box: tuple[int, int, int, int]) -> None:
+def draw_means_chart(
+    draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int]], box: tuple[int, int, int, int]
+) -> None:
     left, top, right, bottom = box
     title_font = nice_font(20)
     label_font = nice_font(15)
@@ -266,7 +297,9 @@ def draw_means_chart(draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int
     draw.rectangle(box, outline=(210, 215, 220), width=1)
     draw.text((left + 18, top + 14), "Score Means", fill=(25, 30, 35), font=title_font)
     draw.rectangle(plot_box, outline=(60, 65, 70), width=2)
-    values = [float(row["genuine_mean"]) for row in rows] + [float(row["impostor_mean"]) for row in rows]
+    values = [float(row["genuine_mean"]) for row in rows] + [
+        float(row["impostor_mean"]) for row in rows
+    ]
     y_min, y_max = min(values), max(values)
     if y_min == y_max:
         y_min -= 0.5
@@ -277,7 +310,10 @@ def draw_means_chart(draw: ImageDraw.ImageDraw, rows: list[dict[str, float | int
         draw.line((plot_left, y, plot_right, y), fill=(230, 233, 236), width=1)
         draw.text((left + 10, y - 8), f"{value:.2f}", fill=(80, 85, 90), font=small_font)
     k_values = [int(row["k_shot"]) for row in rows]
-    for label, key, color in [("genuine", "genuine_mean", (38, 112, 214)), ("impostor", "impostor_mean", (210, 72, 82))]:
+    for label, key, color in [
+        ("genuine", "genuine_mean", (38, 112, 214)),
+        ("impostor", "impostor_mean", (210, 72, 82)),
+    ]:
         points = map_points(k_values, [float(row[key]) for row in rows], plot_box, y_min, y_max)
         if len(points) > 1:
             draw.line(points, fill=color, width=4)
@@ -318,7 +354,9 @@ def main() -> None:
     data_root = Path(args.data_root)
     query_index = IdentityIndex(data_root / args.split)
     gallery_split = args.gallery_split or args.split
-    gallery_index = query_index if gallery_split == args.split else IdentityIndex(data_root / gallery_split)
+    gallery_index = (
+        query_index if gallery_split == args.split else IdentityIndex(data_root / gallery_split)
+    )
     print(f"query {args.split}: {query_index.stats()}")
     if gallery_index is query_index:
         print(f"gallery {gallery_split}: same split as query")
@@ -330,9 +368,20 @@ def main() -> None:
     tfm = build_transform(image_size, train=False, mean=norm_mean, std=norm_std)
     rows = []
     for k_shot in args.k_shots:
-        row = evaluate_kshot(model, tfm, device, query_index, gallery_index, k_shot,
-                             args.max_queries_per_id, args.agg, args.tau,
-                             metric, normalize, args.seed)
+        row = evaluate_kshot(
+            model,
+            tfm,
+            device,
+            query_index,
+            gallery_index,
+            k_shot,
+            args.max_queries_per_id,
+            args.agg,
+            args.tau,
+            metric,
+            normalize,
+            args.seed,
+        )
         rows.append(row)
         print(
             f"k={k_shot:>2} | ROC-AUC {row['roc_auc']:.4f} | "

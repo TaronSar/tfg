@@ -1,4 +1,4 @@
-"""CLI: train the few-shot UAV identification encoder (MLflow-tracked).
+r"""CLI: train the few-shot UAV identification encoder (MLflow-tracked).
 
 Following the department convention, this script owns the CLI (``fire``) and the
 MLflow orchestration; the training logic lives in ``src.uavid.train.trainer``.
@@ -10,6 +10,7 @@ Usage (via DVC or directly)::
         --support_split enrollment \\
         --n_way 15 --test_n_way 5 --k_shot_range "1,3,5,10,15" --degrade_p 0.0
 """
+
 from __future__ import annotations
 
 import json
@@ -21,7 +22,7 @@ import mlflow
 from loguru import logger
 
 from src.uavid.common.config_loader import load_mlflow_config
-from src.uavid.common.io import md5_file, run_name
+from src.uavid.common.io import md5_file
 from src.uavid.common.transforms import build_transform
 from src.uavid.dataset import IdentityIndex
 from src.uavid.model import BACKBONE_NORM
@@ -35,8 +36,14 @@ except ImportError:  # python-dotenv is optional
     pass
 
 
-def _log_artifacts(out_dir: Path, best_acc: float, history: list[dict],
-                   embed_dim: int, image_size: int, backbone: str = "mobilenetv3") -> None:
+def _log_artifacts(
+    out_dir: Path,
+    best_acc: float,
+    history: list[dict],
+    embed_dim: int,
+    image_size: int,
+    backbone: str = "mobilenetv3",
+) -> None:
     """Log checkpoints, manifest and training history to MLflow.
 
     Args:
@@ -45,6 +52,7 @@ def _log_artifacts(out_dir: Path, best_acc: float, history: list[dict],
         history: Per-epoch metric dicts.
         embed_dim: Embedding dimensionality of the trained encoder.
         image_size: Encoder input resolution.
+        backbone: Backbone identifier saved into the checkpoint manifest.
     """
     best_path = out_dir / "best.pth"
     last_path = out_dir / "last.pth"
@@ -105,12 +113,31 @@ def main(
         data_root: Dataset root containing ``train/``, ``val/`` and optionally
             the ``support_split`` directory.
         out: Output directory for ``best.pth`` / ``last.pth``.
-        epochs ... freeze_backbone_epochs: Episodic hyperparameters.
+        epochs: Number of training epochs.
+        episodes_per_epoch: Number of sampled training episodes per epoch.
+        val_episodes: Number of validation episodes per epoch.
+        n_way: Number of classes sampled per training episode.
+        test_n_way: Number of classes sampled per validation episode.
+        k_shot: Default support shots per class.
         k_shot_range: Comma-separated shots for shot-robust sampling (or None).
+        q_query: Query images per class in each episode.
+        lr: Learning rate for the projection head.
+        backbone_lr: Learning rate for the backbone feature extractor.
+        image_size: Input crop size used by transforms.
+        embed_dim: Output embedding dimensionality.
+        metric: Episode metric, usually ``euclidean``.
         backbone: Feature backbone.  Choices: ``mobilenetv3`` (default),
             ``dinov2_vits14``, ``dinov2_vitb14``, ``clip_vit_b32``.  DINOv2 /
             CLIP backbones download weights (~330-350 MB) on first use.
         no_l2norm: Disable final L2-normalisation (unnormalised ablation).
+        degrade_p: Training probability for synthetic low-resolution degradation.
+        support_split: Optional enrollment/support split used for mixed-domain episodes.
+        freeze_backbone_epochs: Number of initial epochs with a frozen backbone.
+        grad_accum: Gradient accumulation interval in episodes.
+        hard_negatives: Optional hard-negative pair CSV path.
+        hard_negative_p: Probability of sampling a hard-negative episode.
+        resume: Optional checkpoint path to resume training from.
+        exclude_json: Optional crop exclusion-list JSON.
         seed: RNG seed.
         mlflow_tracking: Log the run to MLflow when True.
     """
@@ -144,34 +171,56 @@ def main(
 
     train_index = IdentityIndex(Path(data_root) / "train", exclude=excluded, exclude_root=ex_root)
     val_index = IdentityIndex(Path(data_root) / "val", exclude=excluded, exclude_root=ex_root)
-    support_index = (IdentityIndex(Path(data_root) / support_split, exclude=excluded, exclude_root=ex_root)
-                     if support_split else None)
+    support_index = (
+        IdentityIndex(Path(data_root) / support_split, exclude=excluded, exclude_root=ex_root)
+        if support_split
+        else None
+    )
     logger.info(f"Train: {train_index.stats()}")
     logger.info(f"Val:   {val_index.stats()}")
     if support_index:
         logger.info(f"Support ({support_split}): {support_index.stats()}")
 
-    train_tfm = build_transform(image_size, train=True, degrade_p=degrade_p,
-                                mean=BACKBONE_NORM[backbone][0],
-                                std=BACKBONE_NORM[backbone][1])
-    val_tfm = build_transform(image_size, train=False,
-                              mean=BACKBONE_NORM[backbone][0],
-                              std=BACKBONE_NORM[backbone][1])
-    support_tfm = (build_transform(image_size, train=False,
-                                   mean=BACKBONE_NORM[backbone][0],
-                                   std=BACKBONE_NORM[backbone][1])
-                   if support_index else None)
+    train_tfm = build_transform(
+        image_size,
+        train=True,
+        degrade_p=degrade_p,
+        mean=BACKBONE_NORM[backbone][0],
+        std=BACKBONE_NORM[backbone][1],
+    )
+    val_tfm = build_transform(
+        image_size, train=False, mean=BACKBONE_NORM[backbone][0], std=BACKBONE_NORM[backbone][1]
+    )
+    support_tfm = (
+        build_transform(
+            image_size, train=False, mean=BACKBONE_NORM[backbone][0], std=BACKBONE_NORM[backbone][1]
+        )
+        if support_index
+        else None
+    )
 
     params = {
-        "epochs": epochs, "episodes_per_epoch": episodes_per_epoch,
-        "n_way": n_way, "test_n_way": test_n_way, "k_shot": k_shot,
-        "k_shot_range": k_shot_range, "q_query": q_query, "lr": lr,
-        "backbone_lr": backbone_lr, "image_size": image_size,
-        "embed_dim": embed_dim, "metric": metric, "l2_normalize": normalize,
-        "degrade_p": degrade_p, "support_split": support_split,
-        "freeze_backbone_epochs": freeze_backbone_epochs, "device": device,
-        "n_train_identities": len(train_index), "n_val_identities": len(val_index),
-        "backbone": backbone, "grad_accum": grad_accum,
+        "epochs": epochs,
+        "episodes_per_epoch": episodes_per_epoch,
+        "n_way": n_way,
+        "test_n_way": test_n_way,
+        "k_shot": k_shot,
+        "k_shot_range": k_shot_range,
+        "q_query": q_query,
+        "lr": lr,
+        "backbone_lr": backbone_lr,
+        "image_size": image_size,
+        "embed_dim": embed_dim,
+        "metric": metric,
+        "l2_normalize": normalize,
+        "degrade_p": degrade_p,
+        "support_split": support_split,
+        "freeze_backbone_epochs": freeze_backbone_epochs,
+        "device": device,
+        "n_train_identities": len(train_index),
+        "n_val_identities": len(val_index),
+        "backbone": backbone,
+        "grad_accum": grad_accum,
     }
 
     cfg = load_mlflow_config()
@@ -185,6 +234,7 @@ def main(
             mlflow.set_experiment(experiment)
             # Build a human-readable run name: <dataset>_<YYYYMMDD_HHMMSS>
             from datetime import datetime
+
             dataset_slug = Path(data_root).name
             ts = datetime.now().strftime("%Y%m%d_%H%M%S")
             mlflow.start_run(run_name=f"{dataset_slug}_{ts}")
@@ -199,28 +249,47 @@ def main(
         if active:
             try:
                 mlflow.log_metrics(
-                    {k: float(v) for k, v in metrics.items()
-                     if isinstance(v, (int, float))}, step=epoch)
+                    {k: float(v) for k, v in metrics.items() if isinstance(v, (int, float))},
+                    step=epoch,
+                )
             except Exception as e:
                 logger.warning(f"MLflow metric logging failed: {e}")
 
     try:
         best_acc, history = train_protonet(
-            train_index=train_index, val_index=val_index,
-            train_tfm=train_tfm, val_tfm=val_tfm,
-            support_index=support_index, support_tfm=support_tfm,
-            out_dir=Path(out), epochs=epochs,
-            episodes_per_epoch=episodes_per_epoch, val_episodes=val_episodes,
-            n_way=n_way, test_n_way=test_n_way, k_shot=k_shot,
-            k_shot_range=shots, q_query=q_query, lr=lr, backbone_lr=backbone_lr,
-            embed_dim=embed_dim, image_size=image_size, metric=metric,
-            normalize=normalize, degrade_p=degrade_p, support_split=support_split,
-            freeze_backbone_epochs=freeze_backbone_epochs, backbone=backbone,
+            train_index=train_index,
+            val_index=val_index,
+            train_tfm=train_tfm,
+            val_tfm=val_tfm,
+            support_index=support_index,
+            support_tfm=support_tfm,
+            out_dir=Path(out),
+            epochs=epochs,
+            episodes_per_epoch=episodes_per_epoch,
+            val_episodes=val_episodes,
+            n_way=n_way,
+            test_n_way=test_n_way,
+            k_shot=k_shot,
+            k_shot_range=shots,
+            q_query=q_query,
+            lr=lr,
+            backbone_lr=backbone_lr,
+            embed_dim=embed_dim,
+            image_size=image_size,
+            metric=metric,
+            normalize=normalize,
+            degrade_p=degrade_p,
+            support_split=support_split,
+            freeze_backbone_epochs=freeze_backbone_epochs,
+            backbone=backbone,
             grad_accum=grad_accum,
-            hard_negatives=[n.strip() for n in hard_negatives.split(",") if n.strip()] if hard_negatives else None,
+            hard_negatives=[n.strip() for n in hard_negatives.split(",") if n.strip()]
+            if hard_negatives
+            else None,
             hard_negative_p=hard_negative_p,
             resume=resume,
-            device=device, on_epoch=_on_epoch,
+            device=device,
+            on_epoch=_on_epoch,
         )
         if active:
             mlflow.set_tags({"best_val_acc": f"{best_acc:.4f}"})

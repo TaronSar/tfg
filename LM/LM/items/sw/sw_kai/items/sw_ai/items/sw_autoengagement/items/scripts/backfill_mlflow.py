@@ -29,6 +29,7 @@ from pathlib import Path
 
 try:
     from dotenv import load_dotenv
+
     load_dotenv()
 except ImportError:  # python-dotenv optional; env can be set externally
     pass
@@ -72,7 +73,10 @@ RUN_REGISTRY: dict[str, dict] = {
         "stage": "2_aggressive_realistic_regression",
         "dataset": "uav_dataset_realistic_50_100_final",
         "degrade_p": 0.0,
-        "notes": "Aggressive baked-in augmentation. Regression: embedding collapse (impostor mean ~doubled).",
+        "notes": (
+            "Aggressive baked-in augmentation. Regression: embedding collapse "
+            "(impostor mean ~doubled)."
+        ),
     },
     "checkpoints_color_mild_clean_nodegrade_15way_krobust_euclidean": {
         "log": "train_color_mild_clean_15way_krobust_euclidean.log",
@@ -86,7 +90,9 @@ RUN_REGISTRY: dict[str, dict] = {
         "stage": "4_mixed_domain",
         "dataset": "uav_dataset_color_mild_clean (mixed-domain episodes)",
         "degrade_p": 0.0,
-        "notes": "Mixed-domain (enrollment support / operational query). Cross-domain AUC 0.481->0.873.",
+        "notes": (
+            "Mixed-domain (enrollment support / operational query). Cross-domain AUC 0.481->0.873."
+        ),
     },
     "checkpoints_mixed_domain_extended": {
         "log": "train_mixed_domain_extended.log",
@@ -107,7 +113,9 @@ RUN_REGISTRY: dict[str, dict] = {
         "stage": "6_yolox_crops_final",
         "dataset": "uav_dataset_yolox_crops",
         "degrade_p": 0.0,
-        "notes": "FINAL reference model. YOLOX-crop queries match deployment. Cross-domain AUC 0.955@k5.",
+        "notes": (
+            "FINAL reference model. YOLOX-crop queries match deployment. Cross-domain AUC 0.955@k5."
+        ),
         "final": True,
     },
     "checkpoints_yolox_crops_mixed_domain_real": {
@@ -128,8 +136,12 @@ RUN_REGISTRY: dict[str, dict] = {
 
 # K-shot sweep CSV columns we replay as step-indexed metrics.
 _SWEEP_METRIC_COLS = [
-    "roc_auc", "tpr_fpr_1", "tpr_fpr_5", "tpr_fpr_10",
-    "genuine_mean", "impostor_mean",
+    "roc_auc",
+    "tpr_fpr_1",
+    "tpr_fpr_5",
+    "tpr_fpr_10",
+    "genuine_mean",
+    "impostor_mean",
 ]
 
 
@@ -176,7 +188,7 @@ def _replay_sweep(client, run_id: str, csv_path: Path) -> None:
     # Drop the checkpoint-name part of the prefix to keep keys short.
     for known in RUN_REGISTRY:
         if prefix.startswith(known + "_"):
-            prefix = prefix[len(known) + 1:]
+            prefix = prefix[len(known) + 1 :]
             break
 
     with open(csv_path, newline="") as f:
@@ -245,15 +257,20 @@ def backfill(source: Path, dry_run: bool = False, log_checkpoints: bool = True) 
             best_val_acc = tlog.best_val_acc
             best_epoch = tlog.best_epoch
 
-        start_ms = int((ckpt_dir / "best.pth").stat().st_mtime * 1000) \
-            if (ckpt_dir / "best.pth").exists() else None
+        start_ms = (
+            int((ckpt_dir / "best.pth").stat().st_mtime * 1000)
+            if (ckpt_dir / "best.pth").exists()
+            else None
+        )
 
         sweeps = _find_sweep_csvs(csvs_dir, ckpt_name)
 
         n_epochs = len(tlog.epochs) if tlog else 0
         print(f"+ {ckpt_name}")
-        print(f"    stage={meta['stage']} epochs={n_epochs} "
-              f"best_val_acc={best_val_acc} sweeps={len(sweeps)}")
+        print(
+            f"    stage={meta['stage']} epochs={n_epochs} "
+            f"best_val_acc={best_val_acc} sweeps={len(sweeps)}"
+        )
 
         if dry_run:
             continue
@@ -284,8 +301,12 @@ def backfill(source: Path, dry_run: bool = False, log_checkpoints: bool = True) 
         if tlog:
             for e in tlog.epochs:
                 ts = start_ms + int(e.time_s * 1000) * e.epoch if start_ms else None
-                for key, val in (("loss", e.loss), ("train_acc", e.train_acc),
-                                 ("val_acc", e.val_acc), ("epoch_time_s", e.time_s)):
+                for key, val in (
+                    ("loss", e.loss),
+                    ("train_acc", e.train_acc),
+                    ("val_acc", e.val_acc),
+                    ("epoch_time_s", e.time_s),
+                ):
                     client.log_metric(run_id, key, val, timestamp=ts, step=e.epoch)
             if tlog.epochs:
                 gap = tlog.epochs[-1].train_acc - tlog.epochs[-1].val_acc
@@ -303,13 +324,15 @@ def backfill(source: Path, dry_run: bool = False, log_checkpoints: bool = True) 
         # checkpoint artifact (best.pth only, for traceability)
         if log_checkpoints and (ckpt_dir / "best.pth").exists():
             try:
-                client.log_artifact(run_id, str(ckpt_dir / "best.pth"),
-                                    artifact_path="checkpoints")
+                client.log_artifact(run_id, str(ckpt_dir / "best.pth"), artifact_path="checkpoints")
             except Exception as e:
                 print(f"    ! artifact upload failed: {e}")
 
-        end_ms = int((ckpt_dir / "last.pth").stat().st_mtime * 1000) \
-            if (ckpt_dir / "last.pth").exists() else None
+        end_ms = (
+            int((ckpt_dir / "last.pth").stat().st_mtime * 1000)
+            if (ckpt_dir / "last.pth").exists()
+            else None
+        )
         client.set_terminated(run_id, status="FINISHED", end_time=end_ms)
         created += 1
 
@@ -318,12 +341,19 @@ def backfill(source: Path, dry_run: bool = False, log_checkpoints: bool = True) 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--source", required=True,
-                    help="Path to the original protonet_uav project (with checkpoints_*/logs/csvs).")
-    ap.add_argument("--dry-run", action="store_true",
-                    help="Parse and report only; do not write to MLflow.")
-    ap.add_argument("--no-checkpoints", action="store_true",
-                    help="Do not upload best.pth as an MLflow artifact.")
+    ap.add_argument(
+        "--source",
+        required=True,
+        help="Path to the original protonet_uav project (with checkpoints_*/logs/csvs).",
+    )
+    ap.add_argument(
+        "--dry-run", action="store_true", help="Parse and report only; do not write to MLflow."
+    )
+    ap.add_argument(
+        "--no-checkpoints",
+        action="store_true",
+        help="Do not upload best.pth as an MLflow artifact.",
+    )
     args = ap.parse_args()
 
     source = Path(args.source).expanduser().resolve()

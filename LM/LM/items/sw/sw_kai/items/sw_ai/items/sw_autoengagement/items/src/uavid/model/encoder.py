@@ -11,6 +11,7 @@ All encoders expose ``.features`` (backbone) and ``.head`` (projection) for the
 two-LR AdamW optimiser in trainer.py.  Use ``build_encoder()`` as the factory.
 ``BACKBONE_NORM`` maps backbone name -> ``(mean, std)`` for ``build_transform()``.
 """
+
 from __future__ import annotations
 
 import torch
@@ -21,19 +22,22 @@ import torchvision
 # Per-backbone input normalisation constants.
 # Keep in sync with src/uavid/common/constants.py.
 BACKBONE_NORM: dict[str, tuple[list[float], list[float]]] = {
-    "mobilenetv3":   ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    "mobilenetv3": ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
     "dinov2_vits14": ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
     "dinov2_vitb14": ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-    "clip_vit_b32":  ([0.48145466, 0.4578275, 0.40821073],
-                      [0.26862954, 0.26130258, 0.27577711]),
+    "clip_vit_b32": (
+        [0.48145466, 0.4578275, 0.40821073],
+        [0.26862954, 0.26130258, 0.27577711],
+    ),
 }
 
 
 class ProtoNetEncoder(nn.Module):
     """MobileNetV3-Small backbone + 128-d L2-normalised projection head."""
 
-    def __init__(self, embed_dim: int = 128, pretrained: bool = True,
-                 l2_normalize: bool = True) -> None:
+    def __init__(
+        self, embed_dim: int = 128, pretrained: bool = True, l2_normalize: bool = True
+    ) -> None:
         """Initialise the encoder.
 
         Args:
@@ -43,13 +47,11 @@ class ProtoNetEncoder(nn.Module):
         """
         super().__init__()
         weights = (
-            torchvision.models.MobileNet_V3_Small_Weights.IMAGENET1K_V1
-            if pretrained
-            else None
+            torchvision.models.MobileNet_V3_Small_Weights.IMAGENET1K_V1 if pretrained else None
         )
         backbone = torchvision.models.mobilenet_v3_small(weights=weights)
-        self.features = backbone.features        # -> (B, 576, H/32, W/32)
-        self.avgpool = backbone.avgpool          # -> (B, 576, 1, 1)
+        self.features = backbone.features
+        self.avgpool = backbone.avgpool
         self.head = nn.Sequential(
             nn.Flatten(1),
             nn.Linear(576, embed_dim),
@@ -59,7 +61,14 @@ class ProtoNetEncoder(nn.Module):
         self.l2_normalize = l2_normalize
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Embed a batch of images into the (optionally L2-normalised) space."""
+        """Embed a batch of images into the (optionally L2-normalised) space.
+
+        Args:
+            x: Input tensor of shape ``(B, 3, H, W)``.
+
+        Returns:
+            Embedding tensor of shape ``(B, embed_dim)``.
+        """
         x = self.features(x)
         x = self.avgpool(x)
         x = self.head(x)
@@ -71,6 +80,7 @@ class ProtoNetEncoder(nn.Module):
 # ---------------------------------------------------------------------------
 # DINOv2 encoder (Phase 1 — no hardware constraints)
 # ---------------------------------------------------------------------------
+
 
 class DinoV2Encoder(nn.Module):
     """DINOv2 ViT backbone (self-supervised) + linear projection head.
@@ -89,12 +99,28 @@ class DinoV2Encoder(nn.Module):
         Recommended ``image_size``: 224 (= 16 × 14 px patches, aligned).
     """
 
-    def __init__(self, variant: str = "dinov2_vits14", embed_dim: int = 128,
-                 pretrained: bool = True, l2_normalize: bool = True) -> None:
+    def __init__(
+        self,
+        variant: str = "dinov2_vits14",
+        embed_dim: int = 128,
+        pretrained: bool = True,
+        l2_normalize: bool = True,
+    ) -> None:
+        """Initialise the DINOv2 encoder.
+
+        Args:
+            variant: Hub model name -- ``'dinov2_vits14'`` (384-d) or
+                ``'dinov2_vitb14'`` (768-d).
+            embed_dim: Projection head output dimensionality.
+            pretrained: Download hub weights on first use.
+            l2_normalize: L2-normalise the output embedding.
+        """
         super().__init__()
         self.features = torch.hub.load(
-            "facebookresearch/dinov2", variant,
-            pretrained=pretrained, verbose=False,
+            "facebookresearch/dinov2",
+            variant,
+            pretrained=pretrained,
+            verbose=False,
         )
         dino_dim: int = self.features.embed_dim  # 384 (ViT-S) or 768 (ViT-B)
         self.head = nn.Sequential(
@@ -105,8 +131,15 @@ class DinoV2Encoder(nn.Module):
         self.l2_normalize = l2_normalize
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Embed a batch of images (CLS token -> projection head)."""
-        feats = self.features(x)        # (B, dino_dim)
+        """Embed a batch of images (CLS token -> projection head).
+
+        Args:
+            x: Input tensor of shape ``(B, 3, H, W)``.
+
+        Returns:
+            Embedding tensor of shape ``(B, embed_dim)``.
+        """
+        feats = self.features(x)
         x = self.head(feats)
         if self.l2_normalize:
             x = F.normalize(x, p=2, dim=-1)
@@ -116,6 +149,7 @@ class DinoV2Encoder(nn.Module):
 # ---------------------------------------------------------------------------
 # CLIP visual encoder (Phase 1 — no hardware constraints)
 # ---------------------------------------------------------------------------
+
 
 class CLIPEncoder(nn.Module):
     """OpenCLIP ViT-B/32 visual encoder + linear projection head.
@@ -131,8 +165,19 @@ class CLIPEncoder(nn.Module):
         Requires ``open-clip-torch`` (``pip install open-clip-torch``).
     """
 
-    def __init__(self, embed_dim: int = 128, pretrained: bool = True,
-                 l2_normalize: bool = True) -> None:
+    def __init__(
+        self, embed_dim: int = 128, pretrained: bool = True, l2_normalize: bool = True
+    ) -> None:
+        """Initialise the CLIP visual encoder.
+
+        Args:
+            embed_dim: Projection head output dimensionality.
+            pretrained: Download OpenAI weights on first use.
+            l2_normalize: L2-normalise the output embedding.
+
+        Raises:
+            ImportError: If ``open_clip_torch`` is not installed.
+        """
         super().__init__()
         try:
             import open_clip
@@ -144,7 +189,7 @@ class CLIPEncoder(nn.Module):
         clip_model, _, _ = open_clip.create_model_and_transforms(
             "ViT-B-32", pretrained="openai" if pretrained else None
         )
-        self.features = clip_model.visual   # (B, 3, 224, 224) -> (B, 512)
+        self.features = clip_model.visual
         clip_dim: int = self.features.output_dim  # 512 for ViT-B/32
         self.head = nn.Sequential(
             nn.Linear(clip_dim, embed_dim),
@@ -154,8 +199,15 @@ class CLIPEncoder(nn.Module):
         self.l2_normalize = l2_normalize
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """Embed a batch of images via the CLIP visual encoder."""
-        feats = self.features(x)        # (B, 512)
+        """Embed a batch of images via the CLIP visual encoder.
+
+        Args:
+            x: Input tensor of shape ``(B, 3, H, W)``.
+
+        Returns:
+            Embedding tensor of shape ``(B, embed_dim)``.
+        """
+        feats = self.features(x)
         x = self.head(feats)
         if self.l2_normalize:
             x = F.normalize(x, p=2, dim=-1)
@@ -165,6 +217,7 @@ class CLIPEncoder(nn.Module):
 # ---------------------------------------------------------------------------
 # Factory
 # ---------------------------------------------------------------------------
+
 
 def build_encoder(
     backbone: str = "mobilenetv3",
@@ -183,16 +236,26 @@ def build_encoder(
         embed_dim: Projection head output dimensionality.
         pretrained: Load pre-trained weights.
         l2_normalize: L2-normalise the output embedding.
+
+    Returns:
+        Instantiated encoder module.
+
+    Raises:
+        ValueError: If ``backbone`` is not one of the supported choices.
     """
     if backbone == "mobilenetv3":
-        return ProtoNetEncoder(embed_dim=embed_dim, pretrained=pretrained,
-                               l2_normalize=l2_normalize)
+        return ProtoNetEncoder(
+            embed_dim=embed_dim, pretrained=pretrained, l2_normalize=l2_normalize
+        )
     if backbone in ("dinov2_vits14", "dinov2_vitb14"):
-        return DinoV2Encoder(variant=backbone, embed_dim=embed_dim,
-                             pretrained=pretrained, l2_normalize=l2_normalize)
+        return DinoV2Encoder(
+            variant=backbone,
+            embed_dim=embed_dim,
+            pretrained=pretrained,
+            l2_normalize=l2_normalize,
+        )
     if backbone == "clip_vit_b32":
-        return CLIPEncoder(embed_dim=embed_dim, pretrained=pretrained,
-                           l2_normalize=l2_normalize)
+        return CLIPEncoder(embed_dim=embed_dim, pretrained=pretrained, l2_normalize=l2_normalize)
     raise ValueError(
         f"Unknown backbone {backbone!r}. "
         "Choices: mobilenetv3, dinov2_vits14, dinov2_vitb14, clip_vit_b32"

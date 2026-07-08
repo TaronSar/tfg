@@ -5,6 +5,7 @@ lives here and the MLflow orchestration + CLI lives in ``scripts/train.py``.
 Per-epoch metrics are surfaced through an ``on_epoch`` callback so this module
 never imports MLflow.
 """
+
 from __future__ import annotations
 
 import random
@@ -17,51 +18,127 @@ import torch
 import torch.nn.functional as F
 from loguru import logger
 
-from src.uavid.dataset import IdentityIndex, sample_episode, preload_images
+from src.uavid.dataset import IdentityIndex, preload_images, sample_episode
 from src.uavid.model import (
     build_encoder,
-    BACKBONE_NORM,
     build_prototypes,
     cosine_logits,
     euclidean_logits,
 )
 
 
-def run_episode(model, index, tfm, n_way, k_shot, q_query, device,
-                metric="euclidean", normalize=True, support_index=None,
-                support_tfm=None, hard_negatives=None,
-                hard_negative_p=0.5) -> tuple[torch.Tensor, torch.Tensor]:
-    """Run one episode and return ``(loss, accuracy)``."""
-    s_x, s_y, q_x, q_y = sample_episode(index, tfm, n_way, k_shot, q_query,
-                                        support_index=support_index,
-                                        support_tfm=support_tfm,
-                                        hard_negatives=hard_negatives,
-                                        hard_negative_p=hard_negative_p)
+def run_episode(
+    model,
+    index,
+    tfm,
+    n_way,
+    k_shot,
+    q_query,
+    device,
+    metric="euclidean",
+    normalize=True,
+    support_index=None,
+    support_tfm=None,
+    hard_negatives=None,
+    hard_negative_p=0.5,
+) -> tuple[torch.Tensor, torch.Tensor]:
+    """Run one episode and return ``(loss, accuracy)``.
+
+    Args:
+        model: Encoder module in train mode.
+        index: Query-side identity index.
+        tfm: Transform applied to query images (and support when
+            ``support_index`` is ``None``).
+        n_way: Number of classes per episode.
+        k_shot: Support images per class.
+        q_query: Query images per class.
+        device: Torch device string.
+        metric: Distance metric (``"euclidean"`` or ``"cosine"``).
+        normalize: Whether to L2-normalise prototypes.
+        support_index: Optional separate support index for mixed-domain episodes.
+        support_tfm: Transform for support images (defaults to ``tfm``).
+        hard_negatives: Identity names forced into hard-negative episodes.
+        hard_negative_p: Fraction of episodes that are hard-negative episodes.
+
+    Returns:
+        Tuple ``(loss, accuracy)`` as scalar tensors.
+    """
+    s_x, s_y, q_x, q_y = sample_episode(
+        index,
+        tfm,
+        n_way,
+        k_shot,
+        q_query,
+        support_index=support_index,
+        support_tfm=support_tfm,
+        hard_negatives=hard_negatives,
+        hard_negative_p=hard_negative_p,
+    )
     s_x, s_y = s_x.to(device), s_y.to(device)
     q_x, q_y = q_x.to(device), q_y.to(device)
     actual_n_way = int(s_y.max().item()) + 1
 
     emb = model(torch.cat([s_x, q_x], dim=0))
-    s_emb, q_emb = emb[: len(s_x)], emb[len(s_x):]
+    s_emb, q_emb = emb[: len(s_x)], emb[len(s_x) :]
     protos = build_prototypes(s_emb, s_y, actual_n_way, normalize=normalize)
-    logits = (euclidean_logits(q_emb, protos) if metric == "euclidean"
-              else cosine_logits(q_emb, protos))
+    logits = (
+        euclidean_logits(q_emb, protos) if metric == "euclidean" else cosine_logits(q_emb, protos)
+    )
     loss = F.cross_entropy(logits, q_y)
     acc = (logits.argmax(dim=1) == q_y).float().mean()
     return loss, acc
 
 
 @torch.no_grad()
-def validate(model, index, tfm, n_way, k_shot, q_query, episodes, device,
-             metric="euclidean", normalize=True, support_index=None,
-             support_tfm=None) -> float:
-    """Return the mean episodic accuracy over ``episodes`` validation episodes."""
+def validate(
+    model,
+    index,
+    tfm,
+    n_way,
+    k_shot,
+    q_query,
+    episodes,
+    device,
+    metric="euclidean",
+    normalize=True,
+    support_index=None,
+    support_tfm=None,
+) -> float:
+    """Return the mean episodic accuracy over ``episodes`` validation episodes.
+
+    Args:
+        model: Encoder module (set to eval mode internally, restored after).
+        index: Query-side identity index.
+        tfm: Transform applied to images.
+        n_way: Number of classes per episode.
+        k_shot: Support images per class.
+        q_query: Query images per class.
+        episodes: Number of validation episodes to average over.
+        device: Torch device string.
+        metric: Distance metric (``"euclidean"`` or ``"cosine"``).
+        normalize: Whether to L2-normalise prototypes.
+        support_index: Optional separate support index.
+        support_tfm: Transform for support images (defaults to ``tfm``).
+
+    Returns:
+        Mean episodic accuracy in ``[0, 1]``.
+    """
     model.eval()
     accs = []
     for _ in range(episodes):
-        _, acc = run_episode(model, index, tfm, n_way, k_shot, q_query, device,
-                             metric, normalize, support_index=support_index,
-                             support_tfm=support_tfm)
+        _, acc = run_episode(
+            model,
+            index,
+            tfm,
+            n_way,
+            k_shot,
+            q_query,
+            device,
+            metric,
+            normalize,
+            support_index=support_index,
+            support_tfm=support_tfm,
+        )
         accs.append(acc.item())
     model.train()
     return sum(accs) / len(accs)
@@ -105,11 +182,36 @@ def train_protonet(
     """Train the ProtoNet encoder episodically and save best/last checkpoints.
 
     Args:
-        train_index / val_index: Identity indices for the train / val splits.
-        train_tfm / val_tfm: Transforms for train / val images.
-        support_index / support_tfm: Optional mixed-domain support split.
+        train_index: Identity index for the training split.
+        val_index: Identity index for the validation split.
+        train_tfm: Transform for training images.
+        val_tfm: Transform for validation images.
+        support_index: Optional mixed-domain support identity index.
+        support_tfm: Optional transform for support images.
         out_dir: Directory where ``best.pth`` / ``last.pth`` are written.
-        epochs ... freeze_backbone_epochs: Episodic hyperparameters.
+        epochs: Number of training epochs.
+        episodes_per_epoch: Number of sampled training episodes per epoch.
+        val_episodes: Number of validation episodes per epoch.
+        n_way: Number of classes sampled per training episode.
+        test_n_way: Number of classes sampled per validation episode.
+        k_shot: Default support shots per class.
+        k_shot_range: Optional shot values sampled per episode.
+        q_query: Query images per class in each episode.
+        lr: Learning rate for the projection head.
+        backbone_lr: Learning rate for the backbone feature extractor.
+        embed_dim: Output embedding dimensionality.
+        image_size: Input crop size used by transforms.
+        metric: Episode metric, usually ``euclidean``.
+        normalize: Whether to L2-normalise embeddings and prototypes.
+        degrade_p: Training probability for synthetic low-resolution degradation.
+        support_split: Name of the optional support/enrollment split.
+        freeze_backbone_epochs: Number of initial epochs with a frozen backbone.
+        backbone: Backbone identifier passed to ``build_encoder``.
+        grad_accum: Gradient accumulation interval in episodes.
+        preload: Preload indexed images before training.
+        hard_negatives: Optional hard-negative pair keys.
+        hard_negative_p: Probability of sampling a hard-negative episode.
+        resume: Optional checkpoint path to resume training from.
         device: Torch device string.
         on_epoch: Optional callback ``(epoch, metrics)`` invoked each epoch
             (used by the CLI to log to MLflow without coupling this module to it).
@@ -118,25 +220,31 @@ def train_protonet(
         Tuple ``(best_val_acc, history)`` where ``history`` is a list of
         per-epoch metric dicts.
     """
-    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=(resume is None),
-                          l2_normalize=normalize).to(device)
+    model = build_encoder(
+        backbone, embed_dim=embed_dim, pretrained=(resume is None), l2_normalize=normalize
+    ).to(device)
     if resume:
         import torch as _torch
+
         ckpt = _torch.load(resume, map_location=device, weights_only=True)
         model.load_state_dict(ckpt["model"])
-        logger.info(f"Resumed from {resume} | val_acc={ckpt.get('val_acc', '?'):.4f} epoch={ckpt.get('epoch', '?')}")
+        val_acc = ckpt.get("val_acc", "?")
+        epoch = ckpt.get("epoch", "?")
+        logger.info(f"Resumed from {resume} | val_acc={val_acc:.4f} epoch={epoch}")
 
     if preload:
         indices = [train_index, val_index]
         if support_index is not None:
             indices.append(support_index)
         preload_images(*indices)
-    optim = torch.optim.AdamW([
-        {"params": model.features.parameters(), "lr": backbone_lr},
-        {"params": model.head.parameters(), "lr": lr},
-    ], weight_decay=1e-4)
-    sched = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optim, T_max=epochs * episodes_per_epoch)
+    optim = torch.optim.AdamW(
+        [
+            {"params": model.features.parameters(), "lr": backbone_lr},
+            {"params": model.head.parameters(), "lr": lr},
+        ],
+        weight_decay=1e-4,
+    )
+    sched = torch.optim.lr_scheduler.CosineAnnealingLR(optim, T_max=epochs * episodes_per_epoch)
 
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -152,12 +260,21 @@ def train_protonet(
         optim.zero_grad()
         for ep_idx in range(episodes_per_epoch):
             k = random.choice(k_shot_range) if k_shot_range else k_shot
-            loss, acc = run_episode(model, train_index, train_tfm, n_way, k,
-                                    q_query, device, metric, normalize,
-                                    support_index=support_index,
-                                    support_tfm=support_tfm,
-                                    hard_negatives=hard_negatives,
-                                    hard_negative_p=hard_negative_p)
+            loss, acc = run_episode(
+                model,
+                train_index,
+                train_tfm,
+                n_way,
+                k,
+                q_query,
+                device,
+                metric,
+                normalize,
+                support_index=support_index,
+                support_tfm=support_tfm,
+                hard_negatives=hard_negatives,
+                hard_negative_p=hard_negative_p,
+            )
             (loss / grad_accum).backward()
             if (ep_idx + 1) % grad_accum == 0:
                 torch.nn.utils.clip_grad_norm_(model.parameters(), 5.0)
@@ -167,9 +284,20 @@ def train_protonet(
             losses.append(loss.item())
             accs.append(acc.item())
 
-        val_acc = validate(model, val_index, val_tfm, test_n_way, k_shot,
-                           q_query, val_episodes, device, metric, normalize,
-                           support_index=support_index, support_tfm=support_tfm)
+        val_acc = validate(
+            model,
+            val_index,
+            val_tfm,
+            test_n_way,
+            k_shot,
+            q_query,
+            val_episodes,
+            device,
+            metric,
+            normalize,
+            support_index=support_index,
+            support_tfm=support_tfm,
+        )
         epoch_loss = sum(losses) / len(losses)
         train_acc = sum(accs) / len(accs)
         dt = time.time() - t0
@@ -187,10 +315,17 @@ def train_protonet(
         }
         history.append({"epoch": epoch, **metrics})
 
-        ckpt = {"model": model.state_dict(), "embed_dim": embed_dim,
-                "image_size": image_size, "epoch": epoch, "val_acc": val_acc,
-                "metric": metric, "l2_normalize": normalize,
-                "support_split": support_split, "backbone": backbone}
+        ckpt = {
+            "model": model.state_dict(),
+            "embed_dim": embed_dim,
+            "image_size": image_size,
+            "epoch": epoch,
+            "val_acc": val_acc,
+            "metric": metric,
+            "l2_normalize": normalize,
+            "support_split": support_split,
+            "backbone": backbone,
+        }
         torch.save(ckpt, out_dir / "last.pth")
         if val_acc > best_acc:
             best_acc = val_acc

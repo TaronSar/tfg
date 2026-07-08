@@ -1,5 +1,4 @@
-"""
-Composite rendered UAV images onto random real-world backgrounds using rembg.
+"""Composite rendered UAV images onto random real-world backgrounds using rembg.
 
 Usage examples:
   python scripts/composite_uav_rembg.py --test
@@ -8,11 +7,10 @@ Usage examples:
 
 import argparse
 import io
-import os
 import random
 from pathlib import Path
 
-from PIL import Image, ImageFilter, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFilter
 from rembg import new_session, remove
 
 
@@ -40,7 +38,9 @@ def rgba_from_rembg(path: Path, session):
     return Image.open(io.BytesIO(out)).convert("RGBA")
 
 
-def composite_one(uav_path: Path, bg_path: Path, out_dir: Path, session, out_size=640, uav_scale=0.42, jitter=0.15):
+def composite_one(
+    uav_path: Path, bg_path: Path, out_dir: Path, session, out_size=640, uav_scale=0.42, jitter=0.15
+):
     bg = Image.open(bg_path).convert("RGB")
     bg = fit_cover(bg, out_size)
 
@@ -85,16 +85,30 @@ def composite_one(uav_path: Path, bg_path: Path, out_dir: Path, session, out_siz
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Composite UAV renders onto random real-world backgrounds")
+    parser = argparse.ArgumentParser(
+        description="Composite UAV renders onto random real-world backgrounds"
+    )
     parser.add_argument("--uav_root", default="data/uav_dataset_color_mild_clean/enrollment")
     parser.add_argument("--bg_root", default="data/backgrounds")
-    parser.add_argument("--bg_image", default=None,
-                        help="Optional fixed background image path. If set, this background is used for all outputs.")
+    parser.add_argument(
+        "--bg_image",
+        default=None,
+        help=(
+            "Optional fixed background image path. If set, this background is used for all outputs."
+        ),
+    )
     parser.add_argument("--out", default="data/composited_rembg")
     parser.add_argument("--test", action="store_true", help="Run one test image")
-    parser.add_argument("--count", type=int, default=1, help="Number of outputs (ignored with --test)")
-    parser.add_argument("--random_uav", action="store_true", help="Pick UAVs randomly from uav_root")
-    parser.add_argument("--uav_image", default="data/uav_dataset_color_mild_clean/enrollment/mq-9_reaper/az000_el-45_noon_clear_enrollment_v00.jpg")
+    parser.add_argument(
+        "--count", type=int, default=1, help="Number of outputs (ignored with --test)"
+    )
+    parser.add_argument(
+        "--random_uav", action="store_true", help="Pick UAVs randomly from uav_root"
+    )
+    parser.add_argument(
+        "--uav_image",
+        default="data/uav_dataset_color_mild_clean/enrollment/mq-9_reaper/az000_el-45_noon_clear_enrollment_v00.jpg",
+    )
     args = parser.parse_args()
 
     uav_root = Path(args.uav_root)
@@ -130,7 +144,7 @@ def main():
         uav_path = random.choice(uav_files) if args.random_uav else uav_files[i % len(uav_files)]
         bg_path = fixed_bg if fixed_bg else random.choice(bg_files)
         out_path = composite_one(uav_path, bg_path, out_dir, session)
-        print(f"[{i+1}/{args.count}] {out_path}")
+        print(f"[{i + 1}/{args.count}] {out_path}")
 
 
 if __name__ == "__main__":

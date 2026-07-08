@@ -1,5 +1,4 @@
-"""
-Apply real-world backgrounds to rendered UAV dataset identities.
+"""Apply real-world backgrounds to rendered UAV dataset identities.
 
 Behavior:
 - Input identities from data/uav_dataset_before_bg/operational/<identity>
@@ -110,7 +109,9 @@ def extract_uav_rgba(path: Path, session):
     return Image.merge("RGBA", (r2, g2, b2, cleaned))
 
 
-def apply_alpha_cleanup(uav_rgba: Image.Image, alpha_cutoff: int, edge_shrink_px: int) -> Image.Image:
+def apply_alpha_cleanup(
+    uav_rgba: Image.Image, alpha_cutoff: int, edge_shrink_px: int
+) -> Image.Image:
     """Aggressively clean low-alpha residue and slightly shrink edges to remove stains."""
     r, g, b, a = uav_rgba.split()
 
@@ -172,7 +173,11 @@ def composite(
     if shadow_strength > 0:
         # Shadow under UAV, but from a strict mask so residue doesn't cast shadow.
         shadow = Image.new("RGBA", (nw, nh), (0, 0, 0, 0))
-        alpha = uav.split()[-1].point(lambda v: 255 if v > 120 else 0).filter(ImageFilter.GaussianBlur(5))
+        alpha = (
+            uav.split()[-1]
+            .point(lambda v: 255 if v > 120 else 0)
+            .filter(ImageFilter.GaussianBlur(5))
+        )
         if shadow_strength < 1.0:
             alpha = alpha.point(lambda v: int(v * shadow_strength))
         shadow.putalpha(alpha)
@@ -201,29 +206,51 @@ def composite(
 
 
 def main():
-    p = argparse.ArgumentParser(description="Apply 30 backgrounds to each 30-image UAV identity folder")
+    p = argparse.ArgumentParser(
+        description="Apply 30 backgrounds to each 30-image UAV identity folder"
+    )
     p.add_argument("--before_root", default="data/uav_dataset_before_bg/operational")
     p.add_argument("--background_root", default="data/backgrounds")
     p.add_argument("--after_root", default="data/uav_dataset_after_bg/operational")
     p.add_argument("--out_width", type=int, default=640)
     p.add_argument("--out_height", type=int, default=640)
     p.add_argument("--uav_scale", type=float, default=0.84)
-    p.add_argument("--jitter_x", type=float, default=0.12,
-                   help="Horizontal center jitter as fraction of image width")
-    p.add_argument("--jitter_y", type=float, default=0.05,
-                   help="Vertical center jitter as fraction of image height")
-    p.add_argument("--seed", type=int, default=42,
-                   help="Random seed for reproducible placement jitter")
-    p.add_argument("--identities", default="all",
-                   help="Comma-separated identities to process or 'all'")
-    p.add_argument("--limit", type=int, default=0,
-                   help="If >0, process only first N images per identity")
-    p.add_argument("--alpha_cutoff", type=int, default=70,
-                   help="Alpha threshold for residue removal (higher = cleaner edges)")
-    p.add_argument("--edge_shrink", type=int, default=1,
-                   help="Edge shrink iterations to remove border haze")
-    p.add_argument("--shadow_strength", type=float, default=0.0,
-                   help="0 disables shadow; 0.4-0.7 keeps subtle shadow")
+    p.add_argument(
+        "--jitter_x",
+        type=float,
+        default=0.12,
+        help="Horizontal center jitter as fraction of image width",
+    )
+    p.add_argument(
+        "--jitter_y",
+        type=float,
+        default=0.05,
+        help="Vertical center jitter as fraction of image height",
+    )
+    p.add_argument(
+        "--seed", type=int, default=42, help="Random seed for reproducible placement jitter"
+    )
+    p.add_argument(
+        "--identities", default="all", help="Comma-separated identities to process or 'all'"
+    )
+    p.add_argument(
+        "--limit", type=int, default=0, help="If >0, process only first N images per identity"
+    )
+    p.add_argument(
+        "--alpha_cutoff",
+        type=int,
+        default=70,
+        help="Alpha threshold for residue removal (higher = cleaner edges)",
+    )
+    p.add_argument(
+        "--edge_shrink", type=int, default=1, help="Edge shrink iterations to remove border haze"
+    )
+    p.add_argument(
+        "--shadow_strength",
+        type=float,
+        default=0.0,
+        help="0 disables shadow; 0.4-0.7 keeps subtle shadow",
+    )
     args = p.parse_args()
 
     before_root = Path(args.before_root)
@@ -248,9 +275,17 @@ def main():
 
     total = 0
     for identity_dir in identity_dirs:
-        uav_images = sorted([f for f in identity_dir.iterdir() if f.is_file() and f.suffix.lower() in {".jpg", ".jpeg", ".png"}])
+        uav_images = sorted(
+            [
+                f
+                for f in identity_dir.iterdir()
+                if f.is_file() and f.suffix.lower() in {".jpg", ".jpeg", ".png"}
+            ]
+        )
         if len(uav_images) != 30:
-            raise RuntimeError(f"Identity '{identity_dir.name}' expected 30 images, found {len(uav_images)}")
+            raise RuntimeError(
+                f"Identity '{identity_dir.name}' expected 30 images, found {len(uav_images)}"
+            )
 
         if args.limit > 0:
             uav_images = uav_images[: args.limit]

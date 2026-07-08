@@ -4,6 +4,7 @@ The deployment metric is **cross-domain AUC**: enrollment gallery vs operational
 (val) queries. The scoring logic here is MLflow-free; the CLI wrapper lives in
 ``scripts/evaluate.py``.
 """
+
 from __future__ import annotations
 
 import random
@@ -19,10 +20,21 @@ from src.uavid.model import attention_prototype
 
 @torch.no_grad()
 def embed_paths(model, paths, tfm, device, batch_size: int = 64) -> torch.Tensor:
-    """Embed a list of image paths in batches and return the stacked tensor."""
+    """Embed a list of image paths in batches and return the stacked tensor.
+
+    Args:
+        model: Encoder module in eval mode.
+        paths: Image paths to embed.
+        tfm: Eval transform applied to each image.
+        device: Torch device string.
+        batch_size: Number of images processed per forward pass.
+
+    Returns:
+        Embedding tensor of shape ``(N, D)``.
+    """
     out = []
     for i in range(0, len(paths), batch_size):
-        batch = torch.stack([load_image(p, tfm) for p in paths[i:i + batch_size]])
+        batch = torch.stack([load_image(p, tfm) for p in paths[i : i + batch_size]])
         out.append(model(batch.to(device)))
     return torch.cat(out, dim=0)
 
@@ -47,7 +59,18 @@ def roc_auc(genuine: np.ndarray, impostor: np.ndarray) -> float:
 
 
 def tpr_at_fpr(genuine: np.ndarray, impostor: np.ndarray, fpr: float) -> tuple[float, float]:
-    """Return ``(TPR, threshold)`` at a fixed false-positive rate ``fpr``."""
+    """Return ``(TPR, threshold)`` at a fixed false-positive rate ``fpr``.
+
+    Args:
+        genuine: Genuine (target) match scores.
+        impostor: Impostor match scores.
+        fpr: Target false-positive rate in ``(0, 1)``.
+
+    Returns:
+        Tuple ``(tpr, threshold)`` where ``tpr`` is the true-positive rate
+        achieved at the given FPR and ``threshold`` is the corresponding
+        decision boundary.
+    """
     thr = np.quantile(impostor, 1 - fpr)
     return float((genuine >= thr).mean()), float(thr)
 
@@ -91,12 +114,14 @@ def evaluate_openset(
     random.seed(seed)
     same_split = gallery_index is query_index
 
-    query_pools = {n: random.sample(list(query_index.identities[n]),
-                                    len(query_index.identities[n]))
-                   for n in query_index.names}
-    gallery_pools = {n: random.sample(list(gallery_index.identities[n]),
-                                      len(gallery_index.identities[n]))
-                     for n in gallery_index.names}
+    query_pools = {
+        n: random.sample(list(query_index.identities[n]), len(query_index.identities[n]))
+        for n in query_index.names
+    }
+    gallery_pools = {
+        n: random.sample(list(gallery_index.identities[n]), len(gallery_index.identities[n]))
+        for n in gallery_index.names
+    }
 
     genuine_all: list[float] = []
     impostor_all: list[float] = []
@@ -109,11 +134,13 @@ def evaluate_openset(
             if len(query_paths_all) <= k_shot:
                 continue
             enroll_paths = query_paths_all[:k_shot]
-            query_paths = query_paths_all[k_shot:k_shot + max_queries_per_id]
+            query_paths = query_paths_all[k_shot : k_shot + max_queries_per_id]
         else:
-            enroll_paths = (random.sample(gallery_paths_all, k_shot)
-                            if len(gallery_paths_all) >= k_shot
-                            else random.choices(gallery_paths_all, k=k_shot))
+            enroll_paths = (
+                random.sample(gallery_paths_all, k_shot)
+                if len(gallery_paths_all) >= k_shot
+                else random.choices(gallery_paths_all, k=k_shot)
+            )
             query_paths = query_paths_all[:max_queries_per_id]
             if not query_paths:
                 continue
@@ -144,8 +171,7 @@ def evaluate_openset(
         for other in query_index.names:
             if other == name:
                 continue
-            imp_paths += random.sample(query_pools[other],
-                                       min(3, len(query_pools[other])))
+            imp_paths += random.sample(query_pools[other], min(3, len(query_pools[other])))
         impostor_all += score(embed_paths(model, imp_paths, tfm, device))
 
     g, i = np.array(genuine_all), np.array(impostor_all)

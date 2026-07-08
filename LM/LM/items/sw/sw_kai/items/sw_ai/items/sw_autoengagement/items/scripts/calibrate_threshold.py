@@ -45,27 +45,52 @@ def metrics_at(threshold: float, pos: np.ndarray, neg: np.ndarray) -> dict:
     fn = int((pos < threshold).sum())
     fp = int((neg >= threshold).sum())
     tn = int((neg < threshold).sum())
-    tpr = tp / max(1, tp + fn)          # recall / detection rate
-    fpr = fp / max(1, fp + tn)          # false-accept rate
+    tpr = tp / max(1, tp + fn)  # recall / detection rate
+    fpr = fp / max(1, fp + tn)  # false-accept rate
     acc = (tp + tn) / max(1, tp + fn + fp + tn)
     bal_acc = 0.5 * (tpr + (1 - fpr))
-    return {"threshold": threshold, "tp": tp, "fn": fn, "fp": fp, "tn": tn,
-            "tpr": tpr, "fpr": fpr, "acc": acc, "bal_acc": bal_acc,
-            "youden": tpr - fpr}
+    return {
+        "threshold": threshold,
+        "tp": tp,
+        "fn": fn,
+        "fp": fp,
+        "tn": tn,
+        "tpr": tpr,
+        "fpr": fpr,
+        "acc": acc,
+        "bal_acc": bal_acc,
+        "youden": tpr - fpr,
+    }
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--checkpoint", default=None)
     ap.add_argument("--gallery", required=True)
-    ap.add_argument("--pos", nargs="+", required=True,
-                    help="Folder(s)/image(s) of the enrolled target (positives).")
-    ap.add_argument("--neg", nargs="+", required=True,
-                    help="Folder(s)/image(s) of impostors/background (negatives).")
-    ap.add_argument("--steps", type=int, default=200,
-                    help="Number of thresholds to sweep across the score range.")
-    ap.add_argument("--target_far", type=float, default=None,
-                    help="If set, also report the lowest threshold with FAR <= this.")
+    ap.add_argument(
+        "--pos",
+        nargs="+",
+        required=True,
+        help="Folder(s)/image(s) of the enrolled target (positives).",
+    )
+    ap.add_argument(
+        "--neg",
+        nargs="+",
+        required=True,
+        help="Folder(s)/image(s) of impostors/background (negatives).",
+    )
+    ap.add_argument(
+        "--steps",
+        type=int,
+        default=200,
+        help="Number of thresholds to sweep across the score range.",
+    )
+    ap.add_argument(
+        "--target_far",
+        type=float,
+        default=None,
+        help="If set, also report the lowest threshold with FAR <= this.",
+    )
     ap.add_argument("--out_csv", default=None)
     args = ap.parse_args()
 
@@ -81,12 +106,15 @@ def main():
     pos = vf.score(vf.embed_paths(pos_paths))
     neg = vf.score(vf.embed_paths(neg_paths))
 
-    print(f"\nscore = {vf.score_name}(crop, enrolled prototype)  | "
-          f"gallery views = {vf.gallery_views}")
-    print(f"positives ({len(pos)}): mean {pos.mean():.4f}  min {pos.min():.4f}  "
-          f"max {pos.max():.4f}")
-    print(f"negatives ({len(neg)}): mean {neg.mean():.4f}  min {neg.min():.4f}  "
-          f"max {neg.max():.4f}")
+    print(
+        f"\nscore = {vf.score_name}(crop, enrolled prototype)  | gallery views = {vf.gallery_views}"
+    )
+    print(
+        f"positives ({len(pos)}): mean {pos.mean():.4f}  min {pos.min():.4f}  max {pos.max():.4f}"
+    )
+    print(
+        f"negatives ({len(neg)}): mean {neg.mean():.4f}  min {neg.min():.4f}  max {neg.max():.4f}"
+    )
 
     lo = float(min(pos.min(), neg.min()))
     hi = float(max(pos.max(), neg.max()))
@@ -97,9 +125,9 @@ def main():
     best = max(rows, key=lambda r: (r["youden"], r["bal_acc"]))
     print("\n-- Recommended operating point (max Youden's J) --")
     print(f"  threshold   = {best['threshold']:.4f}")
-    print(f"  detection   = {best['tpr']*100:5.1f}%  (TP {best['tp']}/{best['tp']+best['fn']})")
-    print(f"  false-accept= {best['fpr']*100:5.1f}%  (FP {best['fp']}/{best['fp']+best['tn']})")
-    print(f"  accuracy    = {best['acc']*100:5.1f}%   bal_acc {best['bal_acc']*100:5.1f}%")
+    print(f"  detection   = {best['tpr'] * 100:5.1f}%  (TP {best['tp']}/{best['tp'] + best['fn']})")
+    print(f"  false-accept= {best['fpr'] * 100:5.1f}%  (FP {best['fp']}/{best['fp'] + best['tn']})")
+    print(f"  accuracy    = {best['acc'] * 100:5.1f}%   bal_acc {best['bal_acc'] * 100:5.1f}%")
 
     if args.target_far is not None:
         ok = [r for r in rows if r["fpr"] <= args.target_far]
@@ -107,8 +135,8 @@ def main():
             pick = max(ok, key=lambda r: r["tpr"])
             print(f"\n-- Threshold at FAR <= {args.target_far:.2%} --")
             print(f"  threshold   = {pick['threshold']:.4f}")
-            print(f"  detection   = {pick['tpr']*100:5.1f}%")
-            print(f"  false-accept= {pick['fpr']*100:5.1f}%")
+            print(f"  detection   = {pick['tpr'] * 100:5.1f}%")
+            print(f"  false-accept= {pick['fpr'] * 100:5.1f}%")
         else:
             print(f"\nNo threshold reaches FAR <= {args.target_far:.2%}.")
 
@@ -121,6 +149,7 @@ def main():
         out = Path(args.out_csv)
         out.parent.mkdir(parents=True, exist_ok=True)
         import csv
+
         with out.open("w", newline="") as fh:
             w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
             w.writeheader()

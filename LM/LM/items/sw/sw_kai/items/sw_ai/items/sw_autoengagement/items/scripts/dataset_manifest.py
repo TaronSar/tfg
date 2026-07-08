@@ -1,4 +1,4 @@
-"""CLI: write a small dataset manifest JSON (a DVC stage stamp output).
+r"""CLI: write a small dataset manifest JSON (a DVC stage stamp output).
 
 Usage::
 
@@ -6,6 +6,7 @@ Usage::
         --data_root /mnt/Pool_IA/IA_Dataset/.../uav_renders \\
         --out data/manifests/00_render.json
 """
+
 from __future__ import annotations
 
 import fire
@@ -14,8 +15,7 @@ from loguru import logger
 from src.uavid.preprocessing.manifest import write_manifest
 
 
-def main(data_root: str, out: str,
-         splits: str = "train,val,enrollment") -> None:
+def main(data_root: str, out: str, splits: str = "train,val,enrollment") -> None:
     """Write the per-split count manifest for ``data_root`` to ``out``.
 
     Args:

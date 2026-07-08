@@ -37,13 +37,14 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
+from src.model import ProtoNetEncoder  # noqa: E402
 
 from src.uavid.common.constants import IMG_EXTS  # noqa: E402
 from src.uavid.common.transforms import build_transform  # noqa: E402
 from src.uavid.dataset import load_image  # noqa: E402
-from src.model import ProtoNetEncoder  # noqa: E402
 
 
 def load_model(checkpoint):
@@ -74,7 +75,7 @@ def images_in(path: Path) -> list[Path]:
 def embed(model, tfm, paths, device, batch=64) -> np.ndarray:
     out = []
     for i in range(0, len(paths), batch):
-        chunk = paths[i:i + batch]
+        chunk = paths[i : i + batch]
         x = torch.stack([load_image(p, tfm) for p in chunk]).to(device)
         out.append(model(x).cpu().numpy())
     return np.concatenate(out, axis=0).astype(np.float32)
@@ -108,25 +109,30 @@ def collect_identities(args) -> dict[str, list[Path]]:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--checkpoint", default=None)
-    ap.add_argument("--data_root", action="append",
-                    help="Folder whose subfolders are identities (repeatable).")
-    ap.add_argument("--identity", action="append",
-                    help="NAME=PATH for one identity (repeatable).")
-    ap.add_argument("--method", choices=["tsne", "pca", "tsne3d", "pca3d", "simmatrix"],
-                    default="tsne",
-                    help="2d: tsne/pca | 3d: tsne3d/pca3d | simmatrix: full-128D "
-                         "pairwise cosine heatmap (no dimensionality reduction).")
-    ap.add_argument("--max_per_identity", type=int, default=0,
-                    help="Cap images per identity (0 = all).")
-    ap.add_argument("--perplexity", type=float, default=30.0,
-                    help="t-SNE perplexity (auto-clamped to N).")
+    ap.add_argument(
+        "--data_root", action="append", help="Folder whose subfolders are identities (repeatable)."
+    )
+    ap.add_argument("--identity", action="append", help="NAME=PATH for one identity (repeatable).")
+    ap.add_argument(
+        "--method",
+        choices=["tsne", "pca", "tsne3d", "pca3d", "simmatrix"],
+        default="tsne",
+        help="2d: tsne/pca | 3d: tsne3d/pca3d | simmatrix: full-128D "
+        "pairwise cosine heatmap (no dimensionality reduction).",
+    )
+    ap.add_argument(
+        "--max_per_identity", type=int, default=0, help="Cap images per identity (0 = all)."
+    )
+    ap.add_argument(
+        "--perplexity", type=float, default=30.0, help="t-SNE perplexity (auto-clamped to N)."
+    )
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", default="graphs/embedding_map.png")
     args = ap.parse_args()
 
     identities = collect_identities(args)
     if args.max_per_identity > 0:
-        identities = {k: v[:args.max_per_identity] for k, v in identities.items()}
+        identities = {k: v[: args.max_per_identity] for k, v in identities.items()}
 
     model, image_size, device = load_model(args.checkpoint)
     tfm = build_transform(image_size, train=False)
@@ -172,10 +178,12 @@ def main():
         fs = 7 if len(names) > 20 else 9
         plt.xticks(ticks, tlabels, rotation=90, fontsize=fs)
         plt.yticks(ticks, tlabels, fontsize=fs)
-        plt.title(f"Full 128-D pairwise cosine similarity  |  {len(names)} identities, "
-                  f"{n} images\nbright blocks on diagonal = same identity clusters "
-                  f"tightly  |  checkpoint: "
-                  f"{Path(args.checkpoint).name if args.checkpoint else 'imagenet'}")
+        plt.title(
+            f"Full 128-D pairwise cosine similarity  |  {len(names)} identities, "
+            f"{n} images\nbright blocks on diagonal = same identity clusters "
+            f"tightly  |  checkpoint: "
+            f"{Path(args.checkpoint).name if args.checkpoint else 'imagenet'}"
+        )
         plt.tight_layout()
         plt.savefig(out, dpi=150, bbox_inches="tight")
         print(f"Saved -> {out}  (full-128D similarity matrix, {n}x{n})")
@@ -190,12 +198,15 @@ def main():
 
     if base == "tsne":
         from sklearn.manifold import TSNE
+
         perp = max(2.0, min(args.perplexity, (n - 1) / 3.0))
-        proj = TSNE(n_components=n_comp, perplexity=perp, init="pca",
-                    random_state=args.seed).fit_transform(emb)
+        proj = TSNE(
+            n_components=n_comp, perplexity=perp, init="pca", random_state=args.seed
+        ).fit_transform(emb)
         title = f"t-SNE ({n_comp}D) of image embeddings (perplexity={perp:.0f})"
     else:
         from sklearn.decomposition import PCA
+
         pca = PCA(n_components=n_comp, random_state=args.seed)
         proj = pca.fit_transform(emb)
         var = pca.explained_variance_ratio_.sum() * 100
@@ -217,25 +228,51 @@ def main():
         ax = fig.add_subplot(111, projection="3d")
         for idx, name in enumerate(names):
             m = labels == idx
-            ax.scatter(proj[m, 0], proj[m, 1], proj[m, 2], s=40, alpha=0.85,
-                       color=colors[idx], marker=markers[idx % len(markers)],
-                       edgecolors="black", linewidths=0.3,
-                       label=f"{name} ({m.sum()})")
-        ax.set_xlabel("dim 1"); ax.set_ylabel("dim 2"); ax.set_zlabel("dim 3")
+            ax.scatter(
+                proj[m, 0],
+                proj[m, 1],
+                proj[m, 2],
+                s=40,
+                alpha=0.85,
+                color=colors[idx],
+                marker=markers[idx % len(markers)],
+                edgecolors="black",
+                linewidths=0.3,
+                label=f"{name} ({m.sum()})",
+            )
+        ax.set_xlabel("dim 1")
+        ax.set_ylabel("dim 2")
+        ax.set_zlabel("dim 3")
     else:
         ax = fig.add_subplot(111)
         for idx, name in enumerate(names):
             m = labels == idx
-            ax.scatter(proj[m, 0], proj[m, 1], s=46, alpha=0.85,
-                       color=colors[idx], marker=markers[idx % len(markers)],
-                       edgecolors="black", linewidths=0.3,
-                       label=f"{name} ({m.sum()})")
-        ax.set_xlabel("dim 1"); ax.set_ylabel("dim 2")
-    ax.set_title(title + f"  |  {n_id} identities  |  checkpoint: "
-                 f"{Path(args.checkpoint).name if args.checkpoint else 'imagenet'}")
+            ax.scatter(
+                proj[m, 0],
+                proj[m, 1],
+                s=46,
+                alpha=0.85,
+                color=colors[idx],
+                marker=markers[idx % len(markers)],
+                edgecolors="black",
+                linewidths=0.3,
+                label=f"{name} ({m.sum()})",
+            )
+        ax.set_xlabel("dim 1")
+        ax.set_ylabel("dim 2")
+    ax.set_title(
+        title + f"  |  {n_id} identities  |  checkpoint: "
+        f"{Path(args.checkpoint).name if args.checkpoint else 'imagenet'}"
+    )
     ncol = 2 if n_id > 26 else 1
-    ax.legend(title="identity (n images)", bbox_to_anchor=(1.02, 1), loc="upper left",
-              borderaxespad=0, fontsize=7 if n_id > 20 else 9, ncol=ncol)
+    ax.legend(
+        title="identity (n images)",
+        bbox_to_anchor=(1.02, 1),
+        loc="upper left",
+        borderaxespad=0,
+        fontsize=7 if n_id > 20 else 9,
+        ncol=ncol,
+    )
     plt.tight_layout()
 
     plt.savefig(out, dpi=150, bbox_inches="tight")

@@ -16,9 +16,7 @@ from pathlib import Path
 
 COMMONS_API = "https://commons.wikimedia.org/w/api.php"
 FLICKR_FEED = "https://www.flickr.com/services/feeds/photos_public.gne"
-HEADERS = {
-    "User-Agent": "uav-background-downloader/1.1 (research; no-api-key mode)"
-}
+HEADERS = {"User-Agent": "uav-background-downloader/1.1 (research; no-api-key mode)"}
 
 CATEGORY_QUERIES = {
     "beach": ["beach,coast,shore,landscape", "tropical,beach,sea", "coastline,beach"],
@@ -39,11 +37,45 @@ CATEGORY_INCLUDE = {
 }
 
 GLOBAL_EXCLUDE = {
-    "cat", "cats", "kitten", "dog", "dogs", "puppy", "bird", "birds", "eagle", "pigeon",
-    "animal", "animals", "insect", "insects", "butterfly", "moth", "damselfly", "dragonfly",
-    "flower", "flowers", "portrait", "selfie",
-    "person", "people", "face", "wedding", "food", "car", "cars", "toy", "logo", "poster",
-    "drawing", "illustration", "artwork", "statue", "airplane", "drone", "uav",
+    "cat",
+    "cats",
+    "kitten",
+    "dog",
+    "dogs",
+    "puppy",
+    "bird",
+    "birds",
+    "eagle",
+    "pigeon",
+    "animal",
+    "animals",
+    "insect",
+    "insects",
+    "butterfly",
+    "moth",
+    "damselfly",
+    "dragonfly",
+    "flower",
+    "flowers",
+    "portrait",
+    "selfie",
+    "person",
+    "people",
+    "face",
+    "wedding",
+    "food",
+    "car",
+    "cars",
+    "toy",
+    "logo",
+    "poster",
+    "drawing",
+    "illustration",
+    "artwork",
+    "statue",
+    "airplane",
+    "drone",
+    "uav",
 }
 
 
@@ -227,7 +259,7 @@ def download_backgrounds(out_root: str, count_per_category: int, replace: bool =
                 if len(filtered_candidates) >= count_per_category:
                     break
             if needed > 0:
-                print(f"  Added Wikimedia fallback candidates to fill shortage.")
+                print("  Added Wikimedia fallback candidates to fill shortage.")
 
         print(f"  Relevant candidates after filtering: {len(filtered_candidates)}")
 
@@ -247,8 +279,7 @@ def download_backgrounds(out_root: str, count_per_category: int, replace: bool =
                     downloaded += 1
                     total_downloaded += 1
                     print(
-                        f"  [{downloaded:02d}/{count_per_category}] {dest.name}"
-                        f" <- {item['title']}"
+                        f"  [{downloaded:02d}/{count_per_category}] {dest.name} <- {item['title']}"
                     )
                     break
             time.sleep(0.15)
@@ -296,10 +327,14 @@ def download_backgrounds(out_root: str, count_per_category: int, replace: bool =
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Download category-specific real-world backgrounds")
+    parser = argparse.ArgumentParser(
+        description="Download category-specific real-world backgrounds"
+    )
     parser.add_argument("--out", default="data/backgrounds", help="Output root folder")
     parser.add_argument("--count", type=int, default=10, help="Images per category")
-    parser.add_argument("--replace", action="store_true", help="Delete old images in each category first")
+    parser.add_argument(
+        "--replace", action="store_true", help="Delete old images in each category first"
+    )
     args = parser.parse_args()
 
     n = download_backgrounds(args.out, count_per_category=max(1, args.count), replace=args.replace)

@@ -6,6 +6,7 @@ exclusion file. The dataset stays immutable; the training/eval dataset loader
 skips the excluded crops as if they did not exist. This keeps the dataset hash
 stable and avoids constant dataset churn.
 """
+
 from __future__ import annotations
 
 import json
@@ -17,7 +18,14 @@ from src.uavid.common.constants import IMG_EXTS
 
 
 def _shorter_side(path: Path) -> int | None:
-    """Return the shorter side (px) of an image, or None if unreadable."""
+    """Return the shorter side (px) of an image, or ``None`` if unreadable.
+
+    Args:
+        path: Path to the image file.
+
+    Returns:
+        Shorter side in pixels, or ``None`` if the image cannot be opened.
+    """
     try:
         with Image.open(path) as im:
             return min(im.size)
@@ -69,7 +77,15 @@ def build_exclusion(
 
 
 def write_exclusion(report: dict, out_path: Path | str) -> Path:
-    """Write the exclusion report to ``out_path`` (parents created)."""
+    """Write the exclusion report to ``out_path`` (parent dirs created).
+
+    Args:
+        report: Exclusion dict as returned by :func:`build_exclusion`.
+        out_path: Destination JSON path.
+
+    Returns:
+        Resolved path of the written file.
+    """
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(report, indent=2))
@@ -77,6 +93,14 @@ def write_exclusion(report: dict, out_path: Path | str) -> Path:
 
 
 def load_excluded(exclude_json: Path | str) -> set[str]:
-    """Load the set of excluded dataset-relative POSIX paths from a JSON file."""
+    """Load the set of excluded dataset-relative POSIX paths from a JSON file.
+
+    Args:
+        exclude_json: Path to the exclusion JSON produced by
+            :func:`write_exclusion`.
+
+    Returns:
+        Set of dataset-relative POSIX path strings to skip during loading.
+    """
     data = json.loads(Path(exclude_json).read_text())
     return set(data.get("excluded", []))

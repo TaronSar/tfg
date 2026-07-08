@@ -3,12 +3,14 @@
 Usage (on Vision server, NAS mounted)::
 
     PYTHONPATH=. uv run python scripts/load_to_fiftyone.py
-        --data_root /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_dataset_yolox_crops
+        --data_root /mnt/Pool_IA/IA_Dataset/datasets/
+            uav-few-shot-identification/uav_dataset_yolox_crops
         --name uav_yolox_crops
 
     # Or for the raw renders:
     PYTHONPATH=. uv run python scripts/load_to_fiftyone.py
-        --data_root /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_dataset_rendered
+        --data_root /mnt/Pool_IA/IA_Dataset/datasets/
+            uav-few-shot-identification/uav_dataset_rendered
         --name uav_rendered
 
 After the script prints "App running", open http://localhost:5151 in your browser.
@@ -16,6 +18,7 @@ If you are accessing from your local machine via SSH:
     ssh -L 5151:localhost:5151 <vision-server>
 then open http://localhost:5151 on your local browser.
 """
+
 from __future__ import annotations
 
 import os
@@ -68,10 +71,7 @@ def main(
         identity_dirs = sorted(p for p in split_dir.iterdir() if p.is_dir())
         logger.info(f"Split '{split}': {len(identity_dirs)} identities")
         for identity_dir in identity_dirs:
-            imgs = sorted(
-                f for f in identity_dir.rglob("*")
-                if f.suffix.lower() in IMG_EXTS
-            )
+            imgs = sorted(f for f in identity_dir.rglob("*") if f.suffix.lower() in IMG_EXTS)
             for img_path in imgs:
                 s = fo.Sample(filepath=str(img_path))
                 s["split"] = split

@@ -1,10 +1,11 @@
-"""CLI: enroll a target into ``gallery.npy`` (client-side, privacy Option A).
+r"""CLI: enroll a target into ``gallery.npy`` (client-side, privacy Option A).
 
 Usage::
 
     PYTHONPATH=. uv run python scripts/enroll.py \\
         --images refs/ --out gallery.npy --checkpoint models/05_train/best.pth
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -26,8 +27,7 @@ def main(images: str, out: str = "gallery.npy", checkpoint: str | None = None) -
     emb = enroll_gallery(images, out=out, checkpoint=checkpoint)
     size_kb = Path(out).stat().st_size / 1024
     logger.info(f"Enrolled {emb.shape[0]} views -> {out}  shape={emb.shape}")
-    logger.info(f"gallery.npy size: {size_kb:.1f} KB "
-                "(the only artifact that leaves the client)")
+    logger.info(f"gallery.npy size: {size_kb:.1f} KB (the only artifact that leaves the client)")
 
 
 if __name__ == "__main__":

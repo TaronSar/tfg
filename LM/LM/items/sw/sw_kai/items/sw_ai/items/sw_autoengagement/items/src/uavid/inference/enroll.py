@@ -3,6 +3,7 @@
 This is the privacy-critical step (Option A): only the resulting ``gallery.npy``
 ever leaves the client's machine.
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -25,9 +26,12 @@ def _list_images(src: Path) -> list[Path]:
 
 
 @torch.no_grad()
-def enroll_gallery(images: str | Path, out: str | Path = "gallery.npy",
-                   checkpoint: str | None = None,
-                   device: str | None = None) -> np.ndarray:
+def enroll_gallery(
+    images: str | Path,
+    out: str | Path = "gallery.npy",
+    checkpoint: str | None = None,
+    device: str | None = None,
+) -> np.ndarray:
     """Embed reference images and save the L2-normalised gallery to ``out``.
 
     Args:

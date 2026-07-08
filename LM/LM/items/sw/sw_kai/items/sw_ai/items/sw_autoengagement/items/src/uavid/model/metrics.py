@@ -1,12 +1,11 @@
 """Distance metrics for prototypical scoring (Snell et al. 2017)."""
+
 from __future__ import annotations
 
 import torch
 
 
-def euclidean_logits(
-    queries: torch.Tensor, prototypes: torch.Tensor
-) -> torch.Tensor:
+def euclidean_logits(queries: torch.Tensor, prototypes: torch.Tensor) -> torch.Tensor:
     """Negative squared Euclidean distance logits (Snell et al. 2017).
 
     Squared Euclidean is a Bregman divergence, which justifies the class mean as

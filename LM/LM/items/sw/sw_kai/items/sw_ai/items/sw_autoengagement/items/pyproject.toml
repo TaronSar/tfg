@@ -1,5 +1,5 @@
 [project]
-name = "sw-autoengadgement"
+name = "sw-autoengagement"
 version = "0.1.0"
 description = "Privacy-preserving few-shot UAV identification (ProtoNet) for the Embention KAI Autonomous Engagement pipeline."
 readme = "README.md"
@@ -72,7 +72,14 @@ select = [
     "I",   # import sorting
     "B",   # bugbear
     "UP",  # pyupgrade
+    "D205", # blank line after docstring summary
+    "D301", # raw docstrings when examples contain backslashes
+    "D415", # terminal punctuation in docstring summaries
+    "D417", # documented function arguments
 ]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.ruff.format]
 quote-style = "double"

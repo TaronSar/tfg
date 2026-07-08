@@ -1,11 +1,17 @@
-import cv2
-
 import argparse
 from pathlib import Path
 
-def extract_frames(video_path: Path, output_folder: Path, every_sec: float,
-                   max_frames: int | None = None, image_ext: str = "jpg",
-                   overwrite: bool = False) -> list[Path]:
+import cv2
+
+
+def extract_frames(
+    video_path: Path,
+    output_folder: Path,
+    every_sec: float,
+    max_frames: int | None = None,
+    image_ext: str = "jpg",
+    overwrite: bool = False,
+) -> list[Path]:
     if not video_path.exists():
         raise SystemExit(f"Video file not found: {video_path}")
 
@@ -58,16 +64,21 @@ def extract_frames(video_path: Path, output_folder: Path, every_sec: float,
     print(f"output={output_folder}")
     return saved_paths
 
+
 def main():
     parser = argparse.ArgumentParser(description="Extract preview frames from a video.")
     parser.add_argument("--video", required=True)
     parser.add_argument("--output", required=True)
-    parser.add_argument("--every_sec", type=float, default=0.5,
-                        help="Save one frame every N seconds.")
+    parser.add_argument(
+        "--every_sec", type=float, default=0.5, help="Save one frame every N seconds."
+    )
     parser.add_argument("--max_frames", type=int, default=40)
     parser.add_argument("--image_ext", choices=["jpg", "png"], default="jpg")
-    parser.add_argument("--overwrite", action="store_true",
-                        help="Delete existing frame_*.jpg/png files before extracting.")
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Delete existing frame_*.jpg/png files before extracting.",
+    )
     args = parser.parse_args()
 
     extract_frames(
@@ -78,6 +89,7 @@ def main():
         image_ext=args.image_ext,
         overwrite=args.overwrite,
     )
+
 
 if __name__ == "__main__":
     main()

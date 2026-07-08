@@ -1,6 +1,5 @@
-"""
-UAV Dataset Renderer for Blender
-=================================
+"""Render synthetic UAV datasets in Blender.
+
 Renders a .glb/.gltf UAV model from many angles, distances, and sky conditions,
 producing two datasets:
     - operational/  : small UAV (~60-120px) against sky  → goes in data/train or data/val
@@ -35,46 +34,49 @@ OUTPUT STRUCTURE:
                 ...
 """
 
-import bpy
 import math
 import os
-import sys
 import random
-from mathutils import Vector, Euler, Matrix
+import sys
+
+import bpy
+from mathutils import Euler, Matrix, Vector
 
 # ─── FALLBACK CONFIG (used when running from GUI, not CLI) ──────────────────
 FALLBACK = dict(
-    model  = "/path/to/your_uav.glb",   # ← edit this
-    name   = "my_uav",                  # ← edit this (folder name = identity name)
-    output = "/path/to/data/train/",    # ← edit this
-    width  = 640,
-    height = 640,
-    samples = 32,                        # cycles samples (lower = faster, 16-64 is fine)
+    model="/path/to/your_uav.glb",  # ← edit this
+    name="my_uav",  # ← edit this (folder name = identity name)
+    output="/path/to/data/train/",  # ← edit this
+    width=640,
+    height=640,
+    samples=32,  # cycles samples (lower = faster, 16-64 is fine)
 )
 
 # ─── CAMERA ORBIT SETTINGS ──────────────────────────────────────────────────
 # Azimuth: horizontal rotation around UAV (0=front, 90=right, 180=rear, 270=left)
-AZIMUTHS_DEG     = list(range(0, 360, 45))   # 8-way coverage: enough silhouette variety without huge datasets
+AZIMUTHS_DEG = list(
+    range(0, 360, 45)
+)  # 8-way coverage: enough silhouette variety without huge datasets
 
 # Elevation: camera angle relative to the UAV center.
 # Use only negative values: below-UAV oblique belly views, no parallel/above views.
-ELEVATIONS_DEG   = [-65, -45, -25, -10]  # underside through shallow side views
+ELEVATIONS_DEG = [-65, -45, -25, -10]  # underside through shallow side views
 
 # ─── RENDER MODES ───────────────────────────────────────────────────────────
 # "operational" → small UAV, simulates 50-100m distance, goes in train/val
 # "enrollment"  → large UAV, simulates close client photo, goes in enrollment/
 MODES = {
     "operational": {
-        "distance_mult": 32.0,   # closer than the older 38.0 preset to reduce tiny detections
-        "focal_mm":      200,   # telephoto lens (like a ground observer's camera)
-        "target_px":     90,    # approximate rendered UAV size in pixels (informational)
+        "distance_mult": 32.0,  # closer than the older 38.0 preset to reduce tiny detections
+        "focal_mm": 200,  # telephoto lens (like a ground observer's camera)
+        "target_px": 90,  # approximate rendered UAV size in pixels (informational)
         "distance_jitter": (1.10, 1.35),
         "focal_jitter": (0.95, 1.0),
     },
     "enrollment": {
-        "distance_mult": 2.5,   # camera close → large, detailed UAV
-        "focal_mm":      85,    # standard lens
-        "target_px":     350,   # UAV fills much of the frame
+        "distance_mult": 2.5,  # camera close → large, detailed UAV
+        "focal_mm": 85,  # standard lens
+        "target_px": 350,  # UAV fills much of the frame
         "distance_jitter": (0.90, 1.35),
         "focal_jitter": (0.85, 1.20),
     },
@@ -85,11 +87,11 @@ MODES = {
 # Each dict: type="sky" uses Blender's Nishita sky (physically based)
 #            type="color" uses flat background color
 SKIES = [
-    {"type": "sky",   "sun_elev": 60,  "sun_rot": 0.2,  "name": "noon_clear"},
-    {"type": "sky",   "sun_elev": 25,  "sun_rot": 1.0,  "name": "morning"},
-    {"type": "sky",   "sun_elev": 10,  "sun_rot": 2.5,  "name": "dusk"},
-    {"type": "color", "color": (0.80, 0.82, 0.85),      "name": "overcast"},
-    {"type": "color", "color": (0.92, 0.94, 0.97),      "name": "white_hazy"},
+    {"type": "sky", "sun_elev": 60, "sun_rot": 0.2, "name": "noon_clear"},
+    {"type": "sky", "sun_elev": 25, "sun_rot": 1.0, "name": "morning"},
+    {"type": "sky", "sun_elev": 10, "sun_rot": 2.5, "name": "dusk"},
+    {"type": "color", "color": (0.80, 0.82, 0.85), "name": "overcast"},
+    {"type": "color", "color": (0.92, 0.94, 0.97), "name": "white_hazy"},
 ]
 
 # High-contrast but plausible body colors. Chosen to avoid sky-like pale gray/blue.
@@ -114,42 +116,91 @@ UAV_ACCENT_COLORS = [
 def parse_args():
     argv = sys.argv
     if "--" in argv:
-        argv = argv[argv.index("--") + 1:]
+        argv = argv[argv.index("--") + 1 :]
     else:
         return FALLBACK  # running from GUI
 
     import argparse
+
     p = argparse.ArgumentParser()
-    p.add_argument("--model",   required=True)
-    p.add_argument("--name",    required=True)
-    p.add_argument("--output",  required=True)
-    p.add_argument("--width",   type=int, default=640)
-    p.add_argument("--height",  type=int, default=640)
+    p.add_argument("--model", required=True)
+    p.add_argument("--name", required=True)
+    p.add_argument("--output", required=True)
+    p.add_argument("--width", type=int, default=640)
+    p.add_argument("--height", type=int, default=640)
     p.add_argument("--samples", type=int, default=32)
-    p.add_argument("--azimuths", type=int, default=8,
-                   help="Number of horizontal angles (evenly spaced 0-360)")
-    p.add_argument("--elevations", type=float, nargs="+", default=None,
-                   help="Camera elevation angles in degrees. Default covers underside through shallow side views.")
-    p.add_argument("--realistic", action="store_true",
-                   help="Randomize camera roll, distance, lens, aim, exposure, and lighting per render.")
-    p.add_argument("--colorize", choices=["none", "operational", "all"], default="operational",
-                   help="Override UAV materials with contrast-preserving colors. Default: operational renders only.")
-    p.add_argument("--variants", type=int, default=1,
-                   help="Number of randomized renders per pose/sky when --realistic is set.")
-    p.add_argument("--sky_count", type=int, default=3,
-                   help="Use only the first N sky presets. Useful for quick realistic dataset passes.")
-    p.add_argument("--skip_enrollment", action="store_true",
-                   help="Only render operational (far) images, skip enrollment")
-    p.add_argument("--operational_distance_mult", type=float, default=None,
-                   help="Override operational camera distance multiplier for demo or ablation renders.")
-    p.add_argument("--operational_focal_mm", type=float, default=None,
-                   help="Override operational focal length for demo or ablation renders.")
-    p.add_argument("--operational_distance_jitter", type=float, nargs=2, default=None,
-                   metavar=("MIN", "MAX"),
-                   help="Override operational distance jitter multipliers.")
-    p.add_argument("--operational_focal_jitter", type=float, nargs=2, default=None,
-                   metavar=("MIN", "MAX"),
-                   help="Override operational focal length jitter multipliers.")
+    p.add_argument(
+        "--azimuths", type=int, default=8, help="Number of horizontal angles (evenly spaced 0-360)"
+    )
+    p.add_argument(
+        "--elevations",
+        type=float,
+        nargs="+",
+        default=None,
+        help=(
+            "Camera elevation angles in degrees. Default covers underside through "
+            "shallow side views."
+        ),
+    )
+    p.add_argument(
+        "--realistic",
+        action="store_true",
+        help="Randomize camera roll, distance, lens, aim, exposure, and lighting per render.",
+    )
+    p.add_argument(
+        "--colorize",
+        choices=["none", "operational", "all"],
+        default="operational",
+        help=(
+            "Override UAV materials with contrast-preserving colors. Default: "
+            "operational renders only."
+        ),
+    )
+    p.add_argument(
+        "--variants",
+        type=int,
+        default=1,
+        help="Number of randomized renders per pose/sky when --realistic is set.",
+    )
+    p.add_argument(
+        "--sky_count",
+        type=int,
+        default=3,
+        help="Use only the first N sky presets. Useful for quick realistic dataset passes.",
+    )
+    p.add_argument(
+        "--skip_enrollment",
+        action="store_true",
+        help="Only render operational (far) images, skip enrollment",
+    )
+    p.add_argument(
+        "--operational_distance_mult",
+        type=float,
+        default=None,
+        help="Override operational camera distance multiplier for demo or ablation renders.",
+    )
+    p.add_argument(
+        "--operational_focal_mm",
+        type=float,
+        default=None,
+        help="Override operational focal length for demo or ablation renders.",
+    )
+    p.add_argument(
+        "--operational_distance_jitter",
+        type=float,
+        nargs=2,
+        default=None,
+        metavar=("MIN", "MAX"),
+        help="Override operational distance jitter multipliers.",
+    )
+    p.add_argument(
+        "--operational_focal_jitter",
+        type=float,
+        nargs=2,
+        default=None,
+        metavar=("MIN", "MAX"),
+        help="Override operational focal length jitter multipliers.",
+    )
     args = p.parse_args(argv)
     cfg = vars(args)
     global AZIMUTHS_DEG, ELEVATIONS_DEG
@@ -164,8 +215,10 @@ def parse_args():
 def clear_scene():
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete()
-    for block in bpy.data.meshes:    bpy.data.meshes.remove(block)
-    for block in bpy.data.materials: bpy.data.materials.remove(block)
+    for block in list(bpy.data.meshes):
+        bpy.data.meshes.remove(block)
+    for block in list(bpy.data.materials):
+        bpy.data.materials.remove(block)
 
 
 def import_model(path):
@@ -202,8 +255,8 @@ def normalize_model(objects):
     xs = [v.x for v in all_verts]
     ys = [v.y for v in all_verts]
     zs = [v.z for v in all_verts]
-    center = Vector(((max(xs)+min(xs))/2, (max(ys)+min(ys))/2, (max(zs)+min(zs))/2))
-    max_dim = max(max(xs)-min(xs), max(ys)-min(ys), max(zs)-min(zs))
+    center = Vector(((max(xs) + min(xs)) / 2, (max(ys) + min(ys)) / 2, (max(zs) + min(zs)) / 2))
+    max_dim = max(max(xs) - min(xs), max(ys) - min(ys), max(zs) - min(zs))
     scale = 1.0 / max_dim if max_dim > 0 else 1.0
 
     transform = Matrix.Diagonal((scale, scale, scale, 1.0)) @ Matrix.Translation(-center)
@@ -211,7 +264,8 @@ def normalize_model(objects):
         obj.matrix_world = transform @ obj.matrix_world
 
     bpy.context.view_layer.update()
-    print(f"Normalized model: center={tuple(round(v, 4) for v in center)} max_dim={max_dim:.4f} scale={scale:.4f}")
+    center_str = tuple(round(v, 4) for v in center)
+    print(f"Normalized model: center={center_str} max_dim={max_dim:.4f} scale={scale:.4f}")
 
 
 def setup_renderer(cfg):
@@ -244,17 +298,15 @@ def add_camera(focal_mm=85):
 
 def add_sun_light(elevation_deg=45, rotation_deg=0, strength=3.0):
     # Remove existing lights
-    for obj in bpy.data.objects:
+    for obj in list(bpy.data.objects):
         if obj.type == "LIGHT":
             bpy.data.objects.remove(obj)
     bpy.ops.object.light_add(type="SUN", location=(0, 0, 10))
     sun = bpy.context.active_object
     sun.data.energy = strength
-    sun.rotation_euler = Euler((
-        math.radians(90 - elevation_deg),
-        0,
-        math.radians(rotation_deg)
-    ), "XYZ")
+    sun.rotation_euler = Euler(
+        (math.radians(90 - elevation_deg), 0, math.radians(rotation_deg)), "XYZ"
+    )
     return sun
 
 
@@ -278,7 +330,9 @@ def apply_uav_color_variant(objects, mode_name, colorize):
     body = random.choice(UAV_BODY_COLORS)
     accent = random.choice(UAV_ACCENT_COLORS)
     body_mat = make_colored_material(f"runtime_body_{mode_name}_{random.randint(0, 999999)}", body)
-    accent_mat = make_colored_material(f"runtime_accent_{mode_name}_{random.randint(0, 999999)}", accent)
+    accent_mat = make_colored_material(
+        f"runtime_accent_{mode_name}_{random.randint(0, 999999)}", accent
+    )
 
     for idx, obj in enumerate(objects):
         if obj.type != "MESH":
@@ -364,10 +418,9 @@ def set_sky_background(sky_cfg):
         add_sun_light(elevation_deg=40, strength=2.0)
 
 
-def position_camera(cam, azimuth_deg, elevation_deg, distance, target_offset=None,
-                    roll_deg=0.0):
-    """
-    Place camera on a sphere around the origin.
+def position_camera(cam, azimuth_deg, elevation_deg, distance, target_offset=None, roll_deg=0.0):
+    """Place camera on a sphere around the origin.
+
     azimuth=0, elevation=0 → camera looking horizontally at the UAV front.
     elevation > 0 → camera above, looking down.
     elevation < 0 → camera below, looking up (belly shot, like ground observer).
@@ -423,7 +476,7 @@ def random_render_params(realistic, mode_cfg):
 def render_dataset(cfg):
     model_path = cfg["model"]
     model_name = cfg["name"]
-    out_root   = cfg["output"]
+    out_root = cfg["output"]
     skip_enroll = cfg.get("skip_enrollment", False)
     modes = {name: values.copy() for name, values in MODES.items()}
     if cfg.get("operational_distance_mult") is not None:
@@ -431,14 +484,17 @@ def render_dataset(cfg):
     if cfg.get("operational_focal_mm") is not None:
         modes["operational"]["focal_mm"] = float(cfg["operational_focal_mm"])
     if cfg.get("operational_distance_jitter") is not None:
-        modes["operational"]["distance_jitter"] = tuple(float(v) for v in cfg["operational_distance_jitter"])
+        modes["operational"]["distance_jitter"] = tuple(
+            float(v) for v in cfg["operational_distance_jitter"]
+        )
     if cfg.get("operational_focal_jitter") is not None:
-        modes["operational"]["focal_jitter"] = tuple(float(v) for v in cfg["operational_focal_jitter"])
+        modes["operational"]["focal_jitter"] = tuple(
+            float(v) for v in cfg["operational_focal_jitter"]
+        )
 
     # Output directories
     op_dir = os.path.join(out_root, "operational", model_name)
-    en_dir = os.path.join(os.path.dirname(out_root.rstrip("/")),
-                          "enrollment", model_name)
+    en_dir = os.path.join(os.path.dirname(out_root.rstrip("/")), "enrollment", model_name)
     os.makedirs(op_dir, exist_ok=True)
     if not skip_enroll:
         os.makedirs(en_dir, exist_ok=True)
@@ -450,9 +506,15 @@ def render_dataset(cfg):
     setup_renderer(cfg)
     cam = add_camera()
 
-    skies = SKIES[:max(1, int(cfg["sky_count"]))] if cfg.get("sky_count") else SKIES
+    skies = SKIES[: max(1, int(cfg["sky_count"]))] if cfg.get("sky_count") else SKIES
     variants = max(1, int(cfg.get("variants", 1))) if cfg.get("realistic", False) else 1
-    total = len(AZIMUTHS_DEG) * len(ELEVATIONS_DEG) * len(skies) * variants * (1 + (0 if skip_enroll else 1))
+    total = (
+        len(AZIMUTHS_DEG)
+        * len(ELEVATIONS_DEG)
+        * len(skies)
+        * variants
+        * (1 + (0 if skip_enroll else 1))
+    )
     done = 0
 
     for sky in skies:
@@ -472,8 +534,14 @@ def render_dataset(cfg):
             for az in AZIMUTHS_DEG:
                 for el in ELEVATIONS_DEG:
                     for variant in range(variants):
-                        suffix = f"_v{variant:02d}" if cfg.get("realistic", False) or variants > 1 else ""
-                        filename = f"az{int(round(az)):03d}_el{int(round(el)):+03d}_{sky['name']}_{mode_name}{suffix}.jpg"
+                        suffix = (
+                            f"_v{variant:02d}"
+                            if cfg.get("realistic", False) or variants > 1
+                            else ""
+                        )
+                        az_str = f"az{int(round(az)):03d}"
+                        el_str = f"el{int(round(el)):+03d}"
+                        filename = f"{az_str}_{el_str}_{sky['name']}_{mode_name}{suffix}.jpg"
                         filepath = os.path.join(out_dir, filename)
 
                         if os.path.exists(filepath):
@@ -486,23 +554,34 @@ def render_dataset(cfg):
                         bpy.context.scene.view_settings.gamma = params["gamma"]
                         for obj in bpy.data.objects:
                             if obj.type == "LIGHT" and hasattr(obj.data, "energy"):
-                                obj.data.energy = base_light_energy.get(obj.name, obj.data.energy) * params["sun_strength"]
-                        apply_uav_color_variant(objects, mode_name, cfg.get("colorize", "operational"))
-                        position_camera(cam, az, el, params["distance"],
-                                        params["target_offset"], params["roll_deg"])
+                                obj.data.energy = (
+                                    base_light_energy.get(obj.name, obj.data.energy)
+                                    * params["sun_strength"]
+                                )
+                        apply_uav_color_variant(
+                            objects, mode_name, cfg.get("colorize", "operational")
+                        )
+                        position_camera(
+                            cam,
+                            az,
+                            el,
+                            params["distance"],
+                            params["target_offset"],
+                            params["roll_deg"],
+                        )
                         bpy.context.scene.render.filepath = filepath
                         bpy.ops.render.render(write_still=True)
 
                         done += 1
                         print(f"[{done}/{total}] {filename}")
 
-    print(f"\nDone. Renders saved to:")
+    print("\nDone. Renders saved to:")
     print(f"  operational → {op_dir}")
     if not skip_enroll:
         print(f"  enrollment  → {en_dir}")
-    print(f"\nNext steps:")
-    print(f"  1. Run: python scripts/audit_dataset.py --data_root data/ --show_sizes")
-    print(f"  2. If audit passes: python -m src.train --data_root data/ ...")
+    print("\nNext steps:")
+    print("  1. Run: python scripts/audit_dataset.py --data_root data/ --show_sizes")
+    print("  2. If audit passes: python -m src.train --data_root data/ ...")
 
 
 # ─── ENTRY POINT ─────────────────────────────────────────────────────────────

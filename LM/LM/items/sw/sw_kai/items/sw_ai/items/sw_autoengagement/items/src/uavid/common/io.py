@@ -1,9 +1,10 @@
 """File hashing, run-name generation and shared pipeline utilities."""
+
 from __future__ import annotations
 
 import hashlib
 import subprocess
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 
@@ -38,7 +39,8 @@ def run_name(prefix: str) -> str:
         repo_dir = Path(__file__).resolve().parent
         sha = subprocess.check_output(
             ["git", "rev-parse", "--short", "HEAD"],
-            text=True, cwd=repo_dir,
+            text=True,
+            cwd=repo_dir,
         ).strip()
     except Exception:
         sha = "unknown"
@@ -48,4 +50,4 @@ def run_name(prefix: str) -> str:
 
 def utc_now_iso() -> str:
     """Return the current UTC timestamp in ISO-8601 format."""
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()

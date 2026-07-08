@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.uavid.common.constants import IMG_EXTS
 from src.uavid.common.transforms import build_transform
 from src.uavid.dataset import load_image
-from src.uavid.model import ProtoNetEncoder, attention_prototype, build_encoder, BACKBONE_NORM
+from src.uavid.model import BACKBONE_NORM, attention_prototype, build_encoder
 
 
 @torch.no_grad()
@@ -75,8 +75,12 @@ def folder_score(scores, rule, top_k):
 def main():
     parser = argparse.ArgumentParser(description="Run the close-enrollment vs far-query UAV demo.")
     parser.add_argument("--checkpoint", required=True)
-    parser.add_argument("--enrollment", required=True, help="Folder with close client UAV reference images.")
-    parser.add_argument("--queries", required=True, help="Folder containing one subfolder per candidate sighting.")
+    parser.add_argument(
+        "--enrollment", required=True, help="Folder with close client UAV reference images."
+    )
+    parser.add_argument(
+        "--queries", required=True, help="Folder containing one subfolder per candidate sighting."
+    )
     parser.add_argument("--gallery_out", default="data/demo/client_uav/gallery.npy")
     parser.add_argument("--agg", choices=["mean", "attention"], default="mean")
     parser.add_argument("--tau", type=float, default=0.1)
@@ -123,23 +127,30 @@ def main():
         if decision_score > best_score:
             best_name = candidate_dir.name
             best_score = decision_score
-        print(f"{candidate_dir.name:<24} {len(paths):>3} {scores.mean():>8.4f} {scores.max():>8.4f} {topk:>8.4f} {decision:>10}")
-        for path, score in zip(paths, scores):
-            rows.append({
-                "candidate": candidate_dir.name,
-                "image": str(path),
-                "score": float(score),
-                "folder_score": decision_score,
-                "decision": decision,
-            })
+        print(
+            f"{candidate_dir.name:<24} {len(paths):>3} {scores.mean():>8.4f} "
+            f"{scores.max():>8.4f} {topk:>8.4f} {decision:>10}"
+        )
+        for path, score in zip(paths, scores, strict=False):
+            rows.append(
+                {
+                    "candidate": candidate_dir.name,
+                    "image": str(path),
+                    "score": float(score),
+                    "folder_score": decision_score,
+                    "decision": decision,
+                }
+            )
         if args.show_images:
-            for path, score in zip(paths, scores):
+            for path, score in zip(paths, scores, strict=False):
                 print(f"  {path.name:<48} {score:>8.4f}")
 
     csv_path = Path(args.csv_out)
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     with csv_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["candidate", "image", "score", "folder_score", "decision"])
+        writer = csv.DictWriter(
+            handle, fieldnames=["candidate", "image", "score", "folder_score", "decision"]
+        )
         writer.writeheader()
         writer.writerows(rows)
 

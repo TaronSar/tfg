@@ -10,6 +10,7 @@ Expected layout::
 Each identity folder is one physical airframe (or one distinct model). Folders
 whose names start with ``neg_`` are train-only hard negatives.
 """
+
 from __future__ import annotations
 
 import random
@@ -29,12 +30,16 @@ from src.uavid.common.constants import IMG_EXTS
 _IMAGE_CACHE: dict[Path, Image.Image] = {}
 
 
-def preload_images(*indices: "IdentityIndex") -> None:
+def preload_images(*indices: IdentityIndex) -> None:
     """Preload all images from the given indices into RAM.
 
     Call once before training to trade a few seconds of startup time for
     zero per-file I/O latency during all subsequent episodes.  Safe to call
     multiple times; already-cached images are skipped.
+
+    Args:
+        *indices: One or more :class:`IdentityIndex` objects whose images
+            should be loaded into the module-level cache.
     """
     all_paths: set[Path] = set()
     for index in indices:
@@ -53,9 +58,12 @@ def preload_images(*indices: "IdentityIndex") -> None:
 class IdentityIndex:
     """Scan ``data_root/<split>`` and index image paths per identity."""
 
-    def __init__(self, root: str | Path,
-                 exclude: set[str] | None = None,
-                 exclude_root: str | Path | None = None) -> None:
+    def __init__(
+        self,
+        root: str | Path,
+        exclude: set[str] | None = None,
+        exclude_root: str | Path | None = None,
+    ) -> None:
         """Index every identity folder under ``root`` with >= 2 images.
 
         Args:
@@ -98,15 +106,24 @@ class IdentityIndex:
     def stats(self) -> str:
         """Return a human-readable summary of identity/image counts."""
         counts = [len(v) for v in self.identities.values()]
-        return (f"{len(self.names)} identities | images per identity: "
-                f"min={min(counts)} max={max(counts)} total={sum(counts)}")
+        return (
+            f"{len(self.names)} identities | images per identity: "
+            f"min={min(counts)} max={max(counts)} total={sum(counts)}"
+        )
 
 
 def load_image(path: Path, tfm) -> torch.Tensor:
     """Load ``path`` as RGB and apply transform ``tfm``.
 
-    Returns the cached PIL image when ``preload_images`` has been called,
+    Returns the cached PIL image when :func:`preload_images` has been called,
     otherwise falls back to opening the file from disk.
+
+    Args:
+        path: Path to the image file.
+        tfm: Torchvision transform to apply after loading.
+
+    Returns:
+        Transformed image tensor of shape ``(C, H, W)``.
     """
     if path in _IMAGE_CACHE:
         return tfm(_IMAGE_CACHE[path])
@@ -160,8 +177,7 @@ def sample_episode(
             forced = random.sample(valid_hard, min(2, len(valid_hard), n))
             rest_pool = [x for x in pool if x not in forced]
             n_rest = max(0, n - len(forced))
-            rest = (random.sample(rest_pool, n_rest)
-                    if len(rest_pool) >= n_rest else rest_pool)
+            rest = random.sample(rest_pool, n_rest) if len(rest_pool) >= n_rest else rest_pool
             return forced + rest
         return random.sample(pool, min(n, len(pool)))
 
@@ -172,16 +188,19 @@ def sample_episode(
         for c, name in enumerate(chosen):
             pool = index.identities[name]
             need = k_shot + q_query
-            picks = (random.sample(pool, need) if len(pool) >= need
-                     else random.choices(pool, k=need))
+            picks = random.sample(pool, need) if len(pool) >= need else random.choices(pool, k=need)
             for p in picks[:k_shot]:
                 s_imgs.append(load_image(p, tfm))
                 s_lbls.append(c)
             for p in picks[k_shot:]:
                 q_imgs.append(load_image(p, tfm))
                 q_lbls.append(c)
-        return (torch.stack(s_imgs), torch.tensor(s_lbls),
-                torch.stack(q_imgs), torch.tensor(q_lbls))
+        return (
+            torch.stack(s_imgs),
+            torch.tensor(s_lbls),
+            torch.stack(q_imgs),
+            torch.tensor(q_lbls),
+        )
 
     support_tfm = support_tfm or tfm
     names = sorted(set(index.names) & set(support_index.names))
@@ -196,15 +215,20 @@ def sample_episode(
     for c, name in enumerate(chosen):
         support_pool = support_index.identities[name]
         query_pool = index.identities[name]
-        support_picks = (random.sample(support_pool, k_shot) if len(support_pool) >= k_shot
-                         else random.choices(support_pool, k=k_shot))
-        query_picks = (random.sample(query_pool, q_query) if len(query_pool) >= q_query
-                       else random.choices(query_pool, k=q_query))
+        support_picks = (
+            random.sample(support_pool, k_shot)
+            if len(support_pool) >= k_shot
+            else random.choices(support_pool, k=k_shot)
+        )
+        query_picks = (
+            random.sample(query_pool, q_query)
+            if len(query_pool) >= q_query
+            else random.choices(query_pool, k=q_query)
+        )
         for p in support_picks:
             s_imgs.append(load_image(p, support_tfm))
             s_lbls.append(c)
         for p in query_picks:
             q_imgs.append(load_image(p, tfm))
             q_lbls.append(c)
-    return (torch.stack(s_imgs), torch.tensor(s_lbls),
-            torch.stack(q_imgs), torch.tensor(q_lbls))
+    return (torch.stack(s_imgs), torch.tensor(s_lbls), torch.stack(q_imgs), torch.tensor(q_lbls))

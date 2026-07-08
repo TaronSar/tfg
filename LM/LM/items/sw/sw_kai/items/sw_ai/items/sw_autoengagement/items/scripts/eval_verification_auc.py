@@ -1,4 +1,4 @@
-"""CLI: per-identity verification AUC scoreboard with bootstrap CIs and EER.
+r"""CLI: per-identity verification AUC scoreboard with bootstrap CIs and EER.
 
 Scores each enrolled identity's prototype against genuine queries (same
 identity) and impostor queries (all other identities), then reports:
@@ -33,13 +33,15 @@ Notes:
     skipped and listed so you know which need more frames.  Wide CIs indicate
     too few genuine samples.
 """
+
 from __future__ import annotations
 
 import csv
+import importlib.util
 import json
 import os
 import random
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import fire
@@ -54,17 +56,19 @@ from src.uavid.dataset import IdentityIndex, load_image
 from src.uavid.model import BACKBONE_NORM, attention_prototype, build_encoder
 
 try:
-    import mlflow
     from dotenv import load_dotenv
+
     load_dotenv()
-    _MLFLOW_AVAILABLE = True
 except ImportError:
-    _MLFLOW_AVAILABLE = False
+    pass
+
+_MLFLOW_AVAILABLE = importlib.util.find_spec("mlflow") is not None
 
 
 # ---------------------------------------------------------------------------
 # Metric helpers
 # ---------------------------------------------------------------------------
+
 
 def _roc_auc(genuine: np.ndarray, impostor: np.ndarray) -> float:
     """Compute Wilcoxon-Mann-Whitney AUC without sklearn.
@@ -116,8 +120,13 @@ def _eer(genuine: np.ndarray, impostor: np.ndarray) -> float:
         if abs(denom) < 1e-12:
             return float((fprs[idx] + fnrs[idx]) / 2)
         t = d0 / denom
-        return float(((fprs[idx - 1] + t * (fprs[idx] - fprs[idx - 1])) +
-                       (fnrs[idx - 1] + t * (fnrs[idx] - fnrs[idx - 1]))) / 2)
+        return float(
+            (
+                (fprs[idx - 1] + t * (fprs[idx] - fprs[idx - 1]))
+                + (fnrs[idx - 1] + t * (fnrs[idx] - fnrs[idx - 1]))
+            )
+            / 2
+        )
     return float((fprs[idx] + fnrs[idx]) / 2)
 
 
@@ -154,6 +163,7 @@ def _bootstrap_auc_ci(
 # Model loading
 # ---------------------------------------------------------------------------
 
+
 def _load_model(checkpoint: str | None, device: str):
     """Load a trained encoder from a checkpoint file.
 
@@ -168,20 +178,24 @@ def _load_model(checkpoint: str | None, device: str):
     embed_dim, image_size, metric, normalize, backbone = 128, 224, "euclidean", True, "mobilenetv3"
     if checkpoint:
         ckpt = torch.load(checkpoint, map_location="cpu", weights_only=True)
-        embed_dim  = ckpt.get("embed_dim", 128)
+        embed_dim = ckpt.get("embed_dim", 128)
         image_size = ckpt.get("image_size", 224)
-        metric     = ckpt.get("metric", "euclidean")
-        normalize  = ckpt.get("l2_normalize", True)
-        backbone   = ckpt.get("backbone", "mobilenetv3")
-        model = build_encoder(backbone, embed_dim=embed_dim,
-                              pretrained=False, l2_normalize=normalize)
+        metric = ckpt.get("metric", "euclidean")
+        normalize = ckpt.get("l2_normalize", True)
+        backbone = ckpt.get("backbone", "mobilenetv3")
+        model = build_encoder(
+            backbone, embed_dim=embed_dim, pretrained=False, l2_normalize=normalize
+        )
         model.load_state_dict(ckpt["model"])
         logger.info(f"Loaded  {checkpoint}")
-        logger.info(f"        backbone={backbone}  embed_dim={embed_dim}  "
-                    f"metric={metric}  normalize={normalize}")
+        logger.info(
+            f"        backbone={backbone}  embed_dim={embed_dim}  "
+            f"metric={metric}  normalize={normalize}"
+        )
     else:
-        model = build_encoder(backbone, embed_dim=embed_dim,
-                              pretrained=True, l2_normalize=normalize)
+        model = build_encoder(
+            backbone, embed_dim=embed_dim, pretrained=True, l2_normalize=normalize
+        )
         logger.info("Zero-shot ImageNet features (no checkpoint)")
     model.eval().to(device)
     return model, image_size, metric, normalize, backbone
@@ -190,6 +204,7 @@ def _load_model(checkpoint: str | None, device: str):
 # ---------------------------------------------------------------------------
 # Scoring
 # ---------------------------------------------------------------------------
+
 
 @torch.no_grad()
 def _embed(model, paths: list, tfm, device: str, batch_size: int = 32) -> torch.Tensor:
@@ -207,7 +222,7 @@ def _embed(model, paths: list, tfm, device: str, batch_size: int = 32) -> torch.
     """
     out = []
     for i in range(0, len(paths), batch_size):
-        chunk = paths[i:i + batch_size]
+        chunk = paths[i : i + batch_size]
         batch = torch.stack([load_image(p, tfm) for p in chunk]).to(device)
         out.append(model(batch))
     return torch.cat(out, dim=0)
@@ -265,14 +280,15 @@ def _compute_scores(
                 out.append(-float(((q - proto) ** 2).sum()))
         return out
 
-    genuine  = np.array(_score(_embed(model, query_paths, query_tfm, device)), dtype=np.float32)
-    impostor = np.array(_score(_embed(model, imp_paths,   query_tfm, device)), dtype=np.float32)
+    genuine = np.array(_score(_embed(model, query_paths, query_tfm, device)), dtype=np.float32)
+    impostor = np.array(_score(_embed(model, imp_paths, query_tfm, device)), dtype=np.float32)
     return genuine, impostor
 
 
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main(
     data_root: str,
@@ -313,8 +329,6 @@ def main(
         out_csv: Output CSV path.  Defaults to ``data/eval/verification_auc.csv``.
         mlflow_tracking: Log results to MLflow when ``True``.
     """
-    import mlflow as _mlflow  # lazy import so absence doesn't break non-mlflow runs
-
     random.seed(seed)
     np.random.seed(seed)
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -323,33 +337,39 @@ def main(
     model, image_size, metric, normalize, backbone = _load_model(checkpoint, device)
     norm_mean, norm_std = BACKBONE_NORM[backbone]
 
-    gallery_tfm = build_transform(image_size, train=False, degrade_p=0.0,
-                                  mean=norm_mean, std=norm_std)
-    query_tfm   = build_transform(image_size, train=False,
-                                  degrade_p=degrade_p,
-                                  degrade_min_px=degrade_min_px,
-                                  degrade_max_px=degrade_max_px,
-                                  mean=norm_mean, std=norm_std)
+    gallery_tfm = build_transform(
+        image_size, train=False, degrade_p=0.0, mean=norm_mean, std=norm_std
+    )
+    query_tfm = build_transform(
+        image_size,
+        train=False,
+        degrade_p=degrade_p,
+        degrade_min_px=degrade_min_px,
+        degrade_max_px=degrade_max_px,
+        mean=norm_mean,
+        std=norm_std,
+    )
 
     data_root_path = Path(data_root)
-    query_index  = IdentityIndex(data_root_path / split)
-    gsplit       = gallery_split or split
-    gallery_index = (query_index if gsplit == split
-                     else IdentityIndex(data_root_path / gsplit))
+    query_index = IdentityIndex(data_root_path / split)
+    gsplit = gallery_split or split
+    gallery_index = query_index if gsplit == split else IdentityIndex(data_root_path / gsplit)
     same_split = gallery_index.root == query_index.root
 
     logger.info(f"Query   {split}: {query_index.stats()}")
     logger.info(f"Gallery {gsplit}: {'same split' if same_split else gallery_index.stats()}")
 
     rng = random.Random(seed)
-    query_pools   = {n: rng.sample(list(query_index.identities[n]),
-                                   len(query_index.identities[n]))
-                     for n in query_index.names}
-    gallery_pools = {n: rng.sample(list(gallery_index.identities[n]),
-                                   len(gallery_index.identities[n]))
-                     for n in gallery_index.names}
+    query_pools = {
+        n: rng.sample(list(query_index.identities[n]), len(query_index.identities[n]))
+        for n in query_index.names
+    }
+    gallery_pools = {
+        n: rng.sample(list(gallery_index.identities[n]), len(gallery_index.identities[n]))
+        for n in gallery_index.names
+    }
 
-    genuine_by_id:  dict[str, np.ndarray] = {}
+    genuine_by_id: dict[str, np.ndarray] = {}
     impostor_by_id: dict[str, np.ndarray] = {}
     skipped: list[str] = []
 
@@ -362,13 +382,15 @@ def main(
             if len(query_pools[name]) <= k_shot:
                 skipped.append(name)
                 continue
-            enroll_paths = query_pools[name][: k_shot]
-            query_paths  = query_pools[name][k_shot: k_shot + max_queries_per_id]
+            enroll_paths = query_pools[name][:k_shot]
+            query_paths = query_pools[name][k_shot : k_shot + max_queries_per_id]
         else:
-            enroll_paths = (rng.sample(gallery_paths_all, k_shot)
-                            if len(gallery_paths_all) >= k_shot
-                            else rng.choices(gallery_paths_all, k=k_shot))
-            query_paths = query_pools[name][: max_queries_per_id]
+            enroll_paths = (
+                rng.sample(gallery_paths_all, k_shot)
+                if len(gallery_paths_all) >= k_shot
+                else rng.choices(gallery_paths_all, k=k_shot)
+            )
+            query_paths = query_pools[name][:max_queries_per_id]
             if not query_paths:
                 skipped.append(name)
                 continue
@@ -377,21 +399,30 @@ def main(
         for other in query_index.names:
             if other == name:
                 continue
-            imp_paths.extend(rng.sample(query_pools[other],
-                                         min(impostors_per_id, len(query_pools[other]))))
+            imp_paths.extend(
+                rng.sample(query_pools[other], min(impostors_per_id, len(query_pools[other])))
+            )
         if not imp_paths:
             skipped.append(name)
             continue
 
         genuine, impostor = _compute_scores(
-            model, enroll_paths, query_paths, imp_paths,
-            gallery_tfm, query_tfm, device,
-            metric, normalize, agg, tau,
+            model,
+            enroll_paths,
+            query_paths,
+            imp_paths,
+            gallery_tfm,
+            query_tfm,
+            device,
+            metric,
+            normalize,
+            agg,
+            tau,
         )
         if len(genuine) == 0 or len(impostor) == 0:
             skipped.append(name)
             continue
-        genuine_by_id[name]  = genuine
+        genuine_by_id[name] = genuine
         impostor_by_id[name] = impostor
 
     if skipped:
@@ -407,46 +438,56 @@ def main(
         g, imp = genuine_by_id[name], impostor_by_id[name]
         auc_val = _roc_auc(g, imp)
         eer_val = _eer(g, imp)
-        lo, hi  = _bootstrap_auc_ci(g, imp, n_boot=n_boot, seed=seed)
-        rows.append({
-            "identity":      name,
-            "n_genuine":     len(g),
-            "n_impostor":    len(imp),
-            "auc":           round(auc_val, 4),
-            "auc_ci_lo":     round(lo,       4),
-            "auc_ci_hi":     round(hi,       4),
-            "eer":           round(eer_val,  4),
-            "genuine_mean":  round(float(g.mean()),   4),
-            "impostor_mean": round(float(imp.mean()), 4),
-        })
+        lo, hi = _bootstrap_auc_ci(g, imp, n_boot=n_boot, seed=seed)
+        rows.append(
+            {
+                "identity": name,
+                "n_genuine": len(g),
+                "n_impostor": len(imp),
+                "auc": round(auc_val, 4),
+                "auc_ci_lo": round(lo, 4),
+                "auc_ci_hi": round(hi, 4),
+                "eer": round(eer_val, 4),
+                "genuine_mean": round(float(g.mean()), 4),
+                "impostor_mean": round(float(imp.mean()), 4),
+            }
+        )
     rows.sort(key=lambda r: r["auc"])
 
     # Global stats
-    all_g   = np.concatenate(list(genuine_by_id.values()))
+    all_g = np.concatenate(list(genuine_by_id.values()))
     all_imp = np.concatenate(list(impostor_by_id.values()))
-    g_auc       = _roc_auc(all_g, all_imp)
-    g_eer       = _eer(all_g, all_imp)
-    g_lo, g_hi  = _bootstrap_auc_ci(all_g, all_imp, n_boot=n_boot, seed=seed)
+    g_auc = _roc_auc(all_g, all_imp)
+    g_eer = _eer(all_g, all_imp)
+    g_lo, g_hi = _bootstrap_auc_ci(all_g, all_imp, n_boot=n_boot, seed=seed)
     global_row = {
-        "identity": "GLOBAL", "n_genuine": len(all_g), "n_impostor": len(all_imp),
-        "auc": round(g_auc, 4), "auc_ci_lo": round(g_lo, 4), "auc_ci_hi": round(g_hi, 4),
-        "eer": round(g_eer, 4), "genuine_mean": round(float(all_g.mean()), 4),
+        "identity": "GLOBAL",
+        "n_genuine": len(all_g),
+        "n_impostor": len(all_imp),
+        "auc": round(g_auc, 4),
+        "auc_ci_lo": round(g_lo, 4),
+        "auc_ci_hi": round(g_hi, 4),
+        "eer": round(g_eer, 4),
+        "genuine_mean": round(float(all_g.mean()), 4),
         "impostor_mean": round(float(all_imp.mean()), 4),
     }
 
     # Console scoreboard
-    hdr = (f"{'Identity':<45} {'n_g':>4} {'n_i':>5}  "
-           f"{'AUC':>6}  {'95% CI':^14}  {'EER':>6}")
+    hdr = f"{'Identity':<45} {'n_g':>4} {'n_i':>5}  {'AUC':>6}  {'95% CI':^14}  {'EER':>6}"
     logger.info(hdr)
     logger.info("-" * len(hdr))
     for r in rows:
         ci = f"[{r['auc_ci_lo']:.3f}, {r['auc_ci_hi']:.3f}]"
-        logger.info(f"{r['identity']:<45} {r['n_genuine']:>4} {r['n_impostor']:>5}  "
-                    f"{r['auc']:>6.4f}  {ci:^14}  {r['eer']:>6.4f}")
+        logger.info(
+            f"{r['identity']:<45} {r['n_genuine']:>4} {r['n_impostor']:>5}  "
+            f"{r['auc']:>6.4f}  {ci:^14}  {r['eer']:>6.4f}"
+        )
     logger.info("-" * len(hdr))
     ci = f"[{global_row['auc_ci_lo']:.3f}, {global_row['auc_ci_hi']:.3f}]"
-    logger.info(f"{'GLOBAL':<45} {global_row['n_genuine']:>4} {global_row['n_impostor']:>5}  "
-                f"{global_row['auc']:>6.4f}  {ci:^14}  {global_row['eer']:>6.4f}")
+    logger.info(
+        f"{'GLOBAL':<45} {global_row['n_genuine']:>4} {global_row['n_impostor']:>5}  "
+        f"{global_row['auc']:>6.4f}  {ci:^14}  {global_row['eer']:>6.4f}"
+    )
 
     # CSV output
     if out_csv:
@@ -464,23 +505,23 @@ def main(
 
     # Companion meta JSON
     meta = {
-        "checkpoint":    checkpoint or "zero_shot",
-        "backbone":      backbone,
-        "data_root":     str(Path(data_root).resolve()),
-        "split":         split,
+        "checkpoint": checkpoint or "zero_shot",
+        "backbone": backbone,
+        "data_root": str(Path(data_root).resolve()),
+        "split": split,
         "gallery_split": gsplit,
-        "k_shot":        k_shot,
-        "degrade_p":     degrade_p,
-        "degrade_px":    [degrade_min_px, degrade_max_px],
-        "agg":           agg,
-        "n_boot":        n_boot,
-        "seed":          seed,
-        "n_identities":  len(rows),
-        "skipped":       skipped,
-        "global_auc":    global_row["auc"],
-        "global_eer":    global_row["eer"],
+        "k_shot": k_shot,
+        "degrade_p": degrade_p,
+        "degrade_px": [degrade_min_px, degrade_max_px],
+        "agg": agg,
+        "n_boot": n_boot,
+        "seed": seed,
+        "n_identities": len(rows),
+        "skipped": skipped,
+        "global_auc": global_row["auc"],
+        "global_eer": global_row["eer"],
         "global_auc_ci": [global_row["auc_ci_lo"], global_row["auc_ci_hi"]],
-        "run_utc":       datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "run_utc": datetime.now(UTC).isoformat(timespec="seconds"),
     }
     meta_path = csv_path.with_suffix(".json")
     with meta_path.open("w", encoding="utf-8") as fh:
@@ -491,9 +532,10 @@ def main(
     if mlflow_tracking and _MLFLOW_AVAILABLE:
         try:
             import mlflow
+
             cfg = load_mlflow_config()
             tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", cfg.get("tracking_uri"))
-            experiment   = os.environ.get("MLFLOW_EXPERIMENT_NAME", cfg.get("experiment_name"))
+            experiment = os.environ.get("MLFLOW_EXPERIMENT_NAME", cfg.get("experiment_name"))
             mlflow.set_tracking_uri(tracking_uri)
             mlflow.set_experiment(experiment)
             ckpt_stem = Path(checkpoint).parent.name if checkpoint else "zero_shot"
@@ -506,7 +548,7 @@ def main(
                 for r in rows:
                     safe = r["identity"].replace("/", "_")[:40]
                     mlflow.log_metric(f"auc_{safe}", r["auc"])
-                mlflow.log_artifact(str(csv_path),  artifact_path="verification_auc")
+                mlflow.log_artifact(str(csv_path), artifact_path="verification_auc")
                 mlflow.log_artifact(str(meta_path), artifact_path="verification_auc")
             logger.info(f"MLflow run logged to {tracking_uri}")
         except Exception as exc:

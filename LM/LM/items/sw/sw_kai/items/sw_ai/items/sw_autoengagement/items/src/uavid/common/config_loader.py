@@ -4,6 +4,7 @@
 parameters; ``configs/setup.yaml`` holds machine/environment settings. All
 loaders cache the parsed YAML to avoid redundant disk I/O within a run.
 """
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -41,7 +42,11 @@ def _load_setup_config() -> dict:
 
 
 def load_paths_config() -> dict:
-    """Return the ``paths`` section (dataset roots, derived-artifact dirs)."""
+    """Return the ``paths`` section (dataset roots, derived-artifact dirs).
+
+    Returns:
+        Dict with NAS source paths and in-repo output directory keys.
+    """
     return _load_dvc_config()["paths"]
 
 
@@ -57,22 +62,39 @@ def active_dataset_dir() -> str:
 
 
 def load_operational_config() -> dict:
-    """Return the ``operational`` section (pixel envelope, model input size)."""
+    """Return the ``operational`` section (pixel envelope, model input size).
+
+    Returns:
+        Dict with ``min_px``, ``max_px``, and ``model_input_size`` keys.
+    """
     return _load_dvc_config()["operational"]
 
 
 def load_split_config() -> dict:
-    """Return the ``split`` section (train/val/test ratios and seed)."""
+    """Return the ``split`` section (train/val/test ratios and seed).
+
+    Returns:
+        Dict with ``train_ratio``, ``val_ratio``, ``test_ratio``, and
+        ``seed`` keys.
+    """
     return _load_dvc_config()["split"]
 
 
 def load_train_config() -> dict:
-    """Return the ``train`` section (episodic hyperparameters)."""
+    """Return the ``train`` section (episodic hyperparameters).
+
+    Returns:
+        Dict with ``k_shot_range``, ``support_split``, and ``embed_dim`` keys.
+    """
     return _load_dvc_config()["train"]
 
 
 def load_fiftyone_config() -> dict:
-    """Return the ``fiftyone`` section (MongoDB URI, dataset name)."""
+    """Return the ``fiftyone`` section (MongoDB URI, dataset name).
+
+    Returns:
+        Dict with ``database_uri`` and ``dataset_name`` keys.
+    """
     return _load_dvc_config()["fiftyone"]
 
 
@@ -95,5 +117,9 @@ def load_encoder_config() -> dict:
 
 
 def load_mlflow_config() -> dict:
-    """Return the ``mlflow`` section from ``configs/setup.yaml``."""
+    """Return the ``mlflow`` section from ``configs/setup.yaml``.
+
+    Returns:
+        Dict with ``tracking_uri`` and ``experiment_name`` keys.
+    """
     return _load_setup_config()["mlflow"]

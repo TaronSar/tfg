@@ -1,4 +1,4 @@
-"""CLI: pairwise verification AUC for specific hard identity pairs.
+r"""CLI: pairwise verification AUC for specific hard identity pairs.
 
 For each pair (A, B) taken from a confusability CSV (or specified explicitly):
 
@@ -19,6 +19,7 @@ Usage::
         --top_k 6 \\
         --split val
 """
+
 from __future__ import annotations
 
 import csv
@@ -34,10 +35,11 @@ from loguru import logger
 from src.uavid.common.transforms import build_transform
 from src.uavid.dataset import IdentityIndex, load_image
 from src.uavid.eval.openset import roc_auc
-from src.uavid.model import ProtoNetEncoder, build_encoder, BACKBONE_NORM
+from src.uavid.model import BACKBONE_NORM, build_encoder
 
 try:
     from dotenv import load_dotenv
+
     load_dotenv()
 except ImportError:
     pass
@@ -47,7 +49,7 @@ def _embed(model, paths, tfm, device, batch_size=32):
     out = []
     with torch.no_grad():
         for i in range(0, len(paths), batch_size):
-            chunk = paths[i:i + batch_size]
+            chunk = paths[i : i + batch_size]
             batch = torch.stack([load_image(p, tfm) for p in chunk]).to(device)
             out.append(model(batch))
     return torch.cat(out, dim=0)
@@ -104,9 +106,9 @@ def main(
     excluded: set[str] = set()
     if exclude_json:
         from src.uavid.preprocessing.filter_crops import load_excluded
+
         excluded = load_excluded(exclude_json)
-    index = IdentityIndex(Path(data_root) / split, exclude=excluded,
-                          exclude_root=Path(data_root))
+    index = IdentityIndex(Path(data_root) / split, exclude=excluded, exclude_root=Path(data_root))
     norm_mean, norm_std = BACKBONE_NORM[backbone]
     tfm = build_transform(image_size, train=False, mean=norm_mean, std=norm_std)
 
@@ -137,30 +139,38 @@ def main(
         proto_b = _proto(emb_b)
 
         # Positives: A vs A + B vs B
-        pos = torch.cat([
-            torch.tensor(_cosine_scores(emb_a, proto_a)),
-            torch.tensor(_cosine_scores(emb_b, proto_b)),
-        ]).numpy()
+        pos = torch.cat(
+            [
+                torch.tensor(_cosine_scores(emb_a, proto_a)),
+                torch.tensor(_cosine_scores(emb_b, proto_b)),
+            ]
+        ).numpy()
         # Negatives: A vs B + B vs A (the specific cross-impostor)
-        neg = torch.cat([
-            torch.tensor(_cosine_scores(emb_a, proto_b)),
-            torch.tensor(_cosine_scores(emb_b, proto_a)),
-        ]).numpy()
+        neg = torch.cat(
+            [
+                torch.tensor(_cosine_scores(emb_a, proto_b)),
+                torch.tensor(_cosine_scores(emb_b, proto_a)),
+            ]
+        ).numpy()
 
         auc = roc_auc(pos, neg)
-        results.append({
-            "identity_a": name_a,
-            "identity_b": name_b,
-            "proto_cosine_sim": proto_sim,
-            "auc": auc,
-            "genuine_mean": float(pos.mean()),
-            "impostor_mean": float(neg.mean()),
-            "genuine_n": len(pos),
-            "impostor_n": len(neg),
-        })
-        logger.info(f"  {name_a:40s} vs {name_b:40s}  "
-                    f"proto_sim={proto_sim:.4f}  AUC={auc:.4f}  "
-                    f"genuine={pos.mean():.3f}  impostor={neg.mean():.3f}")
+        results.append(
+            {
+                "identity_a": name_a,
+                "identity_b": name_b,
+                "proto_cosine_sim": proto_sim,
+                "auc": auc,
+                "genuine_mean": float(pos.mean()),
+                "impostor_mean": float(neg.mean()),
+                "genuine_n": len(pos),
+                "impostor_n": len(neg),
+            }
+        )
+        logger.info(
+            f"  {name_a:40s} vs {name_b:40s}  "
+            f"proto_sim={proto_sim:.4f}  AUC={auc:.4f}  "
+            f"genuine={pos.mean():.3f}  impostor={neg.mean():.3f}"
+        )
 
     results.sort(key=lambda r: r["auc"])
 
@@ -185,14 +195,17 @@ def main(
     out_json = report_dir / f"hardpair_auc_{split}_summary.json"
     out_json.write_text(json.dumps(summary, indent=2))
     logger.info(f"Wrote {out_csv} and {out_json}")
-    logger.info(f"Mean hard-pair AUC: {summary['mean_hardpair_auc']:.4f}  "
-                f"Min: {summary['min_hardpair_auc']:.4f}  "
-                f"(hardest: {summary['hardest_pair']})")
+    logger.info(
+        f"Mean hard-pair AUC: {summary['mean_hardpair_auc']:.4f}  "
+        f"Min: {summary['min_hardpair_auc']:.4f}  "
+        f"(hardest: {summary['hardest_pair']})"
+    )
 
     if mlflow_tracking:
         try:
             import mlflow
             import yaml
+
             cfg_path = Path(__file__).parent.parent / "configs" / "setup.yaml"
             cfg = yaml.safe_load(cfg_path.read_text()) if cfg_path.exists() else {}
             uri = cfg.get("mlflow", {}).get("tracking_uri", "http://192.168.2.1:5000")
@@ -202,17 +215,21 @@ def main(
             ts = datetime.now().strftime("%Y%m%d_%H%M%S")
             dataset_slug = Path(data_root).name
             with mlflow.start_run(run_name=f"hardpair_auc_{dataset_slug}_{split}_{ts}"):
-                mlflow.log_params({
-                    "dataset": dataset_slug,
-                    "split": split,
-                    "top_k": top_k,
-                    "checkpoint": checkpoint,
-                    "confusability_csv": confusability_csv,
-                })
-                mlflow.log_metrics({
-                    "mean_hardpair_auc": summary["mean_hardpair_auc"],
-                    "min_hardpair_auc": summary["min_hardpair_auc"],
-                })
+                mlflow.log_params(
+                    {
+                        "dataset": dataset_slug,
+                        "split": split,
+                        "top_k": top_k,
+                        "checkpoint": checkpoint,
+                        "confusability_csv": confusability_csv,
+                    }
+                )
+                mlflow.log_metrics(
+                    {
+                        "mean_hardpair_auc": summary["mean_hardpair_auc"],
+                        "min_hardpair_auc": summary["min_hardpair_auc"],
+                    }
+                )
                 for r in results:
                     safe_a = r["identity_a"].replace("-", "_")[:20]
                     safe_b = r["identity_b"].replace("-", "_")[:20]

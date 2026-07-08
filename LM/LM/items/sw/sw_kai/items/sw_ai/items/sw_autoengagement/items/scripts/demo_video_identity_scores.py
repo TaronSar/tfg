@@ -41,7 +41,9 @@ def extract_video_frames(video_path, out_dir, every_sec, max_frames):
     try:
         import cv2
     except ImportError as exc:
-        raise SystemExit("OpenCV is required for video extraction. Install opencv-python in the venv.") from exc
+        raise SystemExit(
+            "OpenCV is required for video extraction. Install opencv-python in the venv."
+        ) from exc
 
     video_path = Path(video_path)
     if not video_path.exists():
@@ -89,7 +91,7 @@ def extract_video_frames(video_path, out_dir, every_sec, max_frames):
 def embed_paths(model, paths, transform, device, batch_size):
     batches = []
     for start in range(0, len(paths), batch_size):
-        chunk = paths[start:start + batch_size]
+        chunk = paths[start : start + batch_size]
         batch = torch.stack([load_image(path, transform) for path in chunk]).to(device)
         batches.append(model(batch))
     return torch.cat(batches, dim=0)
@@ -109,7 +111,9 @@ def score_against_proto(query_embeddings, proto, normalize, metric="euclidean"):
     if metric == "cosine":
         return (query_embeddings @ proto).detach().cpu().numpy().astype(np.float32)
     # euclidean: negative squared L2 distance (higher = more similar)
-    return (-((query_embeddings - proto) ** 2).sum(dim=-1)).detach().cpu().numpy().astype(np.float32)
+    return (
+        (-((query_embeddings - proto) ** 2).sum(dim=-1)).detach().cpu().numpy().astype(np.float32)
+    )
 
 
 def topk_mean(scores, top_k):
@@ -143,33 +147,63 @@ def support_candidates(path):
 @torch.no_grad()
 def main():
     parser = argparse.ArgumentParser(
-        description="Score a query UAV video against uploaded support images and dataset identities."
+        description=(
+            "Score a query UAV video against uploaded support images and dataset identities."
+        )
     )
     parser.add_argument("--checkpoint", required=True)
-    parser.add_argument("--support", required=True, nargs="+",
-                        help="One or more folders with support images (one folder per UAV identity).")
+    parser.add_argument(
+        "--support",
+        required=True,
+        nargs="+",
+        help="One or more folders with support images (one folder per UAV identity).",
+    )
     parser.add_argument("--video", default=None, help="Query video of the UAV flying.")
-    parser.add_argument("--query_frames", default=None,
-                        help="Folder with already-extracted query frames. If set, --video is not required.")
+    parser.add_argument(
+        "--query_frames",
+        default=None,
+        help="Folder with already-extracted query frames. If set, --video is not required.",
+    )
     parser.add_argument("--data_root", default="data/uav_dataset_color_mild_clean")
-    parser.add_argument("--identity_split", default="train", help="Dataset split whose identities should be scored.")
-    parser.add_argument("--include_negatives", action="store_true", help="Also score neg_* identities from the split.")
-    parser.add_argument("--every_sec", type=float, default=0.5, help="Extract one frame every N seconds.")
+    parser.add_argument(
+        "--identity_split", default="train", help="Dataset split whose identities should be scored."
+    )
+    parser.add_argument(
+        "--include_negatives",
+        action="store_true",
+        help="Also score neg_* identities from the split.",
+    )
+    parser.add_argument(
+        "--every_sec", type=float, default=0.5, help="Extract one frame every N seconds."
+    )
     parser.add_argument("--max_frames", type=int, default=60)
     parser.add_argument("--frame_dir", default="data/demo/video_query_frames")
     parser.add_argument("--batch_size", type=int, default=32)
-    parser.add_argument("--k_support", type=int, default=0,
-                        help="Max support images per candidate used to build the "
-                             "prototype (0 = use all).")
+    parser.add_argument(
+        "--k_support",
+        type=int,
+        default=0,
+        help="Max support images per candidate used to build the prototype (0 = use all).",
+    )
     parser.add_argument("--top_k_frames", type=int, default=5)
     parser.add_argument("--out_csv", default="csvs/demo_video_identity_scores.csv")
     parser.add_argument("--out_frame_csv", default="csvs/demo_video_frame_scores.csv")
-    parser.add_argument("--no_dataset_identities", action="store_true",
-                        help="Only score the uploaded support candidates, not train/val dataset identities.")
-    parser.add_argument("--metric", default="euclidean", choices=["euclidean", "cosine"],
-                        help="Similarity metric: euclidean (neg squared L2) or cosine. Default: euclidean.")
-    parser.add_argument("--mlflow_tracking_uri", default=None,
-                        help="MLflow tracking URI. If omitted, reads from configs/setup.yaml.")
+    parser.add_argument(
+        "--no_dataset_identities",
+        action="store_true",
+        help="Only score the uploaded support candidates, not train/val dataset identities.",
+    )
+    parser.add_argument(
+        "--metric",
+        default="euclidean",
+        choices=["euclidean", "cosine"],
+        help="Similarity metric: euclidean (neg squared L2) or cosine. Default: euclidean.",
+    )
+    parser.add_argument(
+        "--mlflow_tracking_uri",
+        default=None,
+        help="MLflow tracking URI. If omitted, reads from configs/setup.yaml.",
+    )
     args = parser.parse_args()
 
     if not args.video and not args.query_frames:
@@ -191,22 +225,26 @@ def main():
         if not frame_paths:
             raise SystemExit(f"No query frames found in {args.query_frames}")
         if args.max_frames:
-            frame_paths = frame_paths[:args.max_frames]
+            frame_paths = frame_paths[: args.max_frames]
     else:
-        frame_paths, fps, stride = extract_video_frames(args.video, args.frame_dir, args.every_sec, args.max_frames)
+        frame_paths, fps, stride = extract_video_frames(
+            args.video, args.frame_dir, args.every_sec, args.max_frames
+        )
     query_embeddings = embed_paths(model, frame_paths, transform, device, args.batch_size)
 
     candidates = []
     for name, source, paths in support_sets:
         if args.k_support > 0:
-            paths = paths[:args.k_support]
+            paths = paths[: args.k_support]
         embeddings = embed_paths(model, paths, transform, device, args.batch_size)
-        candidates.append({
-            "name": name,
-            "source": str(source),
-            "paths": paths,
-            "prototype": make_proto(embeddings, normalize),
-        })
+        candidates.append(
+            {
+                "name": name,
+                "source": str(source),
+                "paths": paths,
+                "prototype": make_proto(embeddings, normalize),
+            }
+        )
 
     if not args.no_dataset_identities:
         split_root = Path(args.data_root) / args.identity_split
@@ -218,19 +256,23 @@ def main():
             if len(paths) < 2:
                 continue
             if args.k_support > 0:
-                paths = paths[:args.k_support]
+                paths = paths[: args.k_support]
             embeddings = embed_paths(model, paths, transform, device, args.batch_size)
-            candidates.append({
-                "name": ident_dir.name,
-                "source": str(ident_dir),
-                "paths": paths,
-                "prototype": make_proto(embeddings, normalize),
-            })
+            candidates.append(
+                {
+                    "name": ident_dir.name,
+                    "source": str(ident_dir),
+                    "paths": paths,
+                    "prototype": make_proto(embeddings, normalize),
+                }
+            )
 
     rows = []
     frame_rows = []
     for candidate in candidates:
-        scores = score_against_proto(query_embeddings, candidate["prototype"], normalize, args.metric)
+        scores = score_against_proto(
+            query_embeddings, candidate["prototype"], normalize, args.metric
+        )
         row = {
             "identity": candidate["name"],
             "source": candidate["source"],
@@ -242,17 +284,18 @@ def main():
             "min_score": float(scores.min()),
         }
         rows.append(row)
-        for frame_path, score in zip(frame_paths, scores):
-            frame_rows.append({
-                "identity": candidate["name"],
-                "frame": str(frame_path),
-                "score": float(score),
-            })
+        for frame_path, score in zip(frame_paths, scores, strict=False):
+            frame_rows.append(
+                {
+                    "identity": candidate["name"],
+                    "frame": str(frame_path),
+                    "score": float(score),
+                }
+            )
 
     rows.sort(key=lambda item: item["topk_frame_mean"], reverse=True)
 
     # Assign verdict: top-ranked identity is CONFIRMED, all others are IMPOSTOR.
-    best_score = rows[0]["topk_frame_mean"]
     for i, row in enumerate(rows):
         row["verdict"] = "CONFIRMED" if i == 0 else "IMPOSTOR"
 
@@ -278,9 +321,18 @@ def main():
     if args.query_frames:
         print(f"Query frames: {len(frame_paths)} from {args.query_frames}")
     else:
-        print(f"Video frames: {len(frame_paths)} from {args.video} (fps={fps:.2f}, stride={stride} frames)")
-    print(f"Scored candidates: {len(rows)} ({args.identity_split}, include_negatives={args.include_negatives})")
-    print(f"\n{'rank':>4} {'identity':<48} {'verdict':<10} {'support':>7} {'mean':>8} {'max':>8} {'topk':>8}")
+        print(
+            f"Video frames: {len(frame_paths)} from {args.video} "
+            f"(fps={fps:.2f}, stride={stride} frames)"
+        )
+    print(
+        f"Scored candidates: {len(rows)} ({args.identity_split}, "
+        f"include_negatives={args.include_negatives})"
+    )
+    print(
+        f"\n{'rank':>4} {'identity':<48} {'verdict':<10} {'support':>7} "
+        f"{'mean':>8} {'max':>8} {'topk':>8}"
+    )
     for rank, row in enumerate(rows[:25], start=1):
         print(
             f"{rank:>4} {row['identity']:<48} {row['verdict']:<10} {row['support_images']:>7} "
@@ -295,9 +347,12 @@ def main():
     try:
         import mlflow
         import yaml
+
         cfg_path = Path(__file__).parent.parent / "configs" / "setup.yaml"
         cfg = yaml.safe_load(cfg_path.read_text()) if cfg_path.exists() else {}
-        uri = args.mlflow_tracking_uri or cfg.get("mlflow", {}).get("tracking_uri", "http://192.168.2.1:5000")
+        uri = args.mlflow_tracking_uri or cfg.get("mlflow", {}).get(
+            "tracking_uri", "http://192.168.2.1:5000"
+        )
         exp = cfg.get("mlflow", {}).get("experiment_name", "uav_few_shot_identification")
         mlflow.set_tracking_uri(uri)
         mlflow.set_experiment(exp)
@@ -305,26 +360,33 @@ def main():
         video_name = Path(args.video).stem if args.video else "query_frames"
         support_name = "_vs_".join(Path(s).name for s in args.support)
         with mlflow.start_run(run_name=f"demo_{support_name}_{video_name}_{ts}"):
-            mlflow.log_params({
-                "checkpoint": args.checkpoint,
-                "support": ", ".join(args.support),
-                "video": args.video or args.query_frames,
-                "metric": args.metric,
-                "n_query_frames": len(frame_paths),
-                "n_support_candidates": len(support_sets),
-                "top_k_frames": args.top_k_frames,
-            })
+            mlflow.log_params(
+                {
+                    "checkpoint": args.checkpoint,
+                    "support": ", ".join(args.support),
+                    "video": args.video or args.query_frames,
+                    "metric": args.metric,
+                    "n_query_frames": len(frame_paths),
+                    "n_support_candidates": len(support_sets),
+                    "top_k_frames": args.top_k_frames,
+                }
+            )
             for row in rows:
                 import re
+
                 safe = re.sub(r"[^a-zA-Z0-9]", "_", row["identity"]).strip("_")
-                mlflow.log_metrics({
-                    f"{safe}_mean": row["mean_score"],
-                    f"{safe}_max": row["max_score"],
-                    f"{safe}_topk": row["topk_frame_mean"],
-                })
+                mlflow.log_metrics(
+                    {
+                        f"{safe}_mean": row["mean_score"],
+                        f"{safe}_max": row["max_score"],
+                        f"{safe}_topk": row["topk_frame_mean"],
+                    }
+                )
                 mlflow.set_tag(f"verdict_{safe}", row["verdict"])
             # Human-readable verdict summary as a tag
-            summary_parts = [f"{r['identity']}: {r['verdict']} (topk={r['topk_frame_mean']:.4f})" for r in rows]
+            summary_parts = [
+                f"{r['identity']}: {r['verdict']} (topk={r['topk_frame_mean']:.4f})" for r in rows
+            ]
             mlflow.set_tag("verdict_summary", " | ".join(summary_parts))
             mlflow.set_tag("best_match", rows[0]["identity"])
             mlflow.log_artifact(str(out_csv), artifact_path="demo")

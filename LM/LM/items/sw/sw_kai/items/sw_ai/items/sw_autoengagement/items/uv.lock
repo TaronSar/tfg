@@ -5094,7 +5094,7 @@ wheels = [
 ]
 
 [[package]]
-name = "sw-autoengadgement"
+name = "sw-autoengagement"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

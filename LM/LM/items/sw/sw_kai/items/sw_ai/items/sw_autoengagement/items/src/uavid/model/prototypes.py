@@ -1,4 +1,5 @@
 """Prototype construction: mean (Snell et al.) and attention aggregation."""
+
 from __future__ import annotations
 
 import torch
@@ -6,7 +7,9 @@ import torch.nn.functional as F
 
 
 def build_prototypes(
-    support: torch.Tensor, support_labels: torch.Tensor, n_way: int,
+    support: torch.Tensor,
+    support_labels: torch.Tensor,
+    n_way: int,
     normalize: bool = True,
 ) -> torch.Tensor:
     """Compute the mean prototype per class (Snell et al. 2017).
@@ -33,7 +36,9 @@ def build_prototypes(
 
 
 def attention_prototype(
-    query: torch.Tensor, gallery: torch.Tensor, tau: float = 0.1,
+    query: torch.Tensor,
+    gallery: torch.Tensor,
+    tau: float = 0.1,
 ) -> torch.Tensor:
     """Attention-weighted adaptive prototype for a single query (Approach 2).
 

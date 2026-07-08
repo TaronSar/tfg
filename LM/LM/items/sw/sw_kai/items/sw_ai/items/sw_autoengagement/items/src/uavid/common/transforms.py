@@ -1,4 +1,5 @@
 """Image transforms: operational degradation and the encoder input pipeline."""
+
 from __future__ import annotations
 
 import random
@@ -6,7 +7,12 @@ import random
 from PIL import Image, ImageFilter
 from torchvision import transforms
 
-from src.uavid.common.constants import IMAGENET_MEAN, IMAGENET_STD, CLIP_MEAN, CLIP_STD  # noqa: F401
+from src.uavid.common.constants import (  # noqa: F401
+    CLIP_MEAN,
+    CLIP_STD,
+    IMAGENET_MEAN,
+    IMAGENET_STD,
+)
 
 
 class DegradeToOperational:
@@ -18,8 +24,9 @@ class DegradeToOperational:
     fine texture exactly like a far-away crop does.
     """
 
-    def __init__(self, p: float = 0.5, min_px: int = 46, max_px: int = 143,
-                 blur_p: float = 0.3) -> None:
+    def __init__(
+        self, p: float = 0.5, min_px: int = 46, max_px: int = 143, blur_p: float = 0.3
+    ) -> None:
         """Initialise the degradation transform.
 
         Args:
@@ -41,8 +48,7 @@ class DegradeToOperational:
         w, h = img.size
         scale = target / max(w, h)
         if scale < 1.0:
-            img = img.resize((max(1, int(w * scale)), max(1, int(h * scale))),
-                             Image.BILINEAR)
+            img = img.resize((max(1, int(w * scale)), max(1, int(h * scale))), Image.BILINEAR)
             if random.random() < self.blur_p:
                 img = img.filter(ImageFilter.GaussianBlur(radius=random.uniform(0.3, 1.0)))
         return img
@@ -79,9 +85,7 @@ def build_transform(
         std = IMAGENET_STD
     ops: list = []
     if degrade_p > 0:
-        ops.append(DegradeToOperational(p=degrade_p,
-                                        min_px=degrade_min_px,
-                                        max_px=degrade_max_px))
+        ops.append(DegradeToOperational(p=degrade_p, min_px=degrade_min_px, max_px=degrade_max_px))
     if train:
         ops += [
             transforms.Resize((image_size, image_size)),

@@ -73,7 +73,14 @@ class TrainingLog:
 
 
 def _read_text(path: Path) -> str:
-    """Read a log file, transparently handling UTF-8 / UTF-16 (BOM-detected)."""
+    """Read a log file, transparently handling UTF-8 / UTF-16 (BOM-detected).
+
+    Args:
+        path: Path to the log file.
+
+    Returns:
+        Decoded text content of the file.
+    """
     raw = path.read_bytes()
     if raw[:2] in (b"\xff\xfe", b"\xfe\xff"):
         return raw.decode("utf-16")
@@ -84,7 +91,15 @@ def _read_text(path: Path) -> str:
 
 
 def parse_training_log(path: str | Path) -> TrainingLog:
-    """Parse a single training log into a :class:`TrainingLog`."""
+    """Parse a single training log into a :class:`TrainingLog`.
+
+    Args:
+        path: Path to the ``.log`` or ``.txt`` training output file.
+
+    Returns:
+        :class:`TrainingLog` with ``params`` dict and list of
+        :class:`EpochRecord` entries.
+    """
     path = Path(path)
     text = _read_text(path)
     log = TrainingLog(path=path)
@@ -96,14 +111,16 @@ def parse_training_log(path: str | Path) -> TrainingLog:
 
         m = _EPOCH_RE.search(line)
         if m:
-            log.epochs.append(EpochRecord(
-                epoch=int(m.group(1)),
-                loss=float(m.group(2)),
-                train_acc=float(m.group(3)),
-                val_acc=float(m.group(4)),
-                time_s=float(m.group(5)),
-                backbone_frozen="frozen" in m.group(6).lower(),
-            ))
+            log.epochs.append(
+                EpochRecord(
+                    epoch=int(m.group(1)),
+                    loss=float(m.group(2)),
+                    train_acc=float(m.group(3)),
+                    val_acc=float(m.group(4)),
+                    time_s=float(m.group(5)),
+                    backbone_frozen="frozen" in m.group(6).lower(),
+                )
+            )
             continue
 
         m = _METRIC_RE.search(line)

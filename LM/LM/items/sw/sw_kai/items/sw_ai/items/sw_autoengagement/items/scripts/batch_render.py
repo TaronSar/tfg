@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-batch_render.py — Run render_uav.py over multiple downloaded .glb models.
+"""batch_render.py — Run render_uav.py over multiple downloaded .glb models.
 
 USAGE:
     python scripts/batch_render.py \
@@ -44,9 +43,9 @@ OUTPUT:
 import argparse
 import json
 import os
-import subprocess
 import random
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -64,58 +63,130 @@ def is_negative(identity_dir: Path) -> bool:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--models_dir",  required=True,
-                    help="Root folder with one subfolder per UAV identity.")
-    ap.add_argument("--output_dir",  required=True,
-                    help="Where to save the dataset (train/ val/ enrollment/).")
-    ap.add_argument("--blender",     default="blender",
-                    help="Path to Blender executable (default: 'blender' if in PATH).")
-    ap.add_argument("--script",      default=None,
-                    help="Path to render_uav.py. Default: same folder as this script.")
-    ap.add_argument("--train_ratio", type=float, default=0.75,
-                    help="Fraction of identities to put in train (rest go to val).")
-    ap.add_argument("--samples",     type=int, default=8,
-                    help="Cycles render samples per image (8=fast preview, 32-64=higher quality).")
-    ap.add_argument("--width",       type=int, default=512)
-    ap.add_argument("--height",      type=int, default=512)
-    ap.add_argument("--azimuths",    type=int, default=8)
-    ap.add_argument("--elevations",  type=float, nargs="+", default=[-65, -45, -25, -10],
-                    help="Camera elevation angles to pass to render_uav.py.")
-    ap.add_argument("--realistic", action="store_true",
-                    help="Enable randomized camera/lighting/exposure rendering in render_uav.py.")
-    ap.add_argument("--colorize", choices=["none", "operational", "all"], default="operational",
-                    help="Override UAV materials with contrast-preserving colors during rendering.")
-    ap.add_argument("--variants", type=int, default=1,
-                    help="Randomized render variants per pose/sky when --realistic is enabled.")
-    ap.add_argument("--sky_count", type=int, default=3,
-                    help="Use only the first N sky presets in render_uav.py.")
-    ap.add_argument("--postprocess_realistic", action="store_true",
-                    help="After rendering, create a camera-degraded dataset with make_realistic_synthetic.py.")
-    ap.add_argument("--postprocess_profile", choices=["mild", "balanced", "aggressive"], default="mild",
-                    help="Strength of camera degradation. mild preserves silhouettes best.")
-    ap.add_argument("--realistic_output_dir", default=None,
-                    help="Output root for the postprocessed realistic dataset.")
-    ap.add_argument("--train_variants", type=int, default=1,
-                    help="Postprocess variants per train image.")
-    ap.add_argument("--val_variants", type=int, default=1,
-                    help="Postprocess variants per val image.")
-    ap.add_argument("--enrollment_variants", type=int, default=1,
-                    help="Postprocess variants per enrollment image.")
+    ap.add_argument(
+        "--models_dir", required=True, help="Root folder with one subfolder per UAV identity."
+    )
+    ap.add_argument(
+        "--output_dir", required=True, help="Where to save the dataset (train/ val/ enrollment/)."
+    )
+    ap.add_argument(
+        "--blender",
+        default="blender",
+        help="Path to Blender executable (default: 'blender' if in PATH).",
+    )
+    ap.add_argument(
+        "--script", default=None, help="Path to render_uav.py. Default: same folder as this script."
+    )
+    ap.add_argument(
+        "--train_ratio",
+        type=float,
+        default=0.75,
+        help="Fraction of identities to put in train (rest go to val).",
+    )
+    ap.add_argument(
+        "--samples",
+        type=int,
+        default=8,
+        help="Cycles render samples per image (8=fast preview, 32-64=higher quality).",
+    )
+    ap.add_argument("--width", type=int, default=512)
+    ap.add_argument("--height", type=int, default=512)
+    ap.add_argument("--azimuths", type=int, default=8)
+    ap.add_argument(
+        "--elevations",
+        type=float,
+        nargs="+",
+        default=[-65, -45, -25, -10],
+        help="Camera elevation angles to pass to render_uav.py.",
+    )
+    ap.add_argument(
+        "--realistic",
+        action="store_true",
+        help="Enable randomized camera/lighting/exposure rendering in render_uav.py.",
+    )
+    ap.add_argument(
+        "--colorize",
+        choices=["none", "operational", "all"],
+        default="operational",
+        help="Override UAV materials with contrast-preserving colors during rendering.",
+    )
+    ap.add_argument(
+        "--variants",
+        type=int,
+        default=1,
+        help="Randomized render variants per pose/sky when --realistic is enabled.",
+    )
+    ap.add_argument(
+        "--sky_count",
+        type=int,
+        default=3,
+        help="Use only the first N sky presets in render_uav.py.",
+    )
+    ap.add_argument(
+        "--postprocess_realistic",
+        action="store_true",
+        help="After rendering, create a camera-degraded dataset with make_realistic_synthetic.py.",
+    )
+    ap.add_argument(
+        "--postprocess_profile",
+        choices=["mild", "balanced", "aggressive"],
+        default="mild",
+        help="Strength of camera degradation. mild preserves silhouettes best.",
+    )
+    ap.add_argument(
+        "--realistic_output_dir",
+        default=None,
+        help="Output root for the postprocessed realistic dataset.",
+    )
+    ap.add_argument(
+        "--train_variants", type=int, default=1, help="Postprocess variants per train image."
+    )
+    ap.add_argument(
+        "--val_variants", type=int, default=1, help="Postprocess variants per val image."
+    )
+    ap.add_argument(
+        "--enrollment_variants",
+        type=int,
+        default=1,
+        help="Postprocess variants per enrollment image.",
+    )
     ap.add_argument("--skip_enrollment", action="store_true")
-    ap.add_argument("--operational_distance_mult", type=float, default=None,
-                    help="Override render_uav.py operational camera distance multiplier.")
-    ap.add_argument("--operational_focal_mm", type=float, default=None,
-                    help="Override render_uav.py operational focal length.")
-    ap.add_argument("--operational_distance_jitter", type=float, nargs=2, default=None,
-                    metavar=("MIN", "MAX"),
-                    help="Override render_uav.py operational distance jitter multipliers.")
-    ap.add_argument("--operational_focal_jitter", type=float, nargs=2, default=None,
-                    metavar=("MIN", "MAX"),
-                    help="Override render_uav.py operational focal jitter multipliers.")
-    ap.add_argument("--seed",        type=int, default=42)
-    ap.add_argument("--manifest_out", default=None,
-                    help="If set, write a DVC dataset manifest JSON to this path after rendering.")
+    ap.add_argument(
+        "--operational_distance_mult",
+        type=float,
+        default=None,
+        help="Override render_uav.py operational camera distance multiplier.",
+    )
+    ap.add_argument(
+        "--operational_focal_mm",
+        type=float,
+        default=None,
+        help="Override render_uav.py operational focal length.",
+    )
+    ap.add_argument(
+        "--operational_distance_jitter",
+        type=float,
+        nargs=2,
+        default=None,
+        metavar=("MIN", "MAX"),
+        help="Override render_uav.py operational distance jitter multipliers.",
+    )
+    ap.add_argument(
+        "--operational_focal_jitter",
+        type=float,
+        nargs=2,
+        default=None,
+        metavar=("MIN", "MAX"),
+        help="Override render_uav.py operational focal jitter multipliers.",
+    )
+    ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument(
+        "--manifest_out",
+        default=None,
+        help="If set, write a DVC dataset manifest JSON to this path after rendering.",
+    )
 
+    args = ap.parse_args()
     random.seed(args.seed)
 
     script = str(Path(args.script or Path(__file__).parent / "render_uav.py").resolve())
@@ -126,14 +197,15 @@ def main():
     output_dir = Path(args.output_dir).resolve()
 
     # Discover identities
-    identities = sorted([
-        d for d in models_dir.iterdir()
-        if d.is_dir() and find_model_file(d) is not None
-    ])
+    identities = sorted(
+        [d for d in models_dir.iterdir() if d.is_dir() and find_model_file(d) is not None]
+    )
 
     if not identities:
-        raise RuntimeError(f"No model files found under {models_dir}. "
-                           f"Expected subfolders with .glb/.gltf/.fbx/.obj files.")
+        raise RuntimeError(
+            f"No model files found under {models_dir}. "
+            f"Expected subfolders with .glb/.gltf/.fbx/.obj files."
+        )
 
     negatives = [d for d in identities if is_negative(d)]
     positives = [d for d in identities if not is_negative(d)]
@@ -165,25 +237,42 @@ def main():
         "train_negatives": [d.name for d in negatives],
         "val": [d.name for d in val_ids],
         "enrollment": [] if args.skip_enrollment else [d.name for d in positives],
-        "note": "neg_* folders are train-only operational negatives: no val split and no enrollment. Positive folders are split into train/val and enrollment is rendered for all positives.",
+        "note": (
+            "neg_* folders are train-only operational negatives: no val split and no enrollment. "
+            "Positive folders are split into train/val and enrollment is rendered "
+            "for all positives."
+        ),
     }
 
     failures = []
 
-    def render(identity_dir, split, skip_enrollment=False):
+    def render(identity_dir: Path, split: str, skip_enrollment: bool = False) -> None:
         model_file = find_model_file(identity_dir)
         name = identity_dir.name
         out = str((output_dir / split).resolve())
 
         cmd = [
-            args.blender, "--background", "--python-exit-code", "1", "--python", script, "--",
-            "--model",   str(model_file.resolve()),
-            "--name",    name,
-            "--output",  out,
-            "--samples", str(args.samples),
-            "--width",   str(args.width),
-            "--height",  str(args.height),
-            "--azimuths", str(args.azimuths),
+            args.blender,
+            "--background",
+            "--python-exit-code",
+            "1",
+            "--python",
+            script,
+            "--",
+            "--model",
+            str(model_file.resolve()),
+            "--name",
+            name,
+            "--output",
+            out,
+            "--samples",
+            str(args.samples),
+            "--width",
+            str(args.width),
+            "--height",
+            str(args.height),
+            "--azimuths",
+            str(args.azimuths),
         ]
         if args.elevations:
             cmd.append("--elevations")
@@ -207,11 +296,11 @@ def main():
             cmd.append("--operational_focal_jitter")
             cmd.extend(str(v) for v in args.operational_focal_jitter)
 
-        print(f"{'─'*60}")
+        print(f"{'─' * 60}")
         suffix = " (no enrollment)" if skip_enrollment else ""
         print(f"Rendering: {name}  →  {split}/operational/{name}/{suffix}")
         print(f"Command: {' '.join(cmd)}")
-        print(f"{'─'*60}")
+        print(f"{'─' * 60}")
 
         result = subprocess.run(cmd)
         if result.returncode != 0:
@@ -235,7 +324,7 @@ def main():
 
     # Reorganize: move operational/ subfolder up to match ProtoNet's expected layout
     # ProtoNet expects: data/train/<identity>/*.jpg  (not data/train/operational/<identity>/)
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("Reorganizing folder structure for ProtoNet...")
 
     for split in ["train", "val"]:
@@ -275,26 +364,35 @@ def main():
         post_script = Path(__file__).parent / "make_realistic_synthetic.py"
         realistic_output = Path(args.realistic_output_dir or f"{output_dir}_realistic").resolve()
         cmd = [
-            sys.executable, str(post_script),
-            "--input", str(output_dir),
-            "--output", str(realistic_output),
-            "--train_variants", str(args.train_variants),
-            "--val_variants", str(args.val_variants),
-            "--enrollment_variants", str(args.enrollment_variants),
-            "--profile", args.postprocess_profile,
-            "--seed", str(args.seed),
+            sys.executable,
+            str(post_script),
+            "--input",
+            str(output_dir),
+            "--output",
+            str(realistic_output),
+            "--train_variants",
+            str(args.train_variants),
+            "--val_variants",
+            str(args.val_variants),
+            "--enrollment_variants",
+            str(args.enrollment_variants),
+            "--profile",
+            args.postprocess_profile,
+            "--seed",
+            str(args.seed),
         ]
-        print(f"\nCreating realistic camera-degraded dataset:")
+        print("\nCreating realistic camera-degraded dataset:")
         print(f"Command: {' '.join(cmd)}")
         result = subprocess.run(cmd)
         if result.returncode != 0:
             raise RuntimeError(f"Realistic postprocess failed with exit code {result.returncode}")
         print(f"Realistic dataset at: {realistic_output}")
-    print(f"\nRun audit:")
+    print("\nRun audit:")
     print(f"  python scripts/audit_dataset.py --data_root {output_dir} --show_sizes")
 
     if args.manifest_out:
         from src.uavid.preprocessing.manifest import write_manifest
+
         write_manifest(output_dir, args.manifest_out)
         print(f"DVC manifest -> {args.manifest_out}")
 

@@ -1,4 +1,4 @@
-"""CLI: open-set target-vs-impostor evaluation of a trained encoder.
+r"""CLI: open-set target-vs-impostor evaluation of a trained encoder.
 
 Sweeps a set of k-shot values, writes a results CSV + summary JSON to
 ``report_dir``, and logs params, metrics and both files as MLflow artifacts
@@ -8,9 +8,11 @@ Usage::
 
     PYTHONPATH=. uv run python scripts/evaluate.py \\
         --checkpoint models/00_train/best.pth \\
-        --data_root /mnt/Pool_IA/IA_Dataset/datasets/uav-few-shot-identification/uav_dataset_yolox_crops \\
+        --data_root /mnt/Pool_IA/IA_Dataset/datasets/ \\
+            uav-few-shot-identification/uav_dataset_yolox_crops \\
         --gallery_split enrollment --split val --k_shots "1,3,5,10,15" --agg mean
 """
+
 from __future__ import annotations
 
 import csv
@@ -28,7 +30,7 @@ from src.uavid.common.io import md5_file, run_name
 from src.uavid.common.transforms import build_transform
 from src.uavid.dataset import IdentityIndex
 from src.uavid.eval import evaluate_openset
-from src.uavid.model import ProtoNetEncoder, build_encoder, BACKBONE_NORM
+from src.uavid.model import BACKBONE_NORM, build_encoder
 
 try:
     from dotenv import load_dotenv
@@ -38,9 +40,19 @@ except ImportError:  # python-dotenv is optional
     pass
 
 _CSV_FIELDS = [
-    "k_shot", "agg", "roc_auc", "genuine_mean", "impostor_mean",
-    "tpr_fpr_1", "threshold_fpr_1", "tpr_fpr_5", "threshold_fpr_5",
-    "tpr_fpr_10", "threshold_fpr_10", "genuine_n", "impostor_n",
+    "k_shot",
+    "agg",
+    "roc_auc",
+    "genuine_mean",
+    "impostor_mean",
+    "tpr_fpr_1",
+    "threshold_fpr_1",
+    "tpr_fpr_5",
+    "threshold_fpr_5",
+    "tpr_fpr_10",
+    "threshold_fpr_10",
+    "genuine_n",
+    "impostor_n",
 ]
 
 
@@ -48,12 +60,19 @@ def _flatten_row(res: dict) -> dict:
     """Flatten one ``evaluate_openset`` result into a CSV row."""
     tpr = res["tpr_at_fpr"]
     return {
-        "k_shot": res["k_shot"], "agg": res["agg"], "roc_auc": res["roc_auc"],
-        "genuine_mean": res["genuine_mean"], "impostor_mean": res["impostor_mean"],
-        "tpr_fpr_1": tpr["0.01"]["tpr"], "threshold_fpr_1": tpr["0.01"]["threshold"],
-        "tpr_fpr_5": tpr["0.05"]["tpr"], "threshold_fpr_5": tpr["0.05"]["threshold"],
-        "tpr_fpr_10": tpr["0.10"]["tpr"], "threshold_fpr_10": tpr["0.10"]["threshold"],
-        "genuine_n": res["genuine_n"], "impostor_n": res["impostor_n"],
+        "k_shot": res["k_shot"],
+        "agg": res["agg"],
+        "roc_auc": res["roc_auc"],
+        "genuine_mean": res["genuine_mean"],
+        "impostor_mean": res["impostor_mean"],
+        "tpr_fpr_1": tpr["0.01"]["tpr"],
+        "threshold_fpr_1": tpr["0.01"]["threshold"],
+        "tpr_fpr_5": tpr["0.05"]["tpr"],
+        "threshold_fpr_5": tpr["0.05"]["threshold"],
+        "tpr_fpr_10": tpr["0.10"]["tpr"],
+        "threshold_fpr_10": tpr["0.10"]["threshold"],
+        "genuine_n": res["genuine_n"],
+        "impostor_n": res["impostor_n"],
     }
 
 
@@ -84,14 +103,14 @@ def main(
         tau: Attention temperature.
         seed: RNG seed.
         report_dir: Directory for ``openset_results.csv`` + ``openset_summary.json``.
+        exclude_json: Optional crop exclusion-list JSON.
         mlflow_tracking: Log the evaluation run to MLflow when True.
     """
     device = "cuda" if torch.cuda.is_available() else "cpu"
     embed_dim, image_size = 128, 224
     metric, normalize = "euclidean", True
     backbone = "mobilenetv3"
-    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=True,
-                          l2_normalize=normalize)
+    model = build_encoder(backbone, embed_dim=embed_dim, pretrained=True, l2_normalize=normalize)
     if checkpoint:
         ckpt = torch.load(checkpoint, map_location="cpu", weights_only=True)
         embed_dim = ckpt.get("embed_dim", 128)
@@ -99,10 +118,13 @@ def main(
         metric = ckpt.get("metric", "euclidean")
         normalize = ckpt.get("l2_normalize", True)
         backbone = ckpt.get("backbone", "mobilenetv3")
-        model = build_encoder(backbone, embed_dim=embed_dim, pretrained=False,
-                              l2_normalize=normalize)
+        model = build_encoder(
+            backbone, embed_dim=embed_dim, pretrained=False, l2_normalize=normalize
+        )
         model.load_state_dict(ckpt["model"])
-        logger.info(f"Loaded {checkpoint} | backbone={backbone} metric={metric} normalize={normalize}")
+        logger.info(
+            f"Loaded {checkpoint} | backbone={backbone} metric={metric} normalize={normalize}"
+        )
     else:
         logger.info("Zero-shot ImageNet features (no checkpoint)")
     model.eval().to(device)
@@ -117,8 +139,11 @@ def main(
 
     query_index = IdentityIndex(Path(data_root) / split, exclude=excluded, exclude_root=ex_root)
     gsplit = gallery_split or split
-    gallery_index = (query_index if gsplit == split
-                     else IdentityIndex(Path(data_root) / gsplit, exclude=excluded, exclude_root=ex_root))
+    gallery_index = (
+        query_index
+        if gsplit == split
+        else IdentityIndex(Path(data_root) / gsplit, exclude=excluded, exclude_root=ex_root)
+    )
     norm_mean, norm_std = BACKBONE_NORM[backbone]
     tfm = build_transform(image_size, train=False, mean=norm_mean, std=norm_std)
 
@@ -131,15 +156,26 @@ def main(
     full: list[dict] = []
     for k in shots:
         res = evaluate_openset(
-            model, query_index, gallery_index, tfm, device,
-            k_shot=k, max_queries_per_id=max_queries_per_id, agg=agg, tau=tau,
-            metric=metric, normalize=normalize, seed=seed,
+            model,
+            query_index,
+            gallery_index,
+            tfm,
+            device,
+            k_shot=k,
+            max_queries_per_id=max_queries_per_id,
+            agg=agg,
+            tau=tau,
+            metric=metric,
+            normalize=normalize,
+            seed=seed,
         )
         res["split"], res["gallery_split"] = split, gsplit
         full.append(res)
         rows.append(_flatten_row(res))
-        logger.info(f"k={k:<3} ROC-AUC {res['roc_auc']:.4f} | "
-                    f"genuine {res['genuine_mean']:.4f} | impostor {res['impostor_mean']:.4f}")
+        logger.info(
+            f"k={k:<3} ROC-AUC {res['roc_auc']:.4f} | "
+            f"genuine {res['genuine_mean']:.4f} | impostor {res['impostor_mean']:.4f}"
+        )
 
     # --- write CSV + JSON summary ---
     out = Path(report_dir)
@@ -151,9 +187,13 @@ def main(
         writer.writerows(rows)
     best = max(full, key=lambda r: r["roc_auc"])
     summary = {
-        "split": split, "gallery_split": gsplit, "agg": agg,
-        "k_shots": shots, "best_k_shot": best["k_shot"],
-        "best_roc_auc": best["roc_auc"], "per_k": full,
+        "split": split,
+        "gallery_split": gsplit,
+        "agg": agg,
+        "k_shots": shots,
+        "best_k_shot": best["k_shot"],
+        "best_roc_auc": best["roc_auc"],
+        "per_k": full,
     }
     summary_path = out / "openset_summary.json"
     summary_path.write_text(json.dumps(summary, indent=2))
@@ -172,8 +212,13 @@ def main(
         logger.warning(f"MLflow disabled (setup failed): {e}")
         return
     with mlflow.start_run(run_name=run_name("evaluate")):
-        params = {"split": split, "gallery_split": gsplit, "agg": agg,
-                  "k_shots": k_shots, "seed": seed}
+        params = {
+            "split": split,
+            "gallery_split": gsplit,
+            "agg": agg,
+            "k_shots": k_shots,
+            "seed": seed,
+        }
         if checkpoint and os.path.isfile(checkpoint):
             params["ckpt_md5"] = md5_file(checkpoint)
         mlflow.log_params(params)
