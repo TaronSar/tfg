@@ -572,14 +572,13 @@ stages:
   09_eval_04_verification_auc:
     frozen: true
     cmd: >-
-      PYTHONPATH=/home/vision/repos/LM/protonet_uav
-      /home/vision/repos/LM/LM/LM/items/sw/sw_kai/items/sw_ai/items/sw_autoengagement/items/.venv/bin/python3
-      /home/vision/repos/LM/protonet_uav/scripts/eval_verification_auc.py
+      PYTHONPATH=. uv run python scripts/eval_verification_auc.py
       --checkpoint models/04_dinov2_hardneg_fromscratch/best.pth
       --data_root  ${paths.datasets_root}/${paths.active_dataset}
       --k_shot     5
       --out_csv    data/eval_04/verification_auc.csv
     deps:
+      - scripts/eval_verification_auc.py
       - models/04_dinov2_hardneg_fromscratch/best.pth
     outs:
       - data/eval_04/verification_auc.csv:
