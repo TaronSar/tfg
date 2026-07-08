@@ -564,6 +564,59 @@ stages:
       - data/eval_phase2/kshot_sweep.png:
           cache: true
 
+  # ==========================================================================
+  # MODEL 04 EVALUATION — DINOv2 hard-neg from scratch
+  # ==========================================================================
+
+  # --- Verification AUC scoreboard (same format as Phase 0 baseline) --------
+  09_eval_04_verification_auc:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=/home/vision/repos/LM/protonet_uav
+      /home/vision/repos/LM/LM/LM/items/sw/sw_kai/items/sw_ai/items/sw_autoengagement/items/.venv/bin/python3
+      /home/vision/repos/LM/protonet_uav/scripts/eval_verification_auc.py
+      --checkpoint models/04_dinov2_hardneg_fromscratch/best.pth
+      --data_root  ${paths.datasets_root}/${paths.active_dataset}
+      --k_shot     5
+      --out_csv    data/eval_04/verification_auc.csv
+    deps:
+      - models/04_dinov2_hardneg_fromscratch/best.pth
+    outs:
+      - data/eval_04/verification_auc.csv:
+          cache: true
+      - data/eval_04/verification_auc.json:
+          cache: true
+
+  # --- Confusability + hard-pair AUC ----------------------------------------
+  09_eval_04_hardpair_auc:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/confusability.py
+      --data_root  ${paths.datasets_root}/${paths.active_dataset}
+      --checkpoint models/04_dinov2_hardneg_fromscratch/best.pth
+      --split      val
+      --top_k      10
+      --report_dir data/eval_04 &&
+      PYTHONPATH=. uv run python scripts/hardpair_auc.py
+      --data_root          ${paths.datasets_root}/${paths.active_dataset}
+      --checkpoint         models/04_dinov2_hardneg_fromscratch/best.pth
+      --confusability_csv  data/eval_04/confusability_val.csv
+      --split              val
+      --top_k              6
+      --report_dir         data/eval_04
+    deps:
+      - scripts/confusability.py
+      - scripts/hardpair_auc.py
+      - models/04_dinov2_hardneg_fromscratch/best.pth
+    outs:
+      - data/eval_04/confusability_val.csv:
+          cache: true
+      - data/eval_04/hardpair_auc_val.csv:
+          cache: true
+    metrics:
+      - data/eval_04/hardpair_auc_val_summary.json:
+          cache: true
+
   # --- 9. Cross-domain k-shot sweep: 02_enrollment checkpoint, yolox_crops val ---
   04_eval_dinov2_vits14_enrollment_cross:
     frozen: true
