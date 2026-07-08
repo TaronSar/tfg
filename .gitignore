@@ -1,5 +1,6 @@
 # Virtual environments
 .venv/
+.venv*/
 venv/
 env/
 
@@ -9,11 +10,8 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Video files
-*.mp4
-*.avi
-*.mov
-*.mkv
+# Video files (only exclude the one that exceeds GitHub's 100MB limit)
+protonet_uav/videoplayback.mp4
 
 # Files exceeding GitHub's 100MB hard limit
 protonet_uav/uav_models/morok_uav_drone_3d_model/morok_uav_drone_3d_model.glb
