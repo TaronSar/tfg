@@ -616,6 +616,28 @@ stages:
       - data/eval_04/hardpair_auc_val_summary.json:
           cache: true
 
+  # --- K-shot sweep (enrollment gallery vs val queries) --------------------
+  09_eval_04_kshot_sweep:
+    frozen: true
+    cmd: >-
+      PYTHONPATH=. uv run python scripts/eval_kshot_sweep.py
+      --checkpoint    models/04_dinov2_hardneg_fromscratch/best.pth
+      --data_root     ${paths.datasets_root}/${paths.active_dataset}
+      --gallery_split enrollment
+      --split         val
+      --agg           mean
+      --k_shots       1 3 5 10 15
+      --out_csv       data/eval_04/cross_domain_kshot.csv
+      --out_graph     data/eval_04/cross_domain_kshot.png
+    deps:
+      - scripts/eval_kshot_sweep.py
+      - models/04_dinov2_hardneg_fromscratch/best.pth
+    outs:
+      - data/eval_04/cross_domain_kshot.csv:
+          cache: true
+      - data/eval_04/cross_domain_kshot.png:
+          cache: true
+
   # --- 9. Cross-domain k-shot sweep: 02_enrollment checkpoint, yolox_crops val ---
   04_eval_dinov2_vits14_enrollment_cross:
     frozen: true
